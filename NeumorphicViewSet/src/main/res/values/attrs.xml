@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    
+    <declare-styleable name="NeumorphicButton">
+
+        <attr name="neu_text" format="string" />
+        <attr name="neu_textSize" format="dimension" />
+        <attr name="neu_textColor" format="color"/>
+        <attr name="neu_fontFamily" format="reference"/>
+        <attr name="neu_textStyle" format="flags">
+            <flag name="normal" value="0" />
+            <flag name="bold" value="1" />
+            <flag name="italic" value="2" />
+            <flag name="bold_italic" value="3" />
+        </attr>
+
+        <attr name="neu_lightDensity" format="float"/>
+        <attr name="neu_shadowDensity" format="float"/>
+        <attr name="neu_JutSize" format="enum">
+            <enum name="small" value="0"/>
+            <enum name="normal" value="1"/>
+            <enum name="large" value="3"/>
+        </attr>
+
+        <attr name="neu_disabledTextColor" format="color"/>
+
+        <attr name="neu_cornerRadius" format="dimension"/>
+        <attr name="neu_backgroundColor" format="color"/>
+
+        <attr name="neu_drawableStart" format="reference"/>
+        <attr name="neu_drawableEnd" format="reference"/>
+        <attr name="neu_drawablePadding" format="dimension"/>
+        <attr name="neu_drawableTint" format="color"/>
+        
+    </declare-styleable>
+    
+</resources>

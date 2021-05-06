@@ -1,0 +1,3 @@
+include ':NeumorphicViewSet'
+include ':app'
+rootProject.name = "NeumorphicView"
