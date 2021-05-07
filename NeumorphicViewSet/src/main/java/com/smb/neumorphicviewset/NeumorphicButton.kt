@@ -58,6 +58,7 @@ class NeumorphicButton : View {
             field = value
             invalidate()
         }
+    private var drawableTintOriginal: Int = 0
 
     private var textXOffSet: Float = 0f
     private var horizontalPadding: Float = dpToPixel(16)
@@ -65,11 +66,10 @@ class NeumorphicButton : View {
     private var touchX : Float = 0f
     private var touchY : Float = 0f
     private var textHeight: Float = 0f
-    private var mTextColorOriginal: Int = Color.BLACK
     private var mTextX: Float = 0f
     private var mTextY: Float = 0f
     private var mTextSize: Float = dpToPixel(16)
-    private var mTextColorCurrent: Int = Color.BLACK
+    private var mTextColor: Int = Color.BLACK
     var disabledTextColor = Color.GRAY
 
     var text: String = "Neumorphic Button"
@@ -92,7 +92,6 @@ class NeumorphicButton : View {
             requestLayout()
         }
 
-
     private var viewJut: Jut = Jut.NORMAL
 
 
@@ -109,21 +108,20 @@ class NeumorphicButton : View {
             drawableEnd = getResourceId(R.styleable.NeumorphicButton_neu_drawableEnd, 0)
             drawablePadding = getDimension(R.styleable.NeumorphicButton_neu_drawablePadding, drawablePadding)
             drawableTint = getInteger(R.styleable.NeumorphicButton_neu_drawableTint, 0)
+            drawableTintOriginal = drawableTint
 
-            lightDensity = getFloat(R.styleable.NeumorphicButton_neu_lightDensity, lightDensity)
-            shadowDensity = getFloat(R.styleable.NeumorphicButton_neu_shadowDensity, shadowDensity)
+            lightDensity = getFloat(R.styleable.NeumorphicButton_neu_lightDensity, lightDensity).coerceAtMost(1f)
+            shadowDensity = getFloat(R.styleable.NeumorphicButton_neu_shadowDensity, shadowDensity).coerceAtMost(1f)
             jutSize = getInt(R.styleable.NeumorphicButton_neu_JutSize, jutSize)
-
 
             //retrieving text attributes
             horizontalPadding = getDimension(R.styleable.NeumorphicButton_neu_HorizontalPadding, horizontalPadding)
             verticalPadding = getDimension(R.styleable.NeumorphicButton_neu_VerticalPadding, verticalPadding)
             textStyle = getInt(R.styleable.NeumorphicButton_neu_textStyle, textStyle)
             mTextSize = getDimension(R.styleable.NeumorphicButton_neu_textSize, mTextSize)
-            mTextColorCurrent = getInteger(R.styleable.NeumorphicButton_neu_textColor, mTextColorCurrent)
+            mTextColor = getInteger(R.styleable.NeumorphicButton_neu_textColor, mTextColor)
             textFont = getResourceId(R.styleable.NeumorphicButton_neu_fontFamily, 0)
             disabledTextColor = getInteger(R.styleable.NeumorphicButton_neu_disabledTextColor, disabledTextColor)
-            mTextColorOriginal = mTextColorCurrent
 
             text = getString(R.styleable.NeumorphicButton_neu_text) ?: text
 
@@ -133,7 +131,7 @@ class NeumorphicButton : View {
         when (jutSize) {
             0 -> viewJut = Jut.SMALL
             1 -> viewJut = Jut.NORMAL
-            3 -> viewJut = Jut.LARGE
+            2 -> viewJut = Jut.LARGE
         }
     }
 
@@ -177,6 +175,32 @@ class NeumorphicButton : View {
         }
     }
 
+    fun disable(){
+        lightPaint.apply {
+            setShadowLayer(25f, -9f, -10f, ColorUtils.blendARGB(mBackgroundColor, Color.WHITE, 0.2f))
+        }
+        shadowPaint.apply {
+            setShadowLayer(25f, 10f, 10f, ColorUtils.blendARGB(mBackgroundColor, Color.BLACK, 0.2f))
+        }
+
+        textPaint.color = disabledTextColor
+        drawableTint = disabledTextColor
+
+        adjustDrawables()
+
+        invalidate()
+    }
+
+    fun enable() {
+        textPaint.color = mTextColor
+        drawableTint = drawableTintOriginal
+
+        adjustDrawables()
+        setJutSize(viewJut)
+
+        invalidate()
+    }
+
     private fun adjustDrawables() {
         if(drawableStart != 0) {
             val drawable = ContextCompat.getDrawable(context, drawableStart)!!
@@ -209,7 +233,7 @@ class NeumorphicButton : View {
             val tf = getTypeFace()
             typeface = Typeface.create(tf, textStyle)
             textSize = mTextSize
-            color = mTextColorCurrent
+            color = mTextColor
             textAlign = Paint.Align.CENTER
         }
 

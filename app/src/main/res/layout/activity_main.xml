@@ -54,7 +54,7 @@
             app:neu_drawableStart="@drawable/baseline_face_24"
             app:neu_drawableTint="@color/white"
             app:neu_lightDensity="0.4"
-            app:neu_shadowDensity="0.5"
+            app:neu_shadowDensity="0.6"
             app:neu_text="Button"
             app:neu_textColor="@color/white"
             app:neu_textSize="24dp"
@@ -79,6 +79,7 @@
             app:neu_textStyle="bold" />
 
         <com.smb.neumorphicviewset.NeumorphicButton
+            android:id="@+id/neuButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
@@ -99,13 +100,13 @@
 
     </LinearLayout>
 
-    <com.smb.neumorphicviewset.NeumorphicButton
-        android:layout_width="100dp"
-        android:layout_height="100dp"
+    <Button
+        android:id="@+id/disableEnable"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        app:neu_cornerRadius="35dp"
-        app:neu_lightDensity="0.9"
-        app:neu_shadowDensity="0.3"
-        app:neu_text="" />
+        android:text="Disable/Enable"
+        android:drawableTint="@color/design_default_color_error"
+        android:drawableLeft="@drawable/baseline_face_24"/>
 
 </LinearLayout>

@@ -21,7 +21,7 @@
         <attr name="neu_JutSize" format="enum">
             <enum name="small" value="0"/>
             <enum name="normal" value="1"/>
-            <enum name="large" value="3"/>
+            <enum name="large" value="2"/>
         </attr>
 
         <attr name="neu_disabledTextColor" format="color"/>
