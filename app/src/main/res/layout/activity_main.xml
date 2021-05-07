@@ -36,6 +36,7 @@
     </FrameLayout>
 
     <LinearLayout
+        android:id="@+id/viewHolder"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="#5A0000"
@@ -45,7 +46,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:layout_margin="16dp"
             app:neu_HorizontalPadding="16dp"
             app:neu_JutSize="small"
             app:neu_backgroundColor="#510000"
@@ -64,7 +64,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:layout_margin="16dp"
             app:neu_JutSize="normal"
             app:neu_backgroundColor="#510000"
             app:neu_cornerRadius="20dp"
@@ -79,11 +78,10 @@
             app:neu_textStyle="bold" />
 
         <com.smb.neumorphicviewset.NeumorphicButton
-            android:id="@+id/neuButton"
+            android:id="@+id/btnNeumorphic"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:layout_margin="16dp"
             app:neu_JutSize="large"
             app:neu_backgroundColor="#510000"
             app:neu_cornerRadius="20dp"

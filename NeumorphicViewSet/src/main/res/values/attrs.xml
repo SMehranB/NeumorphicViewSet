@@ -29,6 +29,7 @@
         <attr name="neu_cornerRadius" format="dimension"/>
         <attr name="neu_backgroundColor" format="color"/>
 
+        <attr name="neu_drawableDimension" format="dimension"/>
         <attr name="neu_drawableStart" format="reference"/>
         <attr name="neu_drawableEnd" format="reference"/>
         <attr name="neu_drawablePadding" format="dimension"/>

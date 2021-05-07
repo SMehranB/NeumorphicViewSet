@@ -1,11 +1,14 @@
 package com.smb.neumorphicviewset
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.*
 import android.os.Build
 import android.util.AttributeSet
+import android.view.MotionEvent
 import android.view.View
 import androidx.annotation.ColorInt
+import androidx.annotation.DrawableRes
 import androidx.annotation.FontRes
 import androidx.annotation.StyleRes
 import androidx.core.content.ContextCompat
@@ -41,6 +44,7 @@ class NeumorphicButton : View {
     private var lightDensity: Float = 0.5f
     private var shadowDensity: Float = 0.5f
     private var jutSize: Int = 1
+    private var jut: Jut = Jut.NORMAL
 
     private val drawablePaint = Paint(Paint.ANTI_ALIAS_FLAG)
     private lateinit var drawableStartBitmap: Bitmap
@@ -49,50 +53,29 @@ class NeumorphicButton : View {
     private var drawableStartX: Float = 0f
     private var drawableEndX: Float = 0f
     private var drawableY: Float = 0f
-    private var drawableDimension = dpToPixel(25).toInt()
+    private var drawableDimension:Float = dpToPixel(25)
     private var drawableStart: Int = 0
     private var drawableEnd: Int = 0
-    @ColorInt
-    var drawableTint: Int = 0
-        set(value) {
-            field = value
-            invalidate()
-        }
+    private var drawableTint: Int = 0
     private var drawableTintOriginal: Int = 0
 
     private var textXOffSet: Float = 0f
     private var horizontalPadding: Float = dpToPixel(16)
     private var verticalPadding: Float = dpToPixel(16)
-    private var touchX : Float = 0f
-    private var touchY : Float = 0f
     private var textHeight: Float = 0f
     private var mTextX: Float = 0f
     private var mTextY: Float = 0f
-    private var mTextSize: Float = dpToPixel(16)
-    private var mTextColor: Int = Color.BLACK
+    private var textSize: Float = dpToPixel(16)
+    private var textColor: Int = Color.BLACK
     var disabledTextColor = Color.GRAY
 
+    private var textStyle: Int = Typeface.NORMAL
+    private var textFont: Int = 0
     var text: String = "Neumorphic Button"
         set(value) {
             field = value
             requestLayout()
         }
-
-    @StyleRes
-    var textStyle: Int = Typeface.NORMAL
-        set(value) {
-            field = value
-            requestLayout()
-        }
-
-    @FontRes
-    var textFont: Int = 0
-        set(value) {
-            field = value
-            requestLayout()
-        }
-
-    private var viewJut: Jut = Jut.NORMAL
 
 
     private fun initAttributes(context: Context, attributeSet: AttributeSet?, defStyleAttr: Int) {
@@ -104,10 +87,11 @@ class NeumorphicButton : View {
             mBackgroundColor = getInteger(R.styleable.NeumorphicButton_neu_backgroundColor, mBackgroundColor)
 
             //retrieving drawable attributes
+            drawableDimension = getDimension(R.styleable.NeumorphicButton_neu_drawableDimension, drawableDimension)
             drawableStart = getResourceId(R.styleable.NeumorphicButton_neu_drawableStart, 0)
             drawableEnd = getResourceId(R.styleable.NeumorphicButton_neu_drawableEnd, 0)
             drawablePadding = getDimension(R.styleable.NeumorphicButton_neu_drawablePadding, drawablePadding)
-            drawableTint = getInteger(R.styleable.NeumorphicButton_neu_drawableTint, 0)
+            drawableTint = getInteger(R.styleable.NeumorphicButton_neu_drawableTint, drawableTint)
             drawableTintOriginal = drawableTint
 
             lightDensity = getFloat(R.styleable.NeumorphicButton_neu_lightDensity, lightDensity).coerceAtMost(1f)
@@ -118,8 +102,8 @@ class NeumorphicButton : View {
             horizontalPadding = getDimension(R.styleable.NeumorphicButton_neu_HorizontalPadding, horizontalPadding)
             verticalPadding = getDimension(R.styleable.NeumorphicButton_neu_VerticalPadding, verticalPadding)
             textStyle = getInt(R.styleable.NeumorphicButton_neu_textStyle, textStyle)
-            mTextSize = getDimension(R.styleable.NeumorphicButton_neu_textSize, mTextSize)
-            mTextColor = getInteger(R.styleable.NeumorphicButton_neu_textColor, mTextColor)
+            textSize = getDimension(R.styleable.NeumorphicButton_neu_textSize, textSize)
+            textColor = getInteger(R.styleable.NeumorphicButton_neu_textColor, textColor)
             textFont = getResourceId(R.styleable.NeumorphicButton_neu_fontFamily, 0)
             disabledTextColor = getInteger(R.styleable.NeumorphicButton_neu_disabledTextColor, disabledTextColor)
 
@@ -129,9 +113,9 @@ class NeumorphicButton : View {
         }
 
         when (jutSize) {
-            0 -> viewJut = Jut.SMALL
-            1 -> viewJut = Jut.NORMAL
-            2 -> viewJut = Jut.LARGE
+            0 -> jut = Jut.SMALL
+            1 -> jut = Jut.NORMAL
+            2 -> jut = Jut.LARGE
         }
     }
 
@@ -148,31 +132,46 @@ class NeumorphicButton : View {
 
     override fun onLayout(changed: Boolean, left: Int, top: Int, right: Int, bottom: Int) {
 
-        adjustDrawables()
-        setJutSize(viewJut)
+        adjustDrawables(drawableTint)
+        setJutSize(jut)
         adjustText()
 
         backgroundRectF.set(shadowMargin, shadowMargin, width.minus(shadowMargin), height.minus(shadowMargin))
         backgroundPaint.color = mBackgroundColor
 
-
         super.onLayout(changed, left, top, right, bottom)
     }
 
     override fun onDraw(canvas: Canvas?) {
-
         canvas?.apply {
             drawRoundRect(backgroundRectF, cornerRadius, cornerRadius, lightPaint)
             drawRoundRect(backgroundRectF, cornerRadius, cornerRadius, shadowPaint)
             drawRoundRect(backgroundRectF, cornerRadius, cornerRadius, backgroundPaint)
+            drawText(text, mTextX, mTextY, textPaint)
             if (drawableStart != 0) {
                 drawBitmap(drawableStartBitmap, drawableStartX, drawableY, drawablePaint)
             }
             if (drawableEnd != 0) {
                 drawBitmap(drawableEndBitmap, drawableEndX, drawableY, drawablePaint)
             }
-            drawText(text, mTextX, mTextY, textPaint)
         }
+    }
+
+    @SuppressLint("ClickableViewAccessibility")
+    override fun onTouchEvent(event: MotionEvent?): Boolean {
+
+        if(event?.action == MotionEvent.ACTION_DOWN){
+
+            if(event.x in backgroundRectF.left..backgroundRectF.right &&
+                event.y in backgroundRectF.top..backgroundRectF.bottom){
+
+                performClick()
+                return true
+            }
+
+            return false
+        }
+        return false
     }
 
     fun disable(){
@@ -184,43 +183,129 @@ class NeumorphicButton : View {
         }
 
         textPaint.color = disabledTextColor
-        drawableTint = disabledTextColor
 
-        adjustDrawables()
+        adjustDrawables(disabledTextColor)
 
         invalidate()
     }
 
     fun enable() {
-        textPaint.color = mTextColor
-        drawableTint = drawableTintOriginal
+        textPaint.color = textColor
 
-        adjustDrawables()
-        setJutSize(viewJut)
+        setJutSize(jut)
+        adjustDrawables(drawableTint)
 
+        requestLayout()
+    }
+
+    fun setBackgroundParams(@ColorInt color: Int, radiusDp: Int) {
+        cornerRadius = dpToPixel(radiusDp)
+        mBackgroundColor = color
+        backgroundPaint.color = color
+        shadowPaint.color = color
+        lightPaint.color = color
         invalidate()
     }
 
-    private fun adjustDrawables() {
+    fun setJutParams(jut: Jut) {
+        this.jut = jut
+        invalidate()
+    }
+
+    fun setJutParams(lightDensity: Float, shadowDensity: Float) {
+        this.lightDensity = lightDensity
+        this.shadowDensity = shadowDensity
+        invalidate()
+    }
+
+    fun setJutParams(lightDensity: Float, shadowDensity: Float, jut: Jut) {
+        this.lightDensity = lightDensity
+        this.shadowDensity = shadowDensity
+        this.jut = jut
+        invalidate()
+    }
+
+    fun setDrawableParams(@DrawableRes drawableStart: Int?, @DrawableRes drawableEnd: Int?) {
+        drawableStart?.let { this.drawableStart = it }
+        drawableEnd?.let { this.drawableEnd = it }
+        requestLayout()
+    }
+
+    fun setDrawableParams(@DrawableRes drawableStart: Int?, @DrawableRes drawableEnd: Int?, @ColorInt tint: Int?) {
+        drawableStart?.let { this.drawableStart = it }
+        drawableEnd?.let { this.drawableEnd = it }
+        tint?.apply {
+            drawableTint = tint
+            drawableTintOriginal = tint
+        }
+        requestLayout()
+    }
+
+    fun setDrawableParams(@DrawableRes drawableStart: Int?, @DrawableRes drawableEnd: Int?, @ColorInt tint: Int?, horizontalPaddingDp: Int) {
+        drawableStart?.let { this.drawableStart = it }
+        drawableEnd?.let { this.drawableEnd = it }
+        tint?.apply {
+            drawableTint = tint
+            drawableTintOriginal = tint
+        }
+        drawablePadding = dpToPixel(horizontalPaddingDp)
+        requestLayout()
+    }
+
+    fun setDrawableDimension(dimensionDp: Int) {
+        drawableDimension = dpToPixel(dimensionDp)
+        requestLayout()
+    }
+
+    fun setTextPaddings(horizontalPaddingDp: Int, verticalPaddingDp: Int) {
+        horizontalPadding = dpToPixel(horizontalPaddingDp)
+        verticalPadding = dpToPixel(verticalPaddingDp)
+    }
+
+    fun setText(text: String, sizeDp: Int, @ColorInt color: Int) {
+        this.text = text
+        textSize = dpToPixel(sizeDp)
+        textColor = color
+        requestLayout()
+    }
+
+    fun setText(text: String, sizeDp: Int) {
+        this.text = text
+        textSize = dpToPixel(sizeDp)
+        requestLayout()
+    }
+
+    fun setTypeface(style: Int, @FontRes font: Int) {
+        textStyle = style
+        textFont = font
+        requestLayout()
+    }
+
+    fun setTypeface(@StyleRes style: Int) {
+        textStyle = style
+        requestLayout()
+    }
+
+    private fun adjustDrawables(tint: Int) {
         if(drawableStart != 0) {
             val drawable = ContextCompat.getDrawable(context, drawableStart)!!
-            if (drawableTint != 0) {
+            if (tint != 0) {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    drawable.setTint(drawableTint)
+                    drawable.setTint(tint)
                 }
             }
-            drawableStartBitmap = drawable.toBitmap(drawableDimension, drawableDimension, Bitmap.Config.ARGB_8888)
+            drawableStartBitmap = drawable.toBitmap(drawableDimension.toInt(), drawableDimension.toInt(), Bitmap.Config.ARGB_8888)
             drawableStartX = shadowMargin + drawablePadding
         }
 
         if(drawableEnd != 0) {
             val drawable = ContextCompat.getDrawable(context, drawableEnd)!!
-            if (drawableTint != 0) {
+            if (tint != 0) {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    drawable.setTint(drawableTint)
+                    drawable.setTint(tint)
                 }
             }
-            drawableEndBitmap = drawable.toBitmap(drawableDimension, drawableDimension, Bitmap.Config.ARGB_8888)
+            drawableEndBitmap = drawable.toBitmap(drawableDimension.toInt(), drawableDimension.toInt(), Bitmap.Config.ARGB_8888)
             drawableEndX = width - shadowMargin - drawablePadding - drawableDimension
         }
 
@@ -232,8 +317,8 @@ class NeumorphicButton : View {
         textPaint.apply {
             val tf = getTypeFace()
             typeface = Typeface.create(tf, textStyle)
-            textSize = mTextSize
-            color = mTextColor
+            textSize = this@NeumorphicButton.textSize
+            color = textColor
             textAlign = Paint.Align.CENTER
         }
 
@@ -246,7 +331,7 @@ class NeumorphicButton : View {
         textPaint.apply {
             val tf = getTypeFace()
             typeface = Typeface.create(tf, textStyle)
-            textSize = mTextSize
+            textSize = this@NeumorphicButton.textSize
         }
         textHeight = textPaint.descent().minus(textPaint.ascent())
 
@@ -350,5 +435,7 @@ class NeumorphicButton : View {
         return tf
     }
 
-    private data class MinimumDimensions(val width: Int, val height: Int)
+    private data class MinimumDimensions(val width: Int, val height: Int){
+
+    }
 }
