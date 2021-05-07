@@ -4,6 +4,8 @@
     <declare-styleable name="NeumorphicButton">
 
         <attr name="neu_text" format="string" />
+        <attr name="neu_HorizontalPadding" format="dimension"/>
+        <attr name="neu_VerticalPadding" format="dimension"/>
         <attr name="neu_textSize" format="dimension" />
         <attr name="neu_textColor" format="color"/>
         <attr name="neu_fontFamily" format="reference"/>

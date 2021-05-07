@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#C0C0C0"
+    android:orientation="vertical"
+    tools:context=".MainActivity">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#C0C0C0">
+
+        <com.smb.neumorphicviewset.NeumorphicButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_margin="16dp"
+            app:neu_HorizontalPadding="16dp"
+            app:neu_JutSize="large"
+            app:neu_backgroundColor="#AFAFAF"
+            app:neu_cornerRadius="20dp"
+            app:neu_drawableEnd="@drawable/outline_shopping_cart_24"
+            app:neu_drawablePadding="16dp"
+            app:neu_drawableStart="@drawable/baseline_face_24"
+            app:neu_drawableTint="@color/white"
+            app:neu_lightDensity="1"
+            app:neu_shadowDensity="0.3"
+            app:neu_text="Button"
+            app:neu_textColor="@color/white"
+            app:neu_textSize="24dp"
+            app:neu_textStyle="bold" />
+
+    </FrameLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#5A0000"
+        android:orientation="vertical">
+
+        <com.smb.neumorphicviewset.NeumorphicButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_margin="16dp"
+            app:neu_HorizontalPadding="16dp"
+            app:neu_JutSize="small"
+            app:neu_backgroundColor="#510000"
+            app:neu_cornerRadius="20dp"
+            app:neu_drawablePadding="16dp"
+            app:neu_drawableStart="@drawable/baseline_face_24"
+            app:neu_drawableTint="@color/white"
+            app:neu_lightDensity="0.4"
+            app:neu_shadowDensity="0.5"
+            app:neu_text="Button"
+            app:neu_textColor="@color/white"
+            app:neu_textSize="24dp"
+            app:neu_textStyle="bold" />
+
+        <com.smb.neumorphicviewset.NeumorphicButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_margin="16dp"
+            app:neu_JutSize="normal"
+            app:neu_backgroundColor="#510000"
+            app:neu_cornerRadius="20dp"
+            app:neu_drawableEnd="@drawable/baseline_face_24"
+            app:neu_drawablePadding="8dp"
+            app:neu_drawableTint="@color/white"
+            app:neu_lightDensity="0.4"
+            app:neu_shadowDensity="0.5"
+            app:neu_text="Button"
+            app:neu_textColor="@color/white"
+            app:neu_textSize="24dp"
+            app:neu_textStyle="bold" />
+
+        <com.smb.neumorphicviewset.NeumorphicButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_margin="16dp"
+            app:neu_JutSize="large"
+            app:neu_backgroundColor="#510000"
+            app:neu_cornerRadius="20dp"
+            app:neu_drawableEnd="@drawable/outline_shopping_cart_24"
+            app:neu_drawablePadding="16dp"
+            app:neu_drawableStart="@drawable/baseline_face_24"
+            app:neu_drawableTint="@color/white"
+            app:neu_lightDensity="0.4"
+            app:neu_shadowDensity="0.5"
+            app:neu_text="Neumorphic Button"
+            app:neu_textColor="@color/white"
+            app:neu_textSize="24dp"
+            app:neu_textStyle="bold" />
+
+    </LinearLayout>
+
+    <com.smb.neumorphicviewset.NeumorphicButton
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_gravity="center_horizontal"
+        app:neu_cornerRadius="35dp"
+        app:neu_lightDensity="0.9"
+        app:neu_shadowDensity="0.3"
+        app:neu_text="" />
+
+</LinearLayout>
