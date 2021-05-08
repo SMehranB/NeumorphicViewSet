@@ -6,16 +6,18 @@ import android.os.Bundle
 import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.smb.neumorphicview.databinding.ActivityMainBinding
 import com.smb.neumorphicviewset.NeumorphicButton
-import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
 
     var disabled = false
+    private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
 
         val neuButton = NeumorphicButton(this)
@@ -31,21 +33,18 @@ class MainActivity : AppCompatActivity() {
             setTextPaddings(16, 16)
             setTypeface(Typeface.BOLD_ITALIC)
             disabledTextColor = Color.BLUE
-
-
         }
 
-        viewHolder.addView(neuButton)
+        binding.viewHolder.addView(neuButton)
 
-        disableEnable.setOnClickListener {
+        binding.disableEnable.setOnClickListener {
             disabled = if (disabled) {
                 neuButton.enable()
-                btnNeumorphic.enable()
-
+                binding.btnNeumorphic.enable()
                 !disabled
             } else {
                 neuButton.disable()
-                btnNeumorphic.disable()
+                binding.btnNeumorphic.disable()
                 !disabled
             }
         }

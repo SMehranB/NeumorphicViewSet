@@ -30,47 +30,49 @@ class NeumorphicButton : View {
 
     enum class Jut { SMALL, NORMAL, LARGE }
 
-    private var cornerRadius: Float = dpToPixel(8)
-
+    /* Paint objects */
     private val backgroundPaint = Paint(Paint.ANTI_ALIAS_FLAG)
     private val textPaint = Paint(Paint.ANTI_ALIAS_FLAG)
     private val lightPaint = Paint(Paint.ANTI_ALIAS_FLAG)
     private val shadowPaint = Paint(Paint.ANTI_ALIAS_FLAG)
+    private val drawablePaint = Paint(Paint.ANTI_ALIAS_FLAG)
 
+    /* Background parameters */
     private var mBackgroundColor = ContextCompat.getColor(context, R.color.primaryColor)
+    private var cornerRadius: Float = dpToPixel(8)
     private val backgroundRectF = RectF()
-    private var shadowMargin: Float = dpToPixel(16)
 
+    /* Shadow and lighting parameters */
+    private var shadowMargin: Float = dpToPixel(16)
     private var lightDensity: Float = 0.5f
     private var shadowDensity: Float = 0.5f
     private var jutSize: Int = 1
     private var jut: Jut = Jut.NORMAL
 
-    private val drawablePaint = Paint(Paint.ANTI_ALIAS_FLAG)
+    /* Drawable Parameters */
     private lateinit var drawableStartBitmap: Bitmap
     private lateinit var drawableEndBitmap: Bitmap
     private var drawablePadding: Float = dpToPixel(8)
     private var drawableStartX: Float = 0f
     private var drawableEndX: Float = 0f
-    private var drawableY: Float = 0f
+    private var drawablesY: Float = 0f
     private var drawableDimension:Float = dpToPixel(25)
     private var drawableStart: Int = 0
     private var drawableEnd: Int = 0
     private var drawableTint: Int = 0
-    private var drawableTintOriginal: Int = 0
 
+    /* Text parameters */
+    private var mTextX: Float = 0f
+    private var mTextY: Float = 0f
     private var textXOffSet: Float = 0f
     private var horizontalPadding: Float = dpToPixel(16)
     private var verticalPadding: Float = dpToPixel(16)
     private var textHeight: Float = 0f
-    private var mTextX: Float = 0f
-    private var mTextY: Float = 0f
     private var textSize: Float = dpToPixel(16)
     private var textColor: Int = Color.BLACK
-    var disabledTextColor = Color.GRAY
-
     private var textStyle: Int = Typeface.NORMAL
     private var textFont: Int = 0
+    var disabledTextColor = Color.GRAY
     var text: String = "Neumorphic Button"
         set(value) {
             field = value
@@ -80,25 +82,20 @@ class NeumorphicButton : View {
 
     private fun initAttributes(context: Context, attributeSet: AttributeSet?, defStyleAttr: Int) {
         val attrs = context.theme.obtainStyledAttributes(attributeSet, R.styleable.NeumorphicButton, defStyleAttr, 0)
-
         attrs.apply {
-
             cornerRadius = getDimension(R.styleable.NeumorphicButton_neu_cornerRadius, cornerRadius)
             mBackgroundColor = getInteger(R.styleable.NeumorphicButton_neu_backgroundColor, mBackgroundColor)
 
-            //retrieving drawable attributes
             drawableDimension = getDimension(R.styleable.NeumorphicButton_neu_drawableDimension, drawableDimension)
             drawableStart = getResourceId(R.styleable.NeumorphicButton_neu_drawableStart, 0)
             drawableEnd = getResourceId(R.styleable.NeumorphicButton_neu_drawableEnd, 0)
             drawablePadding = getDimension(R.styleable.NeumorphicButton_neu_drawablePadding, drawablePadding)
             drawableTint = getInteger(R.styleable.NeumorphicButton_neu_drawableTint, drawableTint)
-            drawableTintOriginal = drawableTint
 
             lightDensity = getFloat(R.styleable.NeumorphicButton_neu_lightDensity, lightDensity).coerceAtMost(1f)
             shadowDensity = getFloat(R.styleable.NeumorphicButton_neu_shadowDensity, shadowDensity).coerceAtMost(1f)
             jutSize = getInt(R.styleable.NeumorphicButton_neu_JutSize, jutSize)
 
-            //retrieving text attributes
             horizontalPadding = getDimension(R.styleable.NeumorphicButton_neu_HorizontalPadding, horizontalPadding)
             verticalPadding = getDimension(R.styleable.NeumorphicButton_neu_VerticalPadding, verticalPadding)
             textStyle = getInt(R.styleable.NeumorphicButton_neu_textStyle, textStyle)
@@ -106,7 +103,6 @@ class NeumorphicButton : View {
             textColor = getInteger(R.styleable.NeumorphicButton_neu_textColor, textColor)
             textFont = getResourceId(R.styleable.NeumorphicButton_neu_fontFamily, 0)
             disabledTextColor = getInteger(R.styleable.NeumorphicButton_neu_disabledTextColor, disabledTextColor)
-
             text = getString(R.styleable.NeumorphicButton_neu_text) ?: text
 
             recycle()
@@ -149,10 +145,10 @@ class NeumorphicButton : View {
             drawRoundRect(backgroundRectF, cornerRadius, cornerRadius, backgroundPaint)
             drawText(text, mTextX, mTextY, textPaint)
             if (drawableStart != 0) {
-                drawBitmap(drawableStartBitmap, drawableStartX, drawableY, drawablePaint)
+                drawBitmap(drawableStartBitmap, drawableStartX, drawablesY, drawablePaint)
             }
             if (drawableEnd != 0) {
-                drawBitmap(drawableEndBitmap, drawableEndX, drawableY, drawablePaint)
+                drawBitmap(drawableEndBitmap, drawableEndX, drawablesY, drawablePaint)
             }
         }
     }
@@ -175,26 +171,14 @@ class NeumorphicButton : View {
     }
 
     fun disable(){
-        lightPaint.apply {
-            setShadowLayer(25f, -9f, -10f, ColorUtils.blendARGB(mBackgroundColor, Color.WHITE, 0.2f))
-        }
-        shadowPaint.apply {
-            setShadowLayer(25f, 10f, 10f, ColorUtils.blendARGB(mBackgroundColor, Color.BLACK, 0.2f))
-        }
-
         textPaint.color = disabledTextColor
-
         adjustDrawables(disabledTextColor)
-
         invalidate()
     }
 
     fun enable() {
         textPaint.color = textColor
-
-        setJutSize(jut)
         adjustDrawables(drawableTint)
-
         requestLayout()
     }
 
@@ -234,20 +218,14 @@ class NeumorphicButton : View {
     fun setDrawableParams(@DrawableRes drawableStart: Int?, @DrawableRes drawableEnd: Int?, @ColorInt tint: Int?) {
         drawableStart?.let { this.drawableStart = it }
         drawableEnd?.let { this.drawableEnd = it }
-        tint?.apply {
-            drawableTint = tint
-            drawableTintOriginal = tint
-        }
+        tint?.let { drawableTint = it }
         requestLayout()
     }
 
     fun setDrawableParams(@DrawableRes drawableStart: Int?, @DrawableRes drawableEnd: Int?, @ColorInt tint: Int?, horizontalPaddingDp: Int) {
         drawableStart?.let { this.drawableStart = it }
         drawableEnd?.let { this.drawableEnd = it }
-        tint?.apply {
-            drawableTint = tint
-            drawableTintOriginal = tint
-        }
+        tint?.let { drawableTint = it }
         drawablePadding = dpToPixel(horizontalPaddingDp)
         requestLayout()
     }
@@ -287,6 +265,7 @@ class NeumorphicButton : View {
     }
 
     private fun adjustDrawables(tint: Int) {
+
         if(drawableStart != 0) {
             val drawable = ContextCompat.getDrawable(context, drawableStart)!!
             if (tint != 0) {
@@ -295,7 +274,7 @@ class NeumorphicButton : View {
                 }
             }
             drawableStartBitmap = drawable.toBitmap(drawableDimension.toInt(), drawableDimension.toInt(), Bitmap.Config.ARGB_8888)
-            drawableStartX = shadowMargin + drawablePadding
+            drawableStartX = shadowMargin.plus(drawablePadding)
         }
 
         if(drawableEnd != 0) {
@@ -306,13 +285,20 @@ class NeumorphicButton : View {
                 }
             }
             drawableEndBitmap = drawable.toBitmap(drawableDimension.toInt(), drawableDimension.toInt(), Bitmap.Config.ARGB_8888)
-            drawableEndX = width - shadowMargin - drawablePadding - drawableDimension
+            drawableEndX = width
+                .minus(shadowMargin)
+                .minus(drawablePadding)
+                .minus(drawableDimension)
         }
 
-        drawableY = height.div(2f).minus(drawableDimension.div(2))
+        drawablesY = height.div(2f).minus(drawableDimension.div(2))
     }
 
     private fun adjustText() {
+
+        /**
+         * Setting all text parameters before the text is drawn
+         */
 
         textPaint.apply {
             val tf = getTypeFace()
@@ -322,11 +308,17 @@ class NeumorphicButton : View {
             textAlign = Paint.Align.CENTER
         }
 
-        mTextX = width.div(2f) + textXOffSet
-        mTextY = height.div(2f) - textPaint.descent().plus(textPaint.ascent()).div(2)
+        mTextX = width.div(2f).plus(textXOffSet) // textXOffSet is the offset caused by the drawables on either side
+        val textVerticalMid = textPaint.descent().plus(textPaint.ascent()).div(2)
+        mTextY = height.div(2f).minus(textVerticalMid)
     }
 
     private fun getDesiredDimensions(): MinimumDimensions {
+
+        /** Need to set the parameters that are determining in the measurement
+         * of the length of the text since the size of the view is calculated
+         * based on the height and the width of the text
+         */
 
         textPaint.apply {
             val tf = getTypeFace()
@@ -335,9 +327,14 @@ class NeumorphicButton : View {
         }
         textHeight = textPaint.descent().minus(textPaint.ascent())
 
-        val width = textPaint.measureText(text) + shadowMargin.times(2) +
-                horizontalPadding.times(2) + getDrawablesCollectiveWidth()
-        val height = textHeight + shadowMargin.times(2) + verticalPadding.times(2)
+        val width = textPaint.measureText(text)
+            .plus(shadowMargin.times(2)) //the margin dedicated to the lighting and shadow from each side
+            .plus(horizontalPadding.times(2)) //this padding applies only to the text increasing the width of the view
+            .plus(getDrawablesCollectiveWidth())
+
+        val height = textHeight
+            .plus(shadowMargin.times(2))
+            .plus(verticalPadding.times(2)) //this padding applies only to the text increasing the height of the view
 
         return MinimumDimensions(width.toInt(), height.toInt())
     }
@@ -362,6 +359,11 @@ class NeumorphicButton : View {
 
     private fun getDrawablesCollectiveWidth(): Float {
 
+        /**
+         * Calculating the amount of (collective) space needed for
+         * one or both of the drawables to be drawn
+         */
+
         var width = 0f
         textXOffSet = 0f
 
@@ -381,7 +383,10 @@ class NeumorphicButton : View {
                 .plus(horizontalPadding.div(2))
         }
 
+        // The offset is divided by 2 to draw the text exactly
+        // in the middle of the available space between the drawables
         textXOffSet = textXOffSet.div(2)
+
         return width
     }
 
