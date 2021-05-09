@@ -39,11 +39,17 @@ class MainActivity : AppCompatActivity() {
         binding.disableEnable.setOnClickListener {
             disabled = if (disabled) {
                 neuButton.enable()
-                binding.btnNeumorphic.enable()
+                binding.apply {
+                    btnPlay.enable()
+                    btnNeumorphic.enable()
+                }
                 !disabled
             } else {
                 neuButton.disable()
-                binding.btnNeumorphic.disable()
+                binding.apply {
+                    btnNeumorphic.disable()
+                    btnPlay.disable()
+                }
                 !disabled
             }
         }
@@ -53,6 +59,9 @@ class MainActivity : AppCompatActivity() {
         }
         binding.btnNeumorphic.setOnClickListener {
             Toast.makeText(this, "btnNeumorphic Clicked", Toast.LENGTH_SHORT).show()
+        }
+        binding.btnPlay.setOnClickListener {
+            Toast.makeText(this, "btnPlay Clicked", Toast.LENGTH_SHORT).show()
         }
     }
 }

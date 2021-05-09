@@ -1,0 +1,288 @@
+package com.smb.neumorphicviewset
+
+import android.annotation.SuppressLint
+import android.content.Context
+import android.graphics.*
+import android.os.Build
+import android.util.AttributeSet
+import android.view.MotionEvent
+import android.view.View
+import androidx.annotation.ColorInt
+import androidx.annotation.DrawableRes
+import androidx.core.content.ContextCompat
+import androidx.core.graphics.ColorUtils
+import androidx.core.graphics.drawable.toBitmap
+
+class NeumorphicImageButton : View {
+
+    constructor(context: Context): super(context){
+        initAttributes(context, null, 0)
+    }
+    constructor(context: Context, attributeSet: AttributeSet) : super(context, attributeSet){
+        initAttributes(context, attributeSet, 0)
+    }
+    constructor(context: Context, attributeSet: AttributeSet, defStyleAttr: Int) : super(context, attributeSet, defStyleAttr){
+        initAttributes(context, attributeSet, defStyleAttr)
+    }
+
+    enum class Jut { SMALL, NORMAL, LARGE }
+
+    /* Paint objects */
+    private val backgroundPaint = Paint(Paint.ANTI_ALIAS_FLAG)
+    private val lightPaint = Paint(Paint.ANTI_ALIAS_FLAG)
+    private val shadowPaint = Paint(Paint.ANTI_ALIAS_FLAG)
+    private val drawablePaint = Paint(Paint.ANTI_ALIAS_FLAG)
+
+    /* Background parameters */
+    private var mBackgroundColor = ContextCompat.getColor(context, R.color.primaryColor)
+    private val backgroundRectF = RectF()
+    private var cornerRadius: Float = dpToPixel(8)
+    private var horizontalPadding: Float = dpToPixel(16)
+    private var verticalPadding: Float = dpToPixel(16)
+    var disabledTextColor = Color.GRAY
+
+    /* Shadow and lighting parameters */
+    private var shadowMargin: Float = dpToPixel(16)
+    private var lightDensity: Float = 0.5f
+    private var shadowDensity: Float = 0.5f
+    private var jutSize: Int = 1
+    private var jut: Jut = Jut.NORMAL
+
+    /* Drawable Parameters */
+    private lateinit var drawableBitmap: Bitmap
+    private var drawableX: Float = 0f
+    private var drawablesY: Float = 0f
+    private var drawableDimension:Float = dpToPixel(25)
+    private var drawable: Int = R.drawable.baseline_play_arrow_24
+    private var drawableTint: Int = 0
+
+    private fun initAttributes(context: Context, attributeSet: AttributeSet?, defStyleAttr: Int) {
+        val attrs = context.theme.obtainStyledAttributes(attributeSet, R.styleable.NeumorphicImageButton, defStyleAttr, 0)
+        attrs.apply {
+            cornerRadius = getDimension(R.styleable.NeumorphicImageButton_nib_cornerRadius, cornerRadius)
+            mBackgroundColor = getInteger(R.styleable.NeumorphicImageButton_nib_backgroundColor, mBackgroundColor)
+
+            drawableDimension = getDimension(R.styleable.NeumorphicImageButton_nib_drawableDimension, drawableDimension)
+            drawable = getResourceId(R.styleable.NeumorphicImageButton_nib_drawable, drawable)
+            drawableTint = getInteger(R.styleable.NeumorphicImageButton_nib_drawableTint, drawableTint)
+
+            lightDensity = getFloat(R.styleable.NeumorphicImageButton_nib_lightDensity, lightDensity).coerceAtMost(1f)
+            shadowDensity = getFloat(R.styleable.NeumorphicImageButton_nib_shadowDensity, shadowDensity).coerceAtMost(1f)
+            jutSize = getInt(R.styleable.NeumorphicImageButton_nib_JutSize, jutSize)
+
+            horizontalPadding = getDimension(R.styleable.NeumorphicImageButton_nib_HorizontalPadding, horizontalPadding)
+            verticalPadding = getDimension(R.styleable.NeumorphicImageButton_nib_VerticalPadding, verticalPadding)
+            disabledTextColor = getInteger(R.styleable.NeumorphicImageButton_nib_disabledColor, disabledTextColor)
+
+            isEnabled = getBoolean(R.styleable.NeumorphicImageButton_nib_enabled, true)
+
+            recycle()
+        }
+
+        when (jutSize) {
+            0 -> jut = Jut.SMALL
+            1 -> jut = Jut.NORMAL
+            2 -> jut = Jut.LARGE
+        }
+    }
+
+    override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
+
+        val desiredDimensions = getDesiredDimensions()
+
+        val desiredWidth = desiredDimensions.width
+        val desiredHeight = desiredDimensions.height
+
+        setMeasuredDimension(getFinalDimension(desiredWidth, widthMeasureSpec),
+            getFinalDimension(desiredHeight, heightMeasureSpec))
+    }
+
+    override fun onLayout(changed: Boolean, left: Int, top: Int, right: Int, bottom: Int) {
+
+        adjustDrawables(drawableTint)
+        setJutSize(jut)
+
+        backgroundRectF.set(shadowMargin, shadowMargin, width.minus(shadowMargin), height.minus(shadowMargin))
+        backgroundPaint.color = mBackgroundColor
+
+        super.onLayout(changed, left, top, right, bottom)
+    }
+
+    override fun onDraw(canvas: Canvas?) {
+        canvas?.apply {
+            drawRoundRect(backgroundRectF, cornerRadius, cornerRadius, lightPaint)
+            drawRoundRect(backgroundRectF, cornerRadius, cornerRadius, shadowPaint)
+            drawRoundRect(backgroundRectF, cornerRadius, cornerRadius, backgroundPaint)
+            drawBitmap(drawableBitmap, drawableX, drawablesY, drawablePaint)
+        }
+    }
+
+    @SuppressLint("ClickableViewAccessibility")
+    override fun onTouchEvent(event: MotionEvent?): Boolean {
+
+        if(event?.action == MotionEvent.ACTION_DOWN && isEnabled){
+
+            if(event.x in backgroundRectF.left..backgroundRectF.right &&
+                event.y in backgroundRectF.top..backgroundRectF.bottom){
+
+                performClick()
+                return true
+            }
+
+            return false
+        }
+
+        return false
+    }
+
+    fun disable(){
+        adjustDrawables(disabledTextColor)
+        isEnabled = false
+        invalidate()
+    }
+
+    fun enable() {
+        adjustDrawables(drawableTint)
+        isEnabled = true
+        requestLayout()
+    }
+
+    fun setBackgroundParams(@ColorInt color: Int, radiusDp: Int) {
+        cornerRadius = dpToPixel(radiusDp)
+        mBackgroundColor = color
+        backgroundPaint.color = color
+        shadowPaint.color = color
+        lightPaint.color = color
+        invalidate()
+    }
+
+    fun setJutParams(jut: Jut) {
+        this.jut = jut
+        invalidate()
+    }
+
+    fun setJutParams(lightDensity: Float, shadowDensity: Float) {
+        this.lightDensity = lightDensity
+        this.shadowDensity = shadowDensity
+        invalidate()
+    }
+
+    fun setJutParams(lightDensity: Float, shadowDensity: Float, jut: Jut) {
+        this.lightDensity = lightDensity
+        this.shadowDensity = shadowDensity
+        this.jut = jut
+        invalidate()
+    }
+
+    fun setDrawableParams(@DrawableRes drawable: Int, dimensionDp: Int) {
+        this.drawable = drawable
+        drawableDimension = dpToPixel(dimensionDp)
+        requestLayout()
+    }
+
+    fun setDrawableParams(@DrawableRes drawable: Int, dimensionDp: Int, @ColorInt tint: Int) {
+        this.drawable = drawable
+        drawableTint = tint
+        drawableDimension = dpToPixel(dimensionDp)
+        requestLayout()
+    }
+
+    fun setPadding(horizontalPaddingDp: Int, verticalPaddingDp: Int) {
+        horizontalPadding = dpToPixel(horizontalPaddingDp)
+        verticalPadding = dpToPixel(verticalPaddingDp)
+    }
+
+    private fun adjustDrawables(tint: Int) {
+
+        val drawable = ContextCompat.getDrawable(context, drawable)!!
+        if (tint != 0) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                drawable.setTint(tint)
+            }
+        }
+
+        drawableBitmap = drawable.toBitmap(drawableDimension.toInt(), drawableDimension.toInt(), Bitmap.Config.ARGB_8888)
+
+        drawableX = width.div(2).minus(drawableDimension.div(2))
+        drawablesY = height.div(2f).minus(drawableDimension.div(2))
+    }
+
+    private fun getDesiredDimensions(): MinimumDimensions {
+
+        /** Need to set the parameters that are determining in the measurement
+         * of the length of the text since the size of the view is calculated
+         * based on the height and the width of the text
+         */
+
+        val width = drawableDimension
+            .plus(shadowMargin.times(2)) //the margin dedicated to the lighting and shadow from each side
+            .plus(horizontalPadding.times(2)) //this padding applies only to the text increasing the width of the view
+
+        val height = drawableDimension
+            .plus(shadowMargin.times(2))
+            .plus(verticalPadding.times(2)) //this padding applies only to the text increasing the height of the view
+
+        return MinimumDimensions(width.toInt(), height.toInt())
+    }
+
+    private fun getFinalDimension(desiredDimen: Int, measureSpec: Int): Int {
+
+        val mode = MeasureSpec.getMode(measureSpec)
+        val size = MeasureSpec.getSize(measureSpec)
+
+        return when(mode){
+            MeasureSpec.EXACTLY -> {
+                size
+            }
+            MeasureSpec.AT_MOST -> {
+                desiredDimen.coerceAtMost(size)
+            }
+            else -> {
+                desiredDimen
+            }
+        }
+    }
+
+    private fun setJutSize(jut: Jut) {
+
+        var radius = 0f
+        var lightOffset = 0f
+        var shadowOffset = 0f
+
+        when (jut) {
+            Jut.SMALL -> {
+                radius = 25f
+                lightOffset = 7f
+                shadowOffset = 8f
+            }
+
+            Jut.NORMAL -> {
+                radius = 25f
+                lightOffset = 9f
+                shadowOffset = 10f
+            }
+
+            Jut.LARGE -> {
+                radius = 25f
+                lightOffset = 10f
+                shadowOffset = 11f
+            }
+        }
+
+        lightPaint.apply {
+            color = mBackgroundColor
+            setShadowLayer(radius, -lightOffset, -lightOffset, ColorUtils.blendARGB(mBackgroundColor, Color.WHITE, lightDensity))
+        }
+
+        shadowPaint.apply {
+            color = mBackgroundColor
+            setShadowLayer(radius, shadowOffset, shadowOffset, ColorUtils.blendARGB(mBackgroundColor, Color.BLACK, shadowDensity))
+        }
+    }
+
+    private fun dpToPixel(dp: Int): Float {
+        return dp.times(resources.displayMetrics.density)
+    }
+
+    private data class MinimumDimensions(val width: Int, val height: Int)
+}

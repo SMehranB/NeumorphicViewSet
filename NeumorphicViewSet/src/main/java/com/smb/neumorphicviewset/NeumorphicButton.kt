@@ -83,29 +83,29 @@ class NeumorphicButton : View {
     private fun initAttributes(context: Context, attributeSet: AttributeSet?, defStyleAttr: Int) {
         val attrs = context.theme.obtainStyledAttributes(attributeSet, R.styleable.NeumorphicButton, defStyleAttr, 0)
         attrs.apply {
-            cornerRadius = getDimension(R.styleable.NeumorphicButton_neu_cornerRadius, cornerRadius)
-            mBackgroundColor = getInteger(R.styleable.NeumorphicButton_neu_backgroundColor, mBackgroundColor)
+            cornerRadius = getDimension(R.styleable.NeumorphicButton_nb_cornerRadius, cornerRadius)
+            mBackgroundColor = getInteger(R.styleable.NeumorphicButton_nb_backgroundColor, mBackgroundColor)
 
-            drawableDimension = getDimension(R.styleable.NeumorphicButton_neu_drawableDimension, drawableDimension)
-            drawableStart = getResourceId(R.styleable.NeumorphicButton_neu_drawableStart, 0)
-            drawableEnd = getResourceId(R.styleable.NeumorphicButton_neu_drawableEnd, 0)
-            drawablePadding = getDimension(R.styleable.NeumorphicButton_neu_drawablePadding, drawablePadding)
-            drawableTint = getInteger(R.styleable.NeumorphicButton_neu_drawableTint, drawableTint)
+            drawableDimension = getDimension(R.styleable.NeumorphicButton_nb_drawableDimension, drawableDimension)
+            drawableStart = getResourceId(R.styleable.NeumorphicButton_nb_drawableStart, 0)
+            drawableEnd = getResourceId(R.styleable.NeumorphicButton_nb_drawableEnd, 0)
+            drawablePadding = getDimension(R.styleable.NeumorphicButton_nb_drawablePadding, drawablePadding)
+            drawableTint = getInteger(R.styleable.NeumorphicButton_nb_drawableTint, drawableTint)
 
-            lightDensity = getFloat(R.styleable.NeumorphicButton_neu_lightDensity, lightDensity).coerceAtMost(1f)
-            shadowDensity = getFloat(R.styleable.NeumorphicButton_neu_shadowDensity, shadowDensity).coerceAtMost(1f)
-            jutSize = getInt(R.styleable.NeumorphicButton_neu_JutSize, jutSize)
+            lightDensity = getFloat(R.styleable.NeumorphicButton_nb_lightDensity, lightDensity).coerceAtMost(1f)
+            shadowDensity = getFloat(R.styleable.NeumorphicButton_nb_shadowDensity, shadowDensity).coerceAtMost(1f)
+            jutSize = getInt(R.styleable.NeumorphicButton_nb_JutSize, jutSize)
 
-            horizontalPadding = getDimension(R.styleable.NeumorphicButton_neu_HorizontalPadding, horizontalPadding)
-            verticalPadding = getDimension(R.styleable.NeumorphicButton_neu_VerticalPadding, verticalPadding)
-            textStyle = getInt(R.styleable.NeumorphicButton_neu_textStyle, textStyle)
-            textSize = getDimension(R.styleable.NeumorphicButton_neu_textSize, textSize)
-            textColor = getInteger(R.styleable.NeumorphicButton_neu_textColor, textColor)
-            textFont = getResourceId(R.styleable.NeumorphicButton_neu_fontFamily, 0)
-            disabledTextColor = getInteger(R.styleable.NeumorphicButton_neu_disabledTextColor, disabledTextColor)
-            text = getString(R.styleable.NeumorphicButton_neu_text) ?: text
+            horizontalPadding = getDimension(R.styleable.NeumorphicButton_nb_HorizontalPadding, horizontalPadding)
+            verticalPadding = getDimension(R.styleable.NeumorphicButton_nb_VerticalPadding, verticalPadding)
+            textStyle = getInt(R.styleable.NeumorphicButton_nb_textStyle, textStyle)
+            textSize = getDimension(R.styleable.NeumorphicButton_nb_textSize, textSize)
+            textColor = getInteger(R.styleable.NeumorphicButton_nb_textColor, textColor)
+            textFont = getResourceId(R.styleable.NeumorphicButton_nb_fontFamily, 0)
+            disabledTextColor = getInteger(R.styleable.NeumorphicButton_nb_disabledTextColor, disabledTextColor)
+            text = getString(R.styleable.NeumorphicButton_nb_text) ?: text
 
-            isEnabled = getBoolean(R.styleable.NeumorphicButton_neu_enabled, true)
+            isEnabled = getBoolean(R.styleable.NeumorphicButton_nb_enabled, true)
 
             recycle()
         }
@@ -445,7 +445,5 @@ class NeumorphicButton : View {
         return tf
     }
 
-    private data class MinimumDimensions(val width: Int, val height: Int){
-
-    }
+    private data class MinimumDimensions(val width: Int, val height: Int)
 }
