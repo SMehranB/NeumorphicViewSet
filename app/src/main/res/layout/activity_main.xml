@@ -91,6 +91,7 @@
             app:neu_drawableTint="@color/white"
             app:neu_lightDensity="0.4"
             app:neu_shadowDensity="0.5"
+            app:neu_enabled="false"
             app:neu_text="Neumorphic Button"
             app:neu_textColor="@color/white"
             app:neu_textSize="24dp"

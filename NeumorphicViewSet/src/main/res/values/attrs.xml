@@ -34,6 +34,8 @@
         <attr name="neu_drawableEnd" format="reference"/>
         <attr name="neu_drawablePadding" format="dimension"/>
         <attr name="neu_drawableTint" format="color"/>
+
+        <attr name="neu_enabled" format="boolean"/>
         
     </declare-styleable>
     

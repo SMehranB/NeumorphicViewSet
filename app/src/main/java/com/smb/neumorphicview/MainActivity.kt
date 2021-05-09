@@ -49,7 +49,10 @@ class MainActivity : AppCompatActivity() {
         }
 
         neuButton.setOnClickListener {
-            Toast.makeText(this, "Clicked", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "neuButton Clicked", Toast.LENGTH_SHORT).show()
+        }
+        binding.btnNeumorphic.setOnClickListener {
+            Toast.makeText(this, "btnNeumorphic Clicked", Toast.LENGTH_SHORT).show()
         }
     }
 }

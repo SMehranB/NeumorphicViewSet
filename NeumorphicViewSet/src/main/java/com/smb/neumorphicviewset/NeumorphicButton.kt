@@ -105,6 +105,8 @@ class NeumorphicButton : View {
             disabledTextColor = getInteger(R.styleable.NeumorphicButton_neu_disabledTextColor, disabledTextColor)
             text = getString(R.styleable.NeumorphicButton_neu_text) ?: text
 
+            isEnabled = getBoolean(R.styleable.NeumorphicButton_neu_enabled, true)
+
             recycle()
         }
 
@@ -156,7 +158,7 @@ class NeumorphicButton : View {
     @SuppressLint("ClickableViewAccessibility")
     override fun onTouchEvent(event: MotionEvent?): Boolean {
 
-        if(event?.action == MotionEvent.ACTION_DOWN){
+        if(event?.action == MotionEvent.ACTION_DOWN && isEnabled){
 
             if(event.x in backgroundRectF.left..backgroundRectF.right &&
                 event.y in backgroundRectF.top..backgroundRectF.bottom){
@@ -167,18 +169,21 @@ class NeumorphicButton : View {
 
             return false
         }
+
         return false
     }
 
     fun disable(){
         textPaint.color = disabledTextColor
         adjustDrawables(disabledTextColor)
+        isEnabled = false
         invalidate()
     }
 
     fun enable() {
         textPaint.color = textColor
         adjustDrawables(drawableTint)
+        isEnabled = true
         requestLayout()
     }
 
