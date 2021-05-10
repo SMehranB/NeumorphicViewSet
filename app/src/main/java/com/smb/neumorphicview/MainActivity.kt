@@ -30,7 +30,7 @@ class MainActivity : AppCompatActivity() {
             setJutParams(NeumorphicButton.Jut.LARGE)
             setDrawableDimension(30)
             setTextPaddings(16, 16)
-            setTypeface(Typeface.BOLD_ITALIC)
+            setTypeface(Typeface.BOLD_ITALIC, R.font.alsscrp)
             disabledTextColor = Color.BLUE
         }
 
