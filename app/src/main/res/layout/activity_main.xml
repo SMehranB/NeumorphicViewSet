@@ -42,12 +42,20 @@
         android:background="#5A0000"
         android:orientation="vertical">
 
+        <com.smb.neumorphicviewset.NeumorphicSeekBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <SeekBar
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
         <com.smb.neumorphicviewset.NeumorphicImageButton
             android:id="@+id/btnPlay"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:nib_JutSize="normal"
-            app:nib_backgroundColor="#510000"
+            app:nib_backgroundColor="@color/neuPrimaryColor"
             android:layout_gravity="center_horizontal"
             app:nib_cornerRadius="100dp"
             app:nib_drawableDimension="80dp"
@@ -61,7 +69,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             app:nb_JutSize="large"
-            app:nb_backgroundColor="#510000"
+            app:nb_backgroundColor="@color/neuPrimaryColor"
             app:nb_cornerRadius="20dp"
             app:nb_drawableEnd="@drawable/outline_shopping_cart_24"
             app:nb_drawablePadding="16dp"

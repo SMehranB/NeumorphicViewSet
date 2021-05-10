@@ -34,7 +34,7 @@ class NeumorphicImageButton : View, NeuUtil {
     private val drawablePaint = Paint(Paint.ANTI_ALIAS_FLAG)
 
     /* Background parameters */
-    private var mBackgroundColor = ContextCompat.getColor(context, R.color.primaryColor)
+    private var mBackgroundColor = ContextCompat.getColor(context, R.color.neuPrimaryColor)
     private val backgroundRectF = RectF()
     private var cornerRadius: Float = dpToPixel(context, 8)
     private var horizontalPadding: Float = dpToPixel(context,16)
@@ -84,6 +84,8 @@ class NeumorphicImageButton : View, NeuUtil {
             1 -> jut = Jut.NORMAL
             2 -> jut = Jut.LARGE
         }
+
+        setLayerTypeBasedOnSDK(this, lightPaint)
     }
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {

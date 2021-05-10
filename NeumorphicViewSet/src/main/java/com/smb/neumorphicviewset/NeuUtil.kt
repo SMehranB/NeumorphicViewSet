@@ -1,7 +1,9 @@
 package com.smb.neumorphicviewset
 
 import android.content.Context
+import android.graphics.Paint
 import android.graphics.Typeface
+import android.os.Build
 import android.view.View
 import androidx.core.content.res.ResourcesCompat
 
@@ -38,5 +40,10 @@ interface NeuUtil {
         return dp.times(context.resources.displayMetrics.density)
     }
 
+    fun setLayerTypeBasedOnSDK(view: View, paint: Paint){
+        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.O) {
+            view.setLayerType(View.LAYER_TYPE_SOFTWARE, paint)
+        }
+    }
     data class MinimumDimensions(val width: Int, val height: Int)
 }
