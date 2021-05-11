@@ -45,5 +45,6 @@ interface NeuUtil {
             view.setLayerType(View.LAYER_TYPE_SOFTWARE, paint)
         }
     }
+
     data class MinimumDimensions(val width: Int, val height: Int)
 }

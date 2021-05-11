@@ -45,12 +45,7 @@
         <com.smb.neumorphicviewset.NeumorphicSeekBar
             android:id="@+id/neuSeekBar"
             android:layout_width="match_parent"
-            android:layout_marginHorizontal="16dp"
-            android:layout_height="wrap_content"/>
-
-        <SeekBar
-            android:id="@+id/seekbar"
-            android:layout_width="match_parent"
+            app:nsb_JutSize="small"
             android:layout_height="wrap_content"/>
 
         <com.smb.neumorphicviewset.NeumorphicImageButton

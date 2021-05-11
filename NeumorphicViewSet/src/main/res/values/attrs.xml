@@ -65,4 +65,28 @@
 
     </declare-styleable>
 
+    <declare-styleable name="NeumorphicSeekBar">
+
+        <attr name="nsb_lightDensity" format="float"/>
+        <attr name="nsb_shadowDensity" format="float"/>
+        <attr name="nsb_JutSize" format="enum">
+            <enum name="small" value="0"/>
+            <enum name="normal" value="1"/>
+            <enum name="large" value="2"/>
+        </attr>
+
+        <attr name="nsb_disabledColor" format="color"/>
+
+        <attr name="nsb_backgroundColor" format="color"/>
+        <attr name="nsb_handleRadius" format="dimension"/>
+
+        <attr name="nsb_ProgressColor" format="color"/>
+        <attr name="nsb_Progress" format="integer"/>
+        <attr name="nsb_Min" format="integer"/>
+        <attr name="nsb_Max" format="integer"/>
+
+        <attr name="nsb_enabled" format="boolean"/>
+
+    </declare-styleable>
+
 </resources>

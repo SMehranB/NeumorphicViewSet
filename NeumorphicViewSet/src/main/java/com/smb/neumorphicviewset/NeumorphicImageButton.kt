@@ -25,8 +25,6 @@ class NeumorphicImageButton : View, NeuUtil {
         initAttributes(context, attributeSet, defStyleAttr)
     }
 
-    enum class Jut { SMALL, NORMAL, LARGE }
-
     /* Paint objects */
     private val backgroundPaint = Paint(Paint.ANTI_ALIAS_FLAG)
     private val lightPaint = Paint(Paint.ANTI_ALIAS_FLAG)
@@ -102,7 +100,7 @@ class NeumorphicImageButton : View, NeuUtil {
     override fun onLayout(changed: Boolean, left: Int, top: Int, right: Int, bottom: Int) {
 
         adjustDrawables(drawableTint)
-        setJutSize(jut)
+        adjustJutParams(jut)
 
         backgroundRectF.set(shadowMargin, shadowMargin, width.minus(shadowMargin), height.minus(shadowMargin))
         backgroundPaint.color = mBackgroundColor
@@ -160,12 +158,14 @@ class NeumorphicImageButton : View, NeuUtil {
 
     fun setJutParams(jut: Jut) {
         this.jut = jut
+        adjustJutParams(jut)
         invalidate()
     }
 
     fun setJutParams(lightDensity: Float, shadowDensity: Float) {
         this.lightDensity = lightDensity
         this.shadowDensity = shadowDensity
+        adjustJutParams(jut)
         invalidate()
     }
 
@@ -173,6 +173,7 @@ class NeumorphicImageButton : View, NeuUtil {
         this.lightDensity = lightDensity
         this.shadowDensity = shadowDensity
         this.jut = jut
+        adjustJutParams(jut)
         invalidate()
     }
 
@@ -226,7 +227,7 @@ class NeumorphicImageButton : View, NeuUtil {
         return NeuUtil.MinimumDimensions(width.toInt(), height.toInt())
     }
 
-    private fun setJutSize(jut: Jut) {
+    private fun adjustJutParams(jut: Jut) {
 
         var radius = 0f
         var lightOffset = 0f
