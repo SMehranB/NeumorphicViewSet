@@ -2,8 +2,10 @@ package com.smb.neumorphicviewset
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.graphics.*
-import android.os.Build
+import android.graphics.Canvas
+import android.graphics.Color
+import android.graphics.Paint
+import android.graphics.RectF
 import android.util.AttributeSet
 import android.view.MotionEvent
 import android.view.View
@@ -49,8 +51,8 @@ class NeumorphicSeekBar : View, NeuUtil {
             invalidate()
         }
     private var progressBarHeight = dpToPixel(context, 8)
-    private var handleRadius: Float = dpToPixel(context, 10)
-    private val progressClipperPath = Path()
+    private var handleRadius: Float = dpToPixel(context, 8)
+    private val handleGlowRadius = 10f
     private var progressBarStart = 0f
     private var progressBarEnd = 0f
     private var progressBarRange = 0f
@@ -84,9 +86,12 @@ class NeumorphicSeekBar : View, NeuUtil {
 
     override fun onLayout(changed: Boolean, left: Int, top: Int, right: Int, bottom: Int) {
 
+        /**
+         * The order of the following functions is important
+         */
         adjustBackgroundParams()
-        adjustProgressBarParams()
         adjustJutParams(jut)
+        adjustProgressBarParams()
 
         setLayerTypeBasedOnSDK(this, lightPaint)
 
@@ -101,10 +106,7 @@ class NeumorphicSeekBar : View, NeuUtil {
             drawRoundRect(backgroundRectF, cornerRadius, cornerRadius, backgroundPaint)
 
             // DRAWING PROGRESS
-            save()
-            clipPath(progressClipperPath)
             drawRoundRect(progressRectF, cornerRadius, cornerRadius, progressPaint)
-            restore()
 
             // DRAWING HANDLE
             drawCircle(handleX, handleY, handleRadius, lightPaint)
@@ -171,13 +173,19 @@ class NeumorphicSeekBar : View, NeuUtil {
     }
 
     fun enable() {
-        progressPaint.color = progressColor
+        progressPaint.apply {
+            color = progressColor
+            setShadowLayer(handleGlowRadius, 0f ,0f , progressColor)
+        }
         isEnabled = true
         invalidate()
     }
 
     fun disable() {
-        progressPaint.color = disabledColor
+        progressPaint.apply {
+            color = disabledColor
+            clearShadowLayer()
+        }
         isEnabled = false
         invalidate()
     }
@@ -300,20 +308,12 @@ class NeumorphicSeekBar : View, NeuUtil {
         progressPaint.apply {
             style = Paint.Style.FILL
             color = progressColor
+            setShadowLayer(handleGlowRadius, 0f ,0f , progressColor)
         }
 
         progressBarStart = backgroundRectF.left.plus(thickness.div(2))
         progressBarEnd = backgroundRectF.right.minus(thickness.div(2))
         progressBarRange = progressBarEnd.minus(progressBarStart)
-
-        adjustProgressRectF()
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            progressClipperPath.addRoundRect(progressBarStart, progressRectF.top, progressBarEnd
-                , progressRectF.bottom, cornerRadius, cornerRadius, Path.Direction.CW)
-        }else{
-            progressClipperPath.addRoundRect(backgroundRectF, cornerRadius, cornerRadius, Path.Direction.CW)
-        }
     }
 
     private fun adjustProgressRectF() {
@@ -375,9 +375,9 @@ class NeumorphicSeekBar : View, NeuUtil {
             setShadowLayer(radius, -lightOffset, -lightOffset, ColorUtils.blendARGB(mBackgroundColor, Color.WHITE, lightDensity))
         }
 
+        handleX = backgroundRectF.left
+        handleY = height.div(2f)
         handlePaint.apply {
-            handleX = progressBarStart
-            handleY = height.div(2f)
             style = Paint.Style.STROKE
             strokeWidth = thickness.times(2f)
             color = mBackgroundColor
