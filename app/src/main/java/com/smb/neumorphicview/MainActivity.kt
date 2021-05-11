@@ -23,11 +23,6 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-
-        binding.neuSeekBar.min = -100
-        binding.neuSeekBar.max = 100
-
-
         binding.neuSeekBar.setOnSeekBarProgressChanged(object : OnNeumorphicSeekBarChangeListener{
             override fun onProgressChanged(neuSeekBar: NeumorphicSeekBar?, progress: Int, fromUser: Boolean) {
                 d("MMM", "On progress changed $progress%")

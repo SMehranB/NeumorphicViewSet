@@ -2,10 +2,8 @@ package com.smb.neumorphicviewset
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.graphics.Canvas
-import android.graphics.Color
-import android.graphics.Paint
-import android.graphics.RectF
+import android.graphics.*
+import android.os.Build
 import android.util.AttributeSet
 import android.view.MotionEvent
 import android.view.View
@@ -22,13 +20,6 @@ class NeumorphicSeekBar : View, NeuUtil {
     }
     constructor(context: Context, attributeSet: AttributeSet, defStyleAttr: Int) : super(context, attributeSet, defStyleAttr){
         initAttributes(context, attributeSet, defStyleAttr)
-    }
-
-
-    private var handleRadius: Float = dpToPixel(context, 12)
-    fun setHandleRadius(radiusDp: Int) {
-        handleRadius = dpToPixel(context, radiusDp)
-        invalidate()
     }
 
     /* Paint objects */
@@ -52,11 +43,14 @@ class NeumorphicSeekBar : View, NeuUtil {
 
     /* Progress and ProgressBar Parameters*/
     var progressColor: Int = Color.CYAN
-    set(value) {
-        field = value
-        progressPaint.color = value
-        invalidate()
-    }
+        set(value) {
+            field = value
+            progressPaint.color = value
+            invalidate()
+        }
+    private var progressBarHeight = dpToPixel(context, 8)
+    private var handleRadius: Float = dpToPixel(context, 10)
+    private val progressClipperPath = Path()
     private var progressBarStart = 0f
     private var progressBarEnd = 0f
     private var progressBarRange = 0f
@@ -90,8 +84,8 @@ class NeumorphicSeekBar : View, NeuUtil {
 
     override fun onLayout(changed: Boolean, left: Int, top: Int, right: Int, bottom: Int) {
 
-        setBackgroundParams()
-        setProgressBarParams()
+        adjustBackgroundParams()
+        adjustProgressBarParams()
         adjustJutParams(jut)
 
         setLayerTypeBasedOnSDK(this, lightPaint)
@@ -107,7 +101,10 @@ class NeumorphicSeekBar : View, NeuUtil {
             drawRoundRect(backgroundRectF, cornerRadius, cornerRadius, backgroundPaint)
 
             // DRAWING PROGRESS
+            save()
+            clipPath(progressClipperPath)
             drawRoundRect(progressRectF, cornerRadius, cornerRadius, progressPaint)
+            restore()
 
             // DRAWING HANDLE
             drawCircle(handleX, handleY, handleRadius, lightPaint)
@@ -197,6 +194,11 @@ class NeumorphicSeekBar : View, NeuUtil {
         return progress
     }
 
+    fun setHandleRadius(radiusDp: Int) {
+        handleRadius = dpToPixel(context, radiusDp)
+        invalidate()
+    }
+
     fun setJutParams(jut: Jut) {
         this.jut = jut
         adjustJutParams(jut)
@@ -231,6 +233,7 @@ class NeumorphicSeekBar : View, NeuUtil {
             jutSize = getInt(R.styleable.NeumorphicSeekBar_nsb_JutSize, jutSize)
 
             progress = getInt(R.styleable.NeumorphicSeekBar_nsb_Progress, progress)
+            progressBarHeight = getDimension(R.styleable.NeumorphicSeekBar_nsb_ProgressBarHeight, progressBarHeight)
             min = getInt(R.styleable.NeumorphicSeekBar_nsb_Min, min)
             max = getInt(R.styleable.NeumorphicSeekBar_nsb_Max, max)
             progressColor = getInt(R.styleable.NeumorphicSeekBar_nsb_ProgressColor, progressColor)
@@ -288,13 +291,12 @@ class NeumorphicSeekBar : View, NeuUtil {
          */
 
         val width = dpToPixel(context, 100)
-        val height = dpToPixel(context, 20)
-            .plus(shadowMargin.times(2))
+        val height = (progressBarHeight.coerceAtLeast(handleRadius.times(2))) + (shadowMargin.times(2)) + thickness
 
         return NeuUtil.MinimumDimensions(width.toInt(), height.toInt())
     }
 
-    private fun setProgressBarParams() {
+    private fun adjustProgressBarParams() {
         progressPaint.apply {
             style = Paint.Style.FILL
             color = progressColor
@@ -303,15 +305,31 @@ class NeumorphicSeekBar : View, NeuUtil {
         progressBarStart = backgroundRectF.left.plus(thickness.div(2))
         progressBarEnd = backgroundRectF.right.minus(thickness.div(2))
         progressBarRange = progressBarEnd.minus(progressBarStart)
+
+        adjustProgressRectF()
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            progressClipperPath.addRoundRect(progressBarStart, progressRectF.top, progressBarEnd
+                , progressRectF.bottom, cornerRadius, cornerRadius, Path.Direction.CW)
+        }else{
+            progressClipperPath.addRoundRect(backgroundRectF, cornerRadius, cornerRadius, Path.Direction.CW)
+        }
     }
 
     private fun adjustProgressRectF() {
-        progressRectF.set(progressBarStart.plus(thickness.div(2)), shadowMargin.plus(thickness),
-            handleX, height.minus(shadowMargin).minus(thickness))
+        progressRectF.set(progressBarStart, backgroundRectF.top.plus(thickness.div(2)),
+            handleX, backgroundRectF.bottom.minus(thickness.div(2)))
     }
 
-    private fun setBackgroundParams() {
-        backgroundRectF.set(shadowMargin.times(1.5f), shadowMargin, width.minus(shadowMargin.times(1.5f)), height.minus(shadowMargin))
+    private fun adjustBackgroundParams() {
+
+        val barLeft = handleRadius.plus(shadowMargin)
+        val barRight = width.minus(barLeft)
+        val barTop = height.div(2).minus(progressBarHeight.div(2))
+        val barBottom = height.div(2).plus(progressBarHeight.div(2))
+
+        backgroundRectF.set(barLeft, barTop, barRight, barBottom)
+
         cornerRadius = backgroundRectF.height().div(2)
         backgroundPaint.apply {
             style = Paint.Style.STROKE

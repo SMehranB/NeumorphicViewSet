@@ -45,8 +45,13 @@
         <com.smb.neumorphicviewset.NeumorphicSeekBar
             android:id="@+id/neuSeekBar"
             android:layout_width="match_parent"
-            app:nsb_JutSize="small"
+            app:nsb_JutSize="large"
+            app:nsb_shadowDensity="0.7"
+            app:nsb_handleRadius="12dp"
+            app:nsb_ProgressBarHeight="8dp"
+            app:nsb_lightDensity="0.6"
             android:layout_height="wrap_content"/>
+
 
         <com.smb.neumorphicviewset.NeumorphicImageButton
             android:id="@+id/btnPlay"

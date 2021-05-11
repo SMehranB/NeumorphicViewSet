@@ -80,6 +80,7 @@
         <attr name="nsb_backgroundColor" format="color"/>
         <attr name="nsb_handleRadius" format="dimension"/>
 
+        <attr name="nsb_ProgressBarHeight" format="dimension"/>
         <attr name="nsb_ProgressColor" format="color"/>
         <attr name="nsb_Progress" format="integer"/>
         <attr name="nsb_Min" format="integer"/>
