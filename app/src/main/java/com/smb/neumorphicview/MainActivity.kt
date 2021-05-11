@@ -3,11 +3,14 @@ package com.smb.neumorphicview
 import android.graphics.Color
 import android.graphics.Typeface
 import android.os.Bundle
+import android.util.Log.d
 import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.smb.neumorphicview.databinding.ActivityMainBinding
 import com.smb.neumorphicviewset.NeumorphicButton
+import com.smb.neumorphicviewset.NeumorphicSeekBar
+import com.smb.neumorphicviewset.OnNeumorphicSeekBarChangeListener
 
 class MainActivity : AppCompatActivity() {
 
@@ -18,6 +21,24 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+
+        binding.neuSeekBar.min = -100f
+        binding.neuSeekBar.max = 100f
+
+        binding.neuSeekBar.setOnSeekBarProgressChanged(object : OnNeumorphicSeekBarChangeListener{
+            override fun onProgressChanged(neuSeekBar: NeumorphicSeekBar?, progress: Int, fromUser: Boolean) {
+                d("MMM", "On progress changed $progress%")
+            }
+
+            override fun onStartTrackingTouch(neuSeekBar: NeumorphicSeekBar?) {
+                d("MMM", "onStartTrackingTouch " + neuSeekBar?.progress)
+            }
+
+            override fun onStopTrackingTouch(neuSeekBar: NeumorphicSeekBar?) {
+                d("MMM", "onStopTrackingTouch " + neuSeekBar?.progress)
+            }
+        })
 
         val neuButton = NeumorphicButton(this)
         val params = LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT)

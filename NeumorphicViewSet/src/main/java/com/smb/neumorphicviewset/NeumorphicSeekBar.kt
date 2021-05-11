@@ -1,5 +1,6 @@
 package com.smb.neumorphicviewset
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Color
@@ -35,6 +36,7 @@ class NeumorphicSeekBar : View, NeuUtil {
     /* Background parameters */
     private var mBackgroundColor = ContextCompat.getColor(context, R.color.neuPrimaryColor)
     private val backgroundRectF = RectF()
+    private val progressRectF = RectF()
     private val thickness = dpToPixel(context, 5)
     private var cornerRadius: Float = dpToPixel(context, 100)
     private var horizontalPadding: Float = dpToPixel(context,16)
@@ -42,18 +44,24 @@ class NeumorphicSeekBar : View, NeuUtil {
     var disabledTextColor = Color.GRAY
 
     private var progressColor: Int = Color.CYAN
-    private var progress: Float = 0f
+    private var progressBarStart = 0f
+    private var progressBarEnd = 0f
+    private var progressBarRange = 0f
+    var progress: Int = 0
+    var min: Float = 0f
+    var max: Float = 100f
     private var handleX: Float = 0f
     private var handleY: Float = 0f
     private var isDragging = false
 
     /* Shadow and lighting parameters */
     private var shadowMargin: Float = dpToPixel(context,16)
-    private var lightDensity: Float = 0.6f
-    private var shadowDensity: Float = 0.4f
+    private var lightDensity: Float = 0.5f
+    private var shadowDensity: Float = 0.5f
     private var jutSize: Int = 1
-    private var jut: NeumorphicImageButton.Jut = NeumorphicImageButton.Jut.NORMAL
+    private var jut: Jut = Jut.NORMAL
 
+    private var onNeumorphicSeekBarChangeListener: OnNeumorphicSeekBarChangeListener? = null
 
     private fun initAttributes(context: Context, attributeSet: AttributeSet?, defStyleAttr: Int) {
         val attrs = context.theme.obtainStyledAttributes(attributeSet, R.styleable.NeumorphicImageButton, defStyleAttr, 0)
@@ -79,9 +87,9 @@ class NeumorphicSeekBar : View, NeuUtil {
         }
 
         when (jutSize) {
-            0 -> jut = NeumorphicImageButton.Jut.SMALL
-            1 -> jut = NeumorphicImageButton.Jut.NORMAL
-            2 -> jut = NeumorphicImageButton.Jut.LARGE
+            0 -> jut = Jut.SMALL
+            1 -> jut = Jut.NORMAL
+            2 -> jut = Jut.LARGE
         }
     }
 
@@ -98,50 +106,73 @@ class NeumorphicSeekBar : View, NeuUtil {
 
     override fun onLayout(changed: Boolean, left: Int, top: Int, right: Int, bottom: Int) {
 
-
+        setBackgroundParams()
+        setProgressBarParams()
         setJutSize(jut)
-
 
         setLayerTypeBasedOnSDK(this, lightPaint)
 
         super.onLayout(changed, left, top, right, bottom)
     }
-
     override fun onDraw(canvas: Canvas?) {
 
         canvas?.apply {
-
-            drawRoundRect(backgroundRectF, cornerRadius, cornerRadius, progressPaint)
-
+            // DRAWING BACKGROUND
             drawRoundRect(backgroundRectF, cornerRadius, cornerRadius, lightPaint)
-
-            drawRoundRect(backgroundRectF, cornerRadius, cornerRadius, backgroundPaint)
             drawRoundRect(backgroundRectF, cornerRadius, cornerRadius, backgroundPaint)
 
+            // DRAWING PROGRESS
+            drawRoundRect(progressRectF, cornerRadius, cornerRadius, progressPaint)
+
+            // DRAWING HANDLE
             drawCircle(handleX, handleY, handleRadius, handlePaint)
             drawCircle(handleX, handleY, handleRadius - thickness, progressPaint)
         }
     }
 
-    private fun seekBarClicked(event: MotionEvent): Boolean {
-        return event.x in backgroundRectF.left..backgroundRectF.right &&
-                event.y in backgroundRectF.top..backgroundRectF.bottom
+    private fun getProgress(x: Float): Int {
+
+        val offsetX = x.minus(progressBarStart)
+
+        return when {
+            offsetX <= 0f -> {
+                min.toInt()
+            }
+
+            offsetX in progressBarRange..width.toFloat() -> {
+                max.toInt()
+            }
+
+            else -> {
+                val progressRange = max.minus(min)
+                (min + offsetX.div(progressBarRange).times(progressRange)).toInt()
+            }
+        }
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     override fun onTouchEvent(event: MotionEvent?): Boolean {
 
         if (event != null && isEnabled) {
             when (event.action) {
                 MotionEvent.ACTION_DOWN -> {
                     return if (seekBarClicked(event)) {
+
                         parent.requestDisallowInterceptTouchEvent(true)
-
-                        handleX = event.x
+                        progress = getProgress(event.x)
                         isDragging = true
+                        onNeumorphicSeekBarChangeListener?.onStartTrackingTouch(this)
 
-                        invalidate()
+                        if (clickInProgressArea(event)) {
+                            handleX = event.x
+                            progressRectF.set(shadowMargin.plus(thickness), shadowMargin.plus(thickness),
+                                handleX, height.minus(shadowMargin).minus(thickness))
+                            invalidate()
+                        }
+
                         performClick()
                         true
+
                     } else {
                         isDragging = false
                         false
@@ -149,14 +180,22 @@ class NeumorphicSeekBar : View, NeuUtil {
                 }
 
                 MotionEvent.ACTION_MOVE -> {
-                    if (isDragging) {
-                        handleX = event.x
-                        invalidate()
+                    if (isDragging && seekBarClicked(event)) {
+
+                        progress = getProgress(event.x)
+                        onNeumorphicSeekBarChangeListener?.onProgressChanged(this, progress, true)
+
+                        if (clickInProgressArea(event)) {
+                            handleX = event.x
+                            progressRectF.set(shadowMargin.plus(thickness), shadowMargin.plus(thickness), handleX, height.minus(shadowMargin).minus(thickness))
+                            invalidate()
+                        }
                     }
                 }
 
                 MotionEvent.ACTION_UP -> {
                     isDragging = false
+                    onNeumorphicSeekBarChangeListener?.onStopTrackingTouch(this)
                     parent.requestDisallowInterceptTouchEvent(false)
                 }
             }
@@ -165,56 +204,74 @@ class NeumorphicSeekBar : View, NeuUtil {
         return super.onTouchEvent(event)
     }
 
+    fun setOnSeekBarProgressChanged(onNeumorphicSeekBarChangeListener: OnNeumorphicSeekBarChangeListener) {
+        this.onNeumorphicSeekBarChangeListener = onNeumorphicSeekBarChangeListener
+    }
+
     private fun getDesiredDimensions(): NeuUtil.MinimumDimensions {
 
         /** The size of the view is calculated based on
          * the height and the width of the drawable
          */
 
-        val width = resources.displayMetrics.widthPixels
+        val width = dpToPixel(context, 100)
         val height = dpToPixel(context, 20)
             .plus(shadowMargin.times(2))
 
-        return NeuUtil.MinimumDimensions(width, height.toInt())
+        return NeuUtil.MinimumDimensions(width.toInt(), height.toInt())
     }
 
-    private fun setJutSize(jut: NeumorphicImageButton.Jut) {
+    private fun setProgressBarParams() {
+        progressPaint.apply {
+            style = Paint.Style.FILL
+            color = progressColor
+        }
+
+        progressBarStart = backgroundRectF.left.plus(thickness.div(2))
+        progressBarEnd = backgroundRectF.right.minus(thickness.div(2))
+        progressBarRange = progressBarEnd.minus(progressBarStart)
+    }
+
+
+    private fun setBackgroundParams() {
+        backgroundRectF.set(shadowMargin, shadowMargin, width.minus(shadowMargin), height.minus(shadowMargin))
+        cornerRadius = backgroundRectF.height().div(2)
+        backgroundPaint.apply {
+            style = Paint.Style.STROKE
+            strokeWidth = thickness
+            color = mBackgroundColor
+        }
+    }
+
+
+    private fun setJutSize(jut: Jut) {
 
         var radius = 0f
         var lightOffset = 0f
         var shadowOffset = 0f
 
         when (jut) {
-            NeumorphicImageButton.Jut.SMALL -> {
+            Jut.SMALL -> {
                 radius = 25f
                 lightOffset = 7f
                 shadowOffset = 8f
             }
 
-            NeumorphicImageButton.Jut.NORMAL -> {
-                radius = 25f
-                lightOffset = 9f
-                shadowOffset = 8f
+            Jut.NORMAL -> {
+                radius = 20f
+                lightOffset = 8f
+                shadowOffset = 10f
             }
 
-            NeumorphicImageButton.Jut.LARGE -> {
+            Jut.LARGE -> {
                 radius = 25f
                 lightOffset = 10f
                 shadowOffset = 11f
             }
         }
 
-        backgroundRectF.set(shadowMargin, shadowMargin, width.minus(shadowMargin), height.minus(shadowMargin))
         backgroundPaint.apply {
-            style = Paint.Style.STROKE
-            strokeWidth = thickness
-            color = mBackgroundColor
-            setShadowLayer(radius.minus(2), shadowOffset, shadowOffset, ColorUtils.blendARGB(mBackgroundColor, Color.BLACK, shadowDensity))
-        }
-
-        progressPaint.apply {
-            style = Paint.Style.FILL
-            color = progressColor
+            setShadowLayer(radius, shadowOffset, shadowOffset, ColorUtils.blendARGB(mBackgroundColor, Color.BLACK, shadowDensity))
         }
 
         lightPaint.apply {
@@ -234,4 +291,11 @@ class NeumorphicSeekBar : View, NeuUtil {
         }
     }
 
+    private fun seekBarClicked(event: MotionEvent): Boolean {
+        return event.x in 0f..width.toFloat()
+    }
+
+    private fun clickInProgressArea(event: MotionEvent): Boolean {
+        return event.x in progressBarStart..progressBarEnd
+    }
 }
