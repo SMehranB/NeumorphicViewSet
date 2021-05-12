@@ -1,4 +1,4 @@
-package com.smb.neumorphicviewset
+package com.smb.neumorphicviewset.interfaces
 
 import android.content.Context
 import android.graphics.Paint

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     
-    <declare-styleable name="NeumorphicButton">
+    <declare-styleable name="NeuButton">
 
         <attr name="nb_text" format="string" />
         <attr name="nb_HorizontalPadding" format="dimension"/>
@@ -39,7 +39,7 @@
         
     </declare-styleable>
 
-    <declare-styleable name="NeumorphicImageButton">
+    <declare-styleable name="NeuImageButton">
 
         <attr name="nib_HorizontalPadding" format="dimension"/>
         <attr name="nib_VerticalPadding" format="dimension"/>
@@ -65,7 +65,7 @@
 
     </declare-styleable>
 
-    <declare-styleable name="NeumorphicSeekBar">
+    <declare-styleable name="NeuSeekBar">
 
         <attr name="nsb_lightDensity" format="float"/>
         <attr name="nsb_shadowDensity" format="float"/>
@@ -87,6 +87,25 @@
         <attr name="nsb_Max" format="integer"/>
 
         <attr name="nsb_enabled" format="boolean"/>
+
+    </declare-styleable>
+
+    <declare-styleable name="NeuSwitch">
+
+        <attr name="ns_lightDensity" format="float"/>
+        <attr name="ns_shadowDensity" format="float"/>
+        <attr name="ns_JutSize" format="enum">
+            <enum name="small" value="0"/>
+            <enum name="normal" value="1"/>
+            <enum name="large" value="2"/>
+        </attr>
+
+        <attr name="ns_disabledColor" format="color"/>
+        <attr name="ns_backgroundColor" format="color"/>
+        <attr name="ns_handleColor" format="color"/>
+
+        <attr name="ns_enabled" format="boolean"/>
+        <attr name="ns_checked" format="boolean"/>
 
     </declare-styleable>
 

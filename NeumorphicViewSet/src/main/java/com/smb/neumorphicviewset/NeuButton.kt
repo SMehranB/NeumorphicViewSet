@@ -14,8 +14,9 @@ import androidx.annotation.StyleRes
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.ColorUtils
 import androidx.core.graphics.drawable.toBitmap
+import com.smb.neumorphicviewset.interfaces.NeuUtil
 
-class NeumorphicButton : View, NeuUtil {
+class NeuButton : View, NeuUtil {
 
     constructor(context: Context): super(context){
         initAttributes(context, null, 0)
@@ -78,31 +79,31 @@ class NeumorphicButton : View, NeuUtil {
 
 
     private fun initAttributes(context: Context, attributeSet: AttributeSet?, defStyleAttr: Int) {
-        val attrs = context.theme.obtainStyledAttributes(attributeSet, R.styleable.NeumorphicButton, defStyleAttr, 0)
+        val attrs = context.theme.obtainStyledAttributes(attributeSet, R.styleable.NeuButton, defStyleAttr, 0)
         attrs.apply {
-            cornerRadius = getDimension(R.styleable.NeumorphicButton_nb_cornerRadius, cornerRadius)
-            mBackgroundColor = getInteger(R.styleable.NeumorphicButton_nb_backgroundColor, mBackgroundColor)
+            cornerRadius = getDimension(R.styleable.NeuButton_nb_cornerRadius, cornerRadius)
+            mBackgroundColor = getInteger(R.styleable.NeuButton_nb_backgroundColor, mBackgroundColor)
 
-            drawableDimension = getDimension(R.styleable.NeumorphicButton_nb_drawableDimension, drawableDimension)
-            drawableStart = getResourceId(R.styleable.NeumorphicButton_nb_drawableStart, 0)
-            drawableEnd = getResourceId(R.styleable.NeumorphicButton_nb_drawableEnd, 0)
-            drawablePadding = getDimension(R.styleable.NeumorphicButton_nb_drawablePadding, drawablePadding)
-            drawableTint = getInteger(R.styleable.NeumorphicButton_nb_drawableTint, drawableTint)
+            drawableDimension = getDimension(R.styleable.NeuButton_nb_drawableDimension, drawableDimension)
+            drawableStart = getResourceId(R.styleable.NeuButton_nb_drawableStart, 0)
+            drawableEnd = getResourceId(R.styleable.NeuButton_nb_drawableEnd, 0)
+            drawablePadding = getDimension(R.styleable.NeuButton_nb_drawablePadding, drawablePadding)
+            drawableTint = getInteger(R.styleable.NeuButton_nb_drawableTint, drawableTint)
 
-            lightDensity = getFloat(R.styleable.NeumorphicButton_nb_lightDensity, lightDensity).coerceAtMost(1f)
-            shadowDensity = getFloat(R.styleable.NeumorphicButton_nb_shadowDensity, shadowDensity).coerceAtMost(1f)
-            jutSize = getInt(R.styleable.NeumorphicButton_nb_JutSize, jutSize)
+            lightDensity = getFloat(R.styleable.NeuButton_nb_lightDensity, lightDensity).coerceAtMost(1f)
+            shadowDensity = getFloat(R.styleable.NeuButton_nb_shadowDensity, shadowDensity).coerceAtMost(1f)
+            jutSize = getInt(R.styleable.NeuButton_nb_JutSize, jutSize)
 
-            horizontalPadding = getDimension(R.styleable.NeumorphicButton_nb_HorizontalPadding, horizontalPadding)
-            verticalPadding = getDimension(R.styleable.NeumorphicButton_nb_VerticalPadding, verticalPadding)
-            textStyle = getInt(R.styleable.NeumorphicButton_nb_textStyle, textStyle)
-            textSize = getDimension(R.styleable.NeumorphicButton_nb_textSize, textSize)
-            textColor = getInteger(R.styleable.NeumorphicButton_nb_textColor, textColor)
-            textFont = getResourceId(R.styleable.NeumorphicButton_nb_fontFamily, 0)
-            disabledTextColor = getInteger(R.styleable.NeumorphicButton_nb_disabledTextColor, disabledTextColor)
-            text = getString(R.styleable.NeumorphicButton_nb_text) ?: text
+            horizontalPadding = getDimension(R.styleable.NeuButton_nb_HorizontalPadding, horizontalPadding)
+            verticalPadding = getDimension(R.styleable.NeuButton_nb_VerticalPadding, verticalPadding)
+            textStyle = getInt(R.styleable.NeuButton_nb_textStyle, textStyle)
+            textSize = getDimension(R.styleable.NeuButton_nb_textSize, textSize)
+            textColor = getInteger(R.styleable.NeuButton_nb_textColor, textColor)
+            textFont = getResourceId(R.styleable.NeuButton_nb_fontFamily, 0)
+            disabledTextColor = getInteger(R.styleable.NeuButton_nb_disabledTextColor, disabledTextColor)
+            text = getString(R.styleable.NeuButton_nb_text) ?: text
 
-            isEnabled = getBoolean(R.styleable.NeumorphicButton_nb_enabled, true)
+            isEnabled = getBoolean(R.styleable.NeuButton_nb_enabled, true)
 
             recycle()
         }
@@ -309,7 +310,7 @@ class NeumorphicButton : View, NeuUtil {
 
         textPaint.apply {
             typeface = getTypeFace(context, textFont, textStyle)
-            textSize = this@NeumorphicButton.textSize
+            textSize = this@NeuButton.textSize
             color = textColor
             textAlign = Paint.Align.CENTER
         }
@@ -328,7 +329,7 @@ class NeumorphicButton : View, NeuUtil {
 
         textPaint.apply {
             typeface = getTypeFace(context, textFont, textStyle)
-            textSize = this@NeumorphicButton.textSize
+            textSize = this@NeuButton.textSize
         }
         textHeight = textPaint.descent().minus(textPaint.ascent())
 

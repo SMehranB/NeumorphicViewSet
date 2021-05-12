@@ -12,8 +12,9 @@ import androidx.annotation.DrawableRes
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.ColorUtils
 import androidx.core.graphics.drawable.toBitmap
+import com.smb.neumorphicviewset.interfaces.NeuUtil
 
-class NeumorphicImageButton : View, NeuUtil {
+class NeuImageButton : View, NeuUtil {
 
     constructor(context: Context): super(context){
         initAttributes(context, null, 0)
@@ -55,24 +56,24 @@ class NeumorphicImageButton : View, NeuUtil {
     private var drawableTint: Int = 0
 
     private fun initAttributes(context: Context, attributeSet: AttributeSet?, defStyleAttr: Int) {
-        val attrs = context.theme.obtainStyledAttributes(attributeSet, R.styleable.NeumorphicImageButton, defStyleAttr, 0)
+        val attrs = context.theme.obtainStyledAttributes(attributeSet, R.styleable.NeuImageButton, defStyleAttr, 0)
         attrs.apply {
-            cornerRadius = getDimension(R.styleable.NeumorphicImageButton_nib_cornerRadius, cornerRadius)
-            mBackgroundColor = getInteger(R.styleable.NeumorphicImageButton_nib_backgroundColor, mBackgroundColor)
+            cornerRadius = getDimension(R.styleable.NeuImageButton_nib_cornerRadius, cornerRadius)
+            mBackgroundColor = getInteger(R.styleable.NeuImageButton_nib_backgroundColor, mBackgroundColor)
 
-            drawableDimension = getDimension(R.styleable.NeumorphicImageButton_nib_drawableDimension, drawableDimension)
-            drawable = getResourceId(R.styleable.NeumorphicImageButton_nib_drawable, drawable)
-            drawableTint = getInteger(R.styleable.NeumorphicImageButton_nib_drawableTint, drawableTint)
+            drawableDimension = getDimension(R.styleable.NeuImageButton_nib_drawableDimension, drawableDimension)
+            drawable = getResourceId(R.styleable.NeuImageButton_nib_drawable, drawable)
+            drawableTint = getInteger(R.styleable.NeuImageButton_nib_drawableTint, drawableTint)
 
-            lightDensity = getFloat(R.styleable.NeumorphicImageButton_nib_lightDensity, lightDensity).coerceAtMost(1f)
-            shadowDensity = getFloat(R.styleable.NeumorphicImageButton_nib_shadowDensity, shadowDensity).coerceAtMost(1f)
-            jutSize = getInt(R.styleable.NeumorphicImageButton_nib_JutSize, jutSize)
+            lightDensity = getFloat(R.styleable.NeuImageButton_nib_lightDensity, lightDensity).coerceAtMost(1f)
+            shadowDensity = getFloat(R.styleable.NeuImageButton_nib_shadowDensity, shadowDensity).coerceAtMost(1f)
+            jutSize = getInt(R.styleable.NeuImageButton_nib_JutSize, jutSize)
 
-            horizontalPadding = getDimension(R.styleable.NeumorphicImageButton_nib_HorizontalPadding, horizontalPadding)
-            verticalPadding = getDimension(R.styleable.NeumorphicImageButton_nib_VerticalPadding, verticalPadding)
-            disabledTextColor = getInteger(R.styleable.NeumorphicImageButton_nib_disabledColor, disabledTextColor)
+            horizontalPadding = getDimension(R.styleable.NeuImageButton_nib_HorizontalPadding, horizontalPadding)
+            verticalPadding = getDimension(R.styleable.NeuImageButton_nib_VerticalPadding, verticalPadding)
+            disabledTextColor = getInteger(R.styleable.NeuImageButton_nib_disabledColor, disabledTextColor)
 
-            isEnabled = getBoolean(R.styleable.NeumorphicImageButton_nib_enabled, true)
+            isEnabled = getBoolean(R.styleable.NeuImageButton_nib_enabled, true)
 
             recycle()
         }

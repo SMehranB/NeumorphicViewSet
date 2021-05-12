@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         android:background="#C0C0C0">
 
-        <com.smb.neumorphicviewset.NeumorphicButton
+        <com.smb.neumorphicviewset.NeuButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
@@ -42,28 +42,36 @@
         android:background="@color/neuPrimaryColor"
         android:orientation="vertical">
 
-        <com.smb.neumorphicviewset.NeumorphicSeekBar
+        <com.smb.neumorphicviewset.NeuSeekBar
             android:id="@+id/neuSeekBar"
             android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             app:nsb_JutSize="normal"
-            app:nsb_shadowDensity="0.7"
             app:nsb_lightDensity="0.5"
-            android:layout_height="wrap_content"/>
+            app:nsb_shadowDensity="0.7" />
 
-        <com.smb.neumorphicviewset.NeumorphicImageButton
+        <com.smb.neumorphicviewset.NeuImageButton
             android:id="@+id/btnPlay"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
             app:nib_JutSize="normal"
             app:nib_backgroundColor="@color/neuPrimaryColor"
-            android:layout_gravity="center_horizontal"
             app:nib_cornerRadius="100dp"
             app:nib_drawableDimension="80dp"
             app:nib_drawableTint="@color/white"
             app:nib_lightDensity="0.4"
-            app:nib_shadowDensity="0.5"/>
+            app:nib_shadowDensity="0.5" />
 
-        <com.smb.neumorphicviewset.NeumorphicButton
+        <com.smb.neumorphicviewset.NeuSwitch
+            android:id="@+id/neuSwitch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:ns_checked="true"
+            app:ns_shadowDensity="0.6"
+            android:layout_gravity="center_horizontal" />
+
+        <com.smb.neumorphicviewset.NeuButton
             android:id="@+id/btnNeumorphic"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -75,9 +83,9 @@
             app:nb_drawablePadding="16dp"
             app:nb_drawableStart="@drawable/baseline_face_24"
             app:nb_drawableTint="@color/white"
+            app:nb_enabled="false"
             app:nb_lightDensity="0.4"
             app:nb_shadowDensity="0.5"
-            app:nb_enabled="false"
             app:nb_text="Neumorphic Button"
             app:nb_textColor="@color/white"
             app:nb_textSize="24dp"
@@ -90,8 +98,17 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:text="Disable/Enable"
+        android:drawableLeft="@drawable/baseline_face_24"
         android:drawableTint="@color/design_default_color_error"
-        android:drawableLeft="@drawable/baseline_face_24"/>
+        android:text="Disable/Enable" />
+
+    <Button
+        android:id="@+id/changed"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:drawableLeft="@drawable/baseline_face_24"
+        android:drawableTint="@color/design_default_color_error"
+        android:text="change" />
 
 </LinearLayout>

@@ -11,9 +11,11 @@ import android.view.MotionEvent
 import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.ColorUtils
+import com.smb.neumorphicviewset.interfaces.NeuUtil
+import com.smb.neumorphicviewset.interfaces.OnNeuSeekBarChangeListener
 import kotlin.math.abs
 
-class NeumorphicSeekBar : View, NeuUtil {
+class NeuSeekBar : View, NeuUtil {
     constructor(context: Context): super(context){
         initAttributes(context, null, 0)
     }
@@ -31,7 +33,7 @@ class NeumorphicSeekBar : View, NeuUtil {
     private val progressPaint = Paint(Paint.ANTI_ALIAS_FLAG)
 
     /* Background parameters */
-    var mBackgroundColor = ContextCompat.getColor(context, R.color.neuPrimaryColor)
+    var backColor = ContextCompat.getColor(context, R.color.neuPrimaryColor)
         set(value) {
             field = value
             backgroundPaint.color = value
@@ -70,7 +72,7 @@ class NeumorphicSeekBar : View, NeuUtil {
     private var jutSize: Int = 1
     private var jut: Jut = Jut.NORMAL
 
-    private var onNeumorphicSeekBarChangeListener: OnNeumorphicSeekBarChangeListener? = null
+    private var onNeuSeekBarChangeListener: OnNeuSeekBarChangeListener? = null
 
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
@@ -126,7 +128,7 @@ class NeumorphicSeekBar : View, NeuUtil {
                         parent.requestDisallowInterceptTouchEvent(true)
                         progress = xToProgress(event.x)
                         isDragging = true
-                        onNeumorphicSeekBarChangeListener?.onStartTrackingTouch(this)
+                        onNeuSeekBarChangeListener?.onStartTrackingTouch(this)
 
                         if (clickInProgressArea(event)) {
                             handleX = event.x
@@ -147,7 +149,7 @@ class NeumorphicSeekBar : View, NeuUtil {
                     if (isDragging && seekBarClicked(event)) {
 
                         progress = xToProgress(event.x)
-                        onNeumorphicSeekBarChangeListener?.onProgressChanged(this, progress, true)
+                        onNeuSeekBarChangeListener?.onProgressChanged(this, progress, true)
 
                         if (clickInProgressArea(event)) {
                             handleX = event.x
@@ -159,7 +161,7 @@ class NeumorphicSeekBar : View, NeuUtil {
 
                 MotionEvent.ACTION_UP -> {
                     isDragging = false
-                    onNeumorphicSeekBarChangeListener?.onStopTrackingTouch(this)
+                    onNeuSeekBarChangeListener?.onStopTrackingTouch(this)
                     parent.requestDisallowInterceptTouchEvent(false)
                 }
             }
@@ -168,8 +170,8 @@ class NeumorphicSeekBar : View, NeuUtil {
         return super.onTouchEvent(event)
     }
 
-    fun setOnSeekBarProgressChanged(onNeumorphicSeekBarChangeListener: OnNeumorphicSeekBarChangeListener) {
-        this.onNeumorphicSeekBarChangeListener = onNeumorphicSeekBarChangeListener
+    fun setOnSeekBarProgressChanged(onNeuSeekBarChangeListener: OnNeuSeekBarChangeListener) {
+        this.onNeuSeekBarChangeListener = onNeuSeekBarChangeListener
     }
 
     fun enable() {
@@ -194,7 +196,7 @@ class NeumorphicSeekBar : View, NeuUtil {
         this.progress = progress
         handleX = progressToX(progress)
         adjustProgressRectF()
-        onNeumorphicSeekBarChangeListener?.onProgressChanged(this, progress, false)
+        onNeuSeekBarChangeListener?.onProgressChanged(this, progress, false)
         invalidate()
     }
 
@@ -230,25 +232,25 @@ class NeumorphicSeekBar : View, NeuUtil {
 
     private fun initAttributes(context: Context, attributeSet: AttributeSet?, defStyleAttr: Int) {
 
-        val attrs = context.theme.obtainStyledAttributes(attributeSet, R.styleable.NeumorphicSeekBar, defStyleAttr, 0)
+        val attrs = context.theme.obtainStyledAttributes(attributeSet, R.styleable.NeuSeekBar, defStyleAttr, 0)
         attrs.apply {
 
-            handleRadius = getDimension(R.styleable.NeumorphicSeekBar_nsb_handleRadius, handleRadius)
-            mBackgroundColor = getInteger(R.styleable.NeumorphicSeekBar_nsb_backgroundColor, mBackgroundColor)
+            handleRadius = getDimension(R.styleable.NeuSeekBar_nsb_handleRadius, handleRadius)
+            backColor = getInteger(R.styleable.NeuSeekBar_nsb_backgroundColor, backColor)
 
-            lightDensity = getFloat(R.styleable.NeumorphicSeekBar_nsb_lightDensity, lightDensity).coerceAtMost(1f)
-            shadowDensity = getFloat(R.styleable.NeumorphicSeekBar_nsb_shadowDensity, shadowDensity).coerceAtMost(1f)
-            jutSize = getInt(R.styleable.NeumorphicSeekBar_nsb_JutSize, jutSize)
+            lightDensity = getFloat(R.styleable.NeuSeekBar_nsb_lightDensity, lightDensity).coerceAtMost(1f)
+            shadowDensity = getFloat(R.styleable.NeuSeekBar_nsb_shadowDensity, shadowDensity).coerceAtMost(1f)
+            jutSize = getInt(R.styleable.NeuSeekBar_nsb_JutSize, jutSize)
 
-            progress = getInt(R.styleable.NeumorphicSeekBar_nsb_Progress, progress)
-            progressBarHeight = getDimension(R.styleable.NeumorphicSeekBar_nsb_ProgressBarHeight, progressBarHeight)
-            min = getInt(R.styleable.NeumorphicSeekBar_nsb_Min, min)
-            max = getInt(R.styleable.NeumorphicSeekBar_nsb_Max, max)
-            progressColor = getInt(R.styleable.NeumorphicSeekBar_nsb_ProgressColor, progressColor)
+            progress = getInt(R.styleable.NeuSeekBar_nsb_Progress, progress)
+            progressBarHeight = getDimension(R.styleable.NeuSeekBar_nsb_ProgressBarHeight, progressBarHeight)
+            min = getInt(R.styleable.NeuSeekBar_nsb_Min, min)
+            max = getInt(R.styleable.NeuSeekBar_nsb_Max, max)
+            progressColor = getInt(R.styleable.NeuSeekBar_nsb_ProgressColor, progressColor)
 
-            disabledColor = getInteger(R.styleable.NeumorphicSeekBar_nsb_disabledColor, disabledColor)
+            disabledColor = getInteger(R.styleable.NeuSeekBar_nsb_disabledColor, disabledColor)
 
-            isEnabled = getBoolean(R.styleable.NeumorphicSeekBar_nsb_enabled, true)
+            isEnabled = getBoolean(R.styleable.NeuSeekBar_nsb_enabled, true)
 
             recycle()
         }
@@ -295,7 +297,8 @@ class NeumorphicSeekBar : View, NeuUtil {
     private fun getDesiredDimensions(): NeuUtil.MinimumDimensions {
 
         /** The size of the view is calculated based on
-         * the height and the width of the drawable
+         * the size of the handle and progressBar height
+         * (whichever is larger in size)
          */
 
         val width = dpToPixel(context, 100)
@@ -334,7 +337,7 @@ class NeumorphicSeekBar : View, NeuUtil {
         backgroundPaint.apply {
             style = Paint.Style.STROKE
             strokeWidth = thickness
-            color = mBackgroundColor
+            color = backColor
         }
     }
 
@@ -365,14 +368,14 @@ class NeumorphicSeekBar : View, NeuUtil {
         }
 
         backgroundPaint.apply {
-            setShadowLayer(radius, shadowOffset, shadowOffset, ColorUtils.blendARGB(mBackgroundColor, Color.BLACK, shadowDensity))
+            setShadowLayer(radius, shadowOffset, shadowOffset, ColorUtils.blendARGB(backColor, Color.BLACK, shadowDensity))
         }
 
         lightPaint.apply {
             style = Paint.Style.STROKE
             strokeWidth = thickness
-            color = mBackgroundColor
-            setShadowLayer(radius, -lightOffset, -lightOffset, ColorUtils.blendARGB(mBackgroundColor, Color.WHITE, lightDensity))
+            color = backColor
+            setShadowLayer(radius, -lightOffset, -lightOffset, ColorUtils.blendARGB(backColor, Color.WHITE, lightDensity))
         }
 
         handleX = backgroundRectF.left
@@ -380,8 +383,8 @@ class NeumorphicSeekBar : View, NeuUtil {
         handlePaint.apply {
             style = Paint.Style.STROKE
             strokeWidth = thickness.times(2f)
-            color = mBackgroundColor
-            setShadowLayer(radius, shadowOffset, shadowOffset, ColorUtils.blendARGB(mBackgroundColor, Color.BLACK, shadowDensity))
+            color = backColor
+            setShadowLayer(radius, shadowOffset, shadowOffset, ColorUtils.blendARGB(backColor, Color.BLACK, shadowDensity))
         }
     }
 
