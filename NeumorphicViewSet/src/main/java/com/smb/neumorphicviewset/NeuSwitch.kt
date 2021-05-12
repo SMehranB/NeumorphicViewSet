@@ -41,7 +41,7 @@ class NeuSwitch: View, NeuUtil {
     private var handleX: Float = 0f
     private var handleY: Float = 0f
     private var handleRadius: Float = dpToPixel(context, 12)
-    private val handleGlowRadius = 10f
+    private val handleGlowRadius = 25f
     var handleColor: Int = Color.CYAN
         set(value) {
             field = value
@@ -236,7 +236,7 @@ class NeuSwitch: View, NeuUtil {
             val value = it.animatedValue as Float
             val color = ColorUtils.blendARGB(handleOffColor, handleColor, value)
             handlePaint.color = color
-            handlePaint.setShadowLayer(value.times(10), 0f, 0f, color)
+            handlePaint.setShadowLayer(value.times(handleGlowRadius), 0f, 0f, color)
             invalidate()
         }
 
@@ -266,7 +266,7 @@ class NeuSwitch: View, NeuUtil {
             val value = it.animatedValue as Float
             val color = ColorUtils.blendARGB(handleOffColor, handleColor, value)
             handlePaint.color = color
-            handlePaint.setShadowLayer(value.times(10), 0f, 0f, color)
+            handlePaint.setShadowLayer(value.times(handleGlowRadius), 0f, 0f, color)
             invalidate()
         }
 

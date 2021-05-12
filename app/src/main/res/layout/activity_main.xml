@@ -47,6 +47,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:nsb_JutSize="normal"
+            app:nsb_ProgressBarHeight="16dp"
+            app:nsb_handleRadius="12dp"
             app:nsb_lightDensity="0.5"
             app:nsb_shadowDensity="0.7" />
 
@@ -68,6 +70,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:ns_checked="true"
+            app:ns_handleColor="#11FF00"
             app:ns_shadowDensity="0.6"
             android:layout_gravity="center_horizontal" />
 

@@ -54,7 +54,7 @@ class NeuSeekBar : View, NeuUtil {
         }
     private var progressBarHeight = dpToPixel(context, 8)
     private var handleRadius: Float = dpToPixel(context, 8)
-    private val handleGlowRadius = 10f
+    private val handleGlowRadius = 25f
     private var progressBarStart = 0f
     private var progressBarEnd = 0f
     private var progressBarRange = 0f
