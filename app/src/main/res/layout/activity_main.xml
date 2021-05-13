@@ -49,6 +49,7 @@
             app:nsb_JutSize="normal"
             app:nsb_ProgressBarHeight="16dp"
             app:nsb_handleRadius="12dp"
+            app:nsb_backgroundColor="@color/neuSecondaryColor"
             app:nsb_lightDensity="0.5"
             app:nsb_shadowDensity="0.7" />
 
@@ -58,7 +59,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             app:nib_JutSize="normal"
-            app:nib_backgroundColor="@color/neuPrimaryColor"
+            app:nib_backgroundColor="@color/neuSecondaryColor"
             app:nib_cornerRadius="100dp"
             app:nib_drawableDimension="50dp"
             app:nib_drawableTint="@color/white"
@@ -70,6 +71,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:ns_checked="true"
+            app:ns_backgroundColor="@color/neuSecondaryColor"
             app:ns_handleColor="#11FF00"
             app:ns_shadowDensity="0.6"
             android:layout_gravity="center_horizontal" />
@@ -80,7 +82,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             app:nb_JutSize="large"
-            app:nb_backgroundColor="@color/neuPrimaryColor"
+            app:nb_backgroundColor="@color/neuSecondaryColor"
             app:nb_cornerRadius="20dp"
             app:nb_drawableEnd="@drawable/outline_shopping_cart_24"
             app:nb_drawablePadding="16dp"
@@ -94,16 +96,13 @@
             app:nb_textSize="24dp"
             app:nb_textStyle="bold" />
 
-        <CheckBox
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="ahsfdbdsj" />
-
         <com.smb.neumorphicviewset.NeuCheckBox
+            android:id="@+id/neu_check_box"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:ncb_backgroundColor="#500000"
-            app:ncb_JutSize="normal"
+            app:ncb_backgroundColor="@color/neuSecondaryColor"
+            app:ncb_JutSize="large"
+            app:ncb_checked="true"
             app:ncb_text="Check Me!"
             app:ncb_textColor="@color/white"
             app:ncb_textStyle="bold"
@@ -122,7 +121,7 @@
         android:text="Disable/Enable" />
 
     <Button
-        android:id="@+id/changed"
+        android:id="@+id/change"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"

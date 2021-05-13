@@ -2,5 +2,6 @@
 <resources>
 
     <color name="neuPrimaryColor">#590000</color>
+    <color name="neuSecondaryColor">#500000</color>
 
 </resources>

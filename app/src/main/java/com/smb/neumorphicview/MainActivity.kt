@@ -1,19 +1,22 @@
 package com.smb.neumorphicview
 
+import android.graphics.Color
+import android.graphics.Typeface
 import android.os.Bundle
 import android.util.Log.d
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.smb.neumorphicview.databinding.ActivityMainBinding
-import com.smb.neumorphicviewset.Jut
+import com.smb.neumorphicviewset.NeuCheckBox
 import com.smb.neumorphicviewset.NeuSeekBar
 import com.smb.neumorphicviewset.NeuSwitch
-import com.smb.neumorphicviewset.interfaces.OnNeuCheckedChangeListener
+import com.smb.neumorphicviewset.interfaces.OnNeuCheckBoxCheckedChangeListener
 import com.smb.neumorphicviewset.interfaces.OnNeuSeekBarChangeListener
+import com.smb.neumorphicviewset.interfaces.OnNeuSwitchCheckedChangeListener
 
 class MainActivity : AppCompatActivity() {
 
-    var disabled = false
+    private var disabled = false
     private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -21,7 +24,13 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        binding.neuSwitch.setOnNeuCheckedChangeListener(object : OnNeuCheckedChangeListener {
+        binding.neuCheckBox.setOnNeuCheckedChangeListener(object: OnNeuCheckBoxCheckedChangeListener {
+            override fun onCheckedChanged(neuCheckBox: NeuCheckBox, checked: Boolean) {
+                d("MMM", "Check box is $checked")
+            }
+        })
+
+        binding.neuSwitch.setOnNeuCheckedChangeListener(object : OnNeuSwitchCheckedChangeListener {
             override fun onCheckedChanged(neuSwitch: NeuSwitch, checked: Boolean) {
                 d("MMM", "the switch is $checked")
             }
@@ -61,6 +70,7 @@ class MainActivity : AppCompatActivity() {
         binding.disableEnable.setOnClickListener {
             disabled = if (disabled) {
                 binding.apply {
+                    neuCheckBox.enable()
                     neuSeekBar.enable()
                     neuSwitch.enable()
 //                neuButton.enable()
@@ -73,6 +83,7 @@ class MainActivity : AppCompatActivity() {
             } else {
 
                 binding.apply {
+                    neuCheckBox.disable()
                     neuSeekBar.disable()
                     neuSwitch.disable()
 //                neuButton.disable()
@@ -83,8 +94,15 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        binding.changed.setOnClickListener {
-            binding.neuSwitch.setJutParams(Jut.LARGE)
+        binding.change.setOnClickListener {
+
+            binding.neuCheckBox.apply {
+                setCheckBoxDimension(50)
+                setCheckMarkParams(Color.YELLOW, 10)
+                setText("Googooli", 20, Color.GREEN)
+                setTypeface(Typeface.ITALIC)
+            }
+
         }
 
 //        neuButton.setOnClickListener {

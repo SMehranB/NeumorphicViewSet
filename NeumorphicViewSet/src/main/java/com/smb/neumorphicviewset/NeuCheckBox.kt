@@ -1,15 +1,18 @@
 package com.smb.neumorphicviewset
 
-import android.animation.AnimatorSet
 import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.*
 import android.util.AttributeSet
 import android.view.MotionEvent
 import android.view.View
+import androidx.annotation.ColorInt
+import androidx.annotation.FontRes
+import androidx.annotation.StyleRes
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.ColorUtils
 import com.smb.neumorphicviewset.interfaces.NeuUtil
+import com.smb.neumorphicviewset.interfaces.OnNeuCheckBoxCheckedChangeListener
 
 class NeuCheckBox : View, NeuUtil {
     constructor(context: Context): super(context){
@@ -22,24 +25,35 @@ class NeuCheckBox : View, NeuUtil {
         initAttributes(context, attributeSet, defStyleAttr)
     }
 
-
+    /* Check box parameters */
     private val cornerRadius: Float = dpToPixel(context, 5)
     private var checkBoxDimension: Float = dpToPixel(context, 24)
-    private var cbStrokeWidth: Float = dpToPixel(context, 5)
-    private var isChecked: Boolean = false
-    private var animatorSet: AnimatorSet? = null
+    private var checkMarkStrokeWidth: Float = dpToPixel(context, 3)
+    private var checkMarkPath: Path = Path()
+    private var checkMarkColor: Int = Color.CYAN
+    private val checkMarkGlowRadius = 25f
+    var isChecked: Boolean = false
+        set(value) {
+            field = value
+            invalidate()
+        }
 
     /* Paint objects */
     private val checkBoxPaint = Paint(Paint.ANTI_ALIAS_FLAG)
+    private val checkMarkPaint = Paint(Paint.ANTI_ALIAS_FLAG)
     private val textPaint = Paint(Paint.ANTI_ALIAS_FLAG)
     private val lightPaint = Paint(Paint.ANTI_ALIAS_FLAG)
 
     /* Background parameters */
-    private var mBackgroundColor = ContextCompat.getColor(context, R.color.neuPrimaryColor)
     private val checkBoxRectF = RectF()
+    var checkBoxColor = ContextCompat.getColor(context, R.color.neuPrimaryColor)
+        set(value) {
+            field = value
+            invalidate()
+        }
 
     /* Shadow and lighting parameters */
-    private var shadowMargin: Float = dpToPixel(context, 16)
+    private var shadowMargin: Float = dpToPixel(context, 12)
     private var lightDensity: Float = 0.4f
     private var shadowDensity: Float = 0.6f
     private var jutSize: Int = 1
@@ -53,32 +67,42 @@ class NeuCheckBox : View, NeuUtil {
     private var textColor: Int = Color.BLACK
     private var textStyle: Int = Typeface.NORMAL
     private var textFont: Int = 0
-    var disabledTextColor = Color.GRAY
-    var text: String = "Neu Check Box"
+    var disabledColor = Color.GRAY
+    var text: String = ""
         set(value) {
             field = value
             requestLayout()
         }
 
+    private var onNeuCheckedChangeListener: OnNeuCheckBoxCheckedChangeListener? = null
+
+    fun setOnNeuCheckedChangeListener(onCheckedChangeListener: OnNeuCheckBoxCheckedChangeListener) {
+        this.onNeuCheckedChangeListener = onCheckedChangeListener
+    }
 
     private fun initAttributes(context: Context, attributeSet: AttributeSet?, defStyleAttr: Int) {
 
         val attrs = context.theme.obtainStyledAttributes(attributeSet, R.styleable.NeuCheckBox, defStyleAttr, 0)
         attrs.apply {
-            mBackgroundColor = getInteger(R.styleable.NeuCheckBox_ncb_backgroundColor, mBackgroundColor)
+            checkBoxColor = getInteger(R.styleable.NeuCheckBox_ncb_backgroundColor, checkBoxColor)
 
             lightDensity = getFloat(R.styleable.NeuCheckBox_ncb_lightDensity, lightDensity).coerceAtMost(1f)
             shadowDensity = getFloat(R.styleable.NeuCheckBox_ncb_shadowDensity, shadowDensity).coerceAtMost(1f)
             jutSize = getInt(R.styleable.NeuCheckBox_ncb_JutSize, jutSize)
 
+            checkMarkColor = getInt(R.styleable.NeuCheckBox_ncb_CheckMarkColor, checkMarkColor)
+            checkMarkStrokeWidth = getDimension(R.styleable.NeuCheckBox_ncb_CheckMarkStrokeWidth, checkMarkStrokeWidth)
+            checkBoxDimension = getDimension(R.styleable.NeuCheckBox_ncb_CheckBoxDimension, checkBoxDimension)
+
             textStyle = getInt(R.styleable.NeuCheckBox_ncb_textStyle, textStyle)
             textSize = getDimension(R.styleable.NeuCheckBox_ncb_textSize, textSize)
             textColor = getInteger(R.styleable.NeuCheckBox_ncb_textColor, textColor)
             textFont = getResourceId(R.styleable.NeuCheckBox_ncb_fontFamily, 0)
-            disabledTextColor = getInteger(R.styleable.NeuCheckBox_ncb_disabledColor, disabledTextColor)
+            disabledColor = getInteger(R.styleable.NeuCheckBox_ncb_disabledColor, disabledColor)
             text = getString(R.styleable.NeuCheckBox_ncb_text) ?: text
 
-            isEnabled = getBoolean(R.styleable.NeuButton_nb_enabled, true)
+            isChecked = getBoolean(R.styleable.NeuCheckBox_ncb_checked, isChecked)
+            isEnabled = getBoolean(R.styleable.NeuCheckBox_ncb_enabled, isEnabled)
 
             recycle()
         }
@@ -91,7 +115,6 @@ class NeuCheckBox : View, NeuUtil {
 
         setLayerTypeBasedOnSDK(this, lightPaint)
     }
-
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
 
@@ -118,6 +141,10 @@ class NeuCheckBox : View, NeuUtil {
             drawRoundRect(checkBoxRectF, cornerRadius, cornerRadius, lightPaint)
             drawRoundRect(checkBoxRectF, cornerRadius, cornerRadius, checkBoxPaint)
             drawText(text, mTextX, mTextY, textPaint)
+
+            if (isChecked) {
+                drawPath(checkMarkPath, checkMarkPaint)
+            }
         }
     }
 
@@ -126,19 +153,100 @@ class NeuCheckBox : View, NeuUtil {
 
         if(event?.action == MotionEvent.ACTION_DOWN && isEnabled){
 
-            if(event.x in checkBoxRectF.left..checkBoxRectF.right &&
-                event.y in checkBoxRectF.top..checkBoxRectF.bottom){
+            isChecked = !isChecked
+            invalidate()
 
-                performClick()
-                return true
-            }
+            onNeuCheckedChangeListener?.onCheckedChanged(this, isChecked)
 
-            return false
+            performClick()
+            return true
         }
 
         return false
     }
 
+    fun enable() {
+        isEnabled = true
+        textPaint.color = textColor
+        checkMarkPaint.apply {
+            color = checkMarkColor
+            setShadowLayer(checkMarkGlowRadius, 0f, 0f, checkMarkColor)
+        }
+
+        invalidate()
+    }
+
+    fun disable() {
+        isEnabled = false
+        textPaint.color = disabledColor
+        checkMarkPaint.apply {
+            color = disabledColor
+            setShadowLayer(checkMarkGlowRadius, 0f, 0f, disabledColor)
+        }
+
+        invalidate()
+    }
+
+    fun setJutParams(jut: Jut) {
+        this.jut = jut
+        adjustJutParams(jut)
+        invalidate()
+    }
+
+    fun setJutParams(lightDensity: Float, shadowDensity: Float) {
+        this.lightDensity = lightDensity
+        this.shadowDensity = shadowDensity
+        adjustJutParams(jut)
+        invalidate()
+    }
+
+    fun setJutParams(lightDensity: Float, shadowDensity: Float, jut: Jut) {
+        this.lightDensity = lightDensity
+        this.shadowDensity = shadowDensity
+        this.jut = jut
+        adjustJutParams(jut)
+        invalidate()
+    }
+
+    fun setCheckBoxDimension(dimensionDp: Int) {
+        checkBoxDimension = dpToPixel(context, dimensionDp)
+        requestLayout()
+    }
+
+    fun setCheckMarkParams(color: Int) {
+        checkMarkColor = color
+        invalidate()
+    }
+
+    fun setCheckMarkParams(color: Int, strokeWidthDp: Int) {
+        checkMarkStrokeWidth = dpToPixel(context, strokeWidthDp)
+        checkMarkColor = color
+        invalidate()
+    }
+
+    fun setText(text: String, sizeDp: Int, @ColorInt color: Int) {
+        this.text = text
+        textSize = dpToPixel(context, sizeDp)
+        textColor = color
+        requestLayout()
+    }
+
+    fun setText(text: String, sizeDp: Int) {
+        this.text = text
+        textSize = dpToPixel(context, sizeDp)
+        requestLayout()
+    }
+
+    fun setTypeface(style: Int, @FontRes font: Int) {
+        textStyle = style
+        textFont = font
+        requestLayout()
+    }
+
+    fun setTypeface(@StyleRes style: Int) {
+        textStyle = style
+        requestLayout()
+    }
 
     private fun adjustText() {
 
@@ -159,14 +267,17 @@ class NeuCheckBox : View, NeuUtil {
 
     private fun adjustCheckBoxParams() {
 
-        val left = shadowMargin.plus(cbStrokeWidth.div(2))
+        val left = shadowMargin.plus(checkMarkStrokeWidth.div(2))
         val right = left.plus(checkBoxDimension)
-        val top = shadowMargin.plus(cbStrokeWidth.div(2))
+        val top = shadowMargin.plus(checkMarkStrokeWidth.div(2))
         val bottom = top.plus(checkBoxDimension)
 
         checkBoxRectF.set(left, top, right, bottom)
-        checkBoxPaint.color = mBackgroundColor
+        checkBoxPaint.color = checkBoxColor
+
+        checkMarkPath = getCheckMarkPath()
     }
+
     private fun getDesiredDimensions(): NeuUtil.MinimumDimensions {
 
         /** Need to set the parameters that are determining in the measurement
@@ -180,7 +291,7 @@ class NeuCheckBox : View, NeuUtil {
         }
         textHeight = textPaint.descent().minus(textPaint.ascent())
 
-        val checkBoxDimen = checkBoxDimension.plus(cbStrokeWidth).plus(shadowMargin.times(2))
+        val checkBoxDimen = checkBoxDimension.plus(checkMarkStrokeWidth).plus(shadowMargin.times(2))
 
         var width = textPaint.measureText(text)
             .plus(checkBoxDimen)
@@ -221,13 +332,42 @@ class NeuCheckBox : View, NeuUtil {
         }
 
         lightPaint.apply {
-            color = mBackgroundColor
-            setShadowLayer(radius, -lightOffset, -lightOffset, ColorUtils.blendARGB(mBackgroundColor, Color.WHITE, lightDensity))
+            color = checkBoxColor
+            setShadowLayer(radius, -lightOffset, -lightOffset, ColorUtils.blendARGB(checkBoxColor, Color.WHITE, lightDensity))
         }
 
         checkBoxPaint.apply {
-            color = mBackgroundColor
-            setShadowLayer(radius, shadowOffset, shadowOffset, ColorUtils.blendARGB(mBackgroundColor, Color.BLACK, shadowDensity))
+            color = checkBoxColor
+            setShadowLayer(radius, shadowOffset, shadowOffset, ColorUtils.blendARGB(checkBoxColor, Color.BLACK, shadowDensity))
+        }
+
+        checkMarkPaint.apply {
+            style = Paint.Style.STROKE
+            strokeWidth = checkMarkStrokeWidth
+            strokeJoin = Paint.Join.ROUND
+            strokeCap = Paint.Cap.ROUND
+            color = checkMarkColor
+            setShadowLayer(checkMarkGlowRadius, 0f, 0f, checkMarkColor)
         }
     }
+
+    private fun getCheckMarkPath(): Path {
+
+        val path = Path()
+
+        val segment = checkBoxDimension.div(4)
+        val startX = checkBoxRectF.left.plus(segment)
+        val startY = checkBoxRectF.top.plus(segment.times(2))
+        val midX = startX.plus(segment.div(2))
+        val midY = startY.plus(segment)
+        val endX = midX.plus(segment.times(1.5f))
+        val endY = midY.minus(segment.times(2))
+
+        path.moveTo(startX, startY)
+        path.lineTo(midX, midY)
+        path.lineTo(endX, endY)
+
+        return path
+    }
+
 }

@@ -15,7 +15,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.graphics.ColorUtils
 import com.smb.neumorphicviewset.interfaces.MyAnimatorListener
 import com.smb.neumorphicviewset.interfaces.NeuUtil
-import com.smb.neumorphicviewset.interfaces.OnNeuCheckedChangeListener
+import com.smb.neumorphicviewset.interfaces.OnNeuSwitchCheckedChangeListener
 
 class NeuSwitch: View, NeuUtil {
     constructor(context: Context): super(context){
@@ -76,7 +76,7 @@ class NeuSwitch: View, NeuUtil {
     private var jutSize: Int = 1
     private var jut: Jut = Jut.NORMAL
 
-    private var onNeuCheckedChangeListener: OnNeuCheckedChangeListener? = null
+    private var onNeuSwitchCheckedChangeListener: OnNeuSwitchCheckedChangeListener? = null
 
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
@@ -184,8 +184,8 @@ class NeuSwitch: View, NeuUtil {
         invalidate()
     }
 
-    fun setOnNeuCheckedChangeListener(onCheckedChangeListener: OnNeuCheckedChangeListener) {
-        onNeuCheckedChangeListener = onCheckedChangeListener
+    fun setOnNeuCheckedChangeListener(onSwitchCheckedChangeListener: OnNeuSwitchCheckedChangeListener) {
+        onNeuSwitchCheckedChangeListener = onSwitchCheckedChangeListener
     }
 
     private fun initAttributes(context: Context, attributeSet: AttributeSet?, defStyleAttr: Int) {
@@ -244,7 +244,7 @@ class NeuSwitch: View, NeuUtil {
         animatorSet!!.apply {
             addListener(object: MyAnimatorListener{
                 override fun onAnimationEnd(p0: Animator?) {
-                    onNeuCheckedChangeListener?.onCheckedChanged(this@NeuSwitch, true)
+                    onNeuSwitchCheckedChangeListener?.onCheckedChanged(this@NeuSwitch, true)
                 }
             })
             playTogether(slideRight, colorChange)
@@ -274,7 +274,7 @@ class NeuSwitch: View, NeuUtil {
         animatorSet!!.apply {
             addListener(object: MyAnimatorListener{
                 override fun onAnimationEnd(p0: Animator?) {
-                    onNeuCheckedChangeListener?.onCheckedChanged(this@NeuSwitch, false)
+                    onNeuSwitchCheckedChangeListener?.onCheckedChanged(this@NeuSwitch, false)
                 }
             })
             playTogether(slideRight, colorChange)

@@ -139,6 +139,10 @@
         <attr name="ncb_enabled" format="boolean"/>
         <attr name="ncb_checked" format="boolean"/>
 
+        <attr name="ncb_CheckMarkColor" format="color" />
+        <attr name="ncb_CheckMarkStrokeWidth" format="dimension" />
+        <attr name="ncb_CheckBoxDimension" format="dimension" />
+
     </declare-styleable>
 
 </resources>
