@@ -95,6 +95,10 @@ class NeuSeekBar : View, NeuUtil {
         adjustJutParams(jut)
         adjustProgressBarParams()
 
+        if (!isEnabled) {
+            disable()
+        }
+
         setLayerTypeBasedOnSDK(this, lightPaint)
 
         super.onLayout(changed, left, top, right, bottom)
@@ -317,6 +321,8 @@ class NeuSeekBar : View, NeuUtil {
         progressBarStart = backgroundRectF.left.plus(thickness.div(2))
         progressBarEnd = backgroundRectF.right.minus(thickness.div(2))
         progressBarRange = progressBarEnd.minus(progressBarStart)
+
+        setProgress(progress)
     }
 
     private fun adjustProgressRectF() {

@@ -133,6 +133,10 @@ class NeuCheckBox : View, NeuUtil {
         adjustCheckBoxParams()
         adjustText()
 
+        if (!isEnabled) {
+            disable()
+        }
+
         super.onLayout(changed, left, top, right, bottom)
     }
 
