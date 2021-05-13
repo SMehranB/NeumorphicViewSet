@@ -25,19 +25,6 @@ class NeuCheckBox : View, NeuUtil {
         initAttributes(context, attributeSet, defStyleAttr)
     }
 
-    /* Check box parameters */
-    private val cornerRadius: Float = dpToPixel(context, 5)
-    private var checkBoxDimension: Float = dpToPixel(context, 24)
-    private var checkMarkStrokeWidth: Float = dpToPixel(context, 3)
-    private var checkMarkPath: Path = Path()
-    private var checkMarkColor: Int = Color.CYAN
-    private val checkMarkGlowRadius = 25f
-    var isChecked: Boolean = false
-        set(value) {
-            field = value
-            invalidate()
-        }
-
     /* Paint objects */
     private val checkBoxPaint = Paint(Paint.ANTI_ALIAS_FLAG)
     private val checkMarkPaint = Paint(Paint.ANTI_ALIAS_FLAG)
@@ -47,6 +34,19 @@ class NeuCheckBox : View, NeuUtil {
     /* Background parameters */
     private val checkBoxRectF = RectF()
     var checkBoxColor = ContextCompat.getColor(context, R.color.neuPrimaryColor)
+        set(value) {
+            field = value
+            invalidate()
+        }
+
+    /* Check box parameters */
+    private val cornerRadius: Float = dpToPixel(context, 5)
+    private var checkBoxDimension: Float = dpToPixel(context, 24)
+    private var checkMarkStrokeWidth: Float = dpToPixel(context, 3)
+    private var checkMarkPath: Path = Path()
+    private var checkMarkColor: Int = Color.CYAN
+    private val checkMarkGlowRadius = 25f
+    var isChecked: Boolean = false
         set(value) {
             field = value
             invalidate()
@@ -217,12 +217,12 @@ class NeuCheckBox : View, NeuUtil {
         requestLayout()
     }
 
-    fun setCheckMarkParams(color: Int) {
+    fun setCheckMarkParams(@ColorInt color: Int) {
         checkMarkColor = color
         invalidate()
     }
 
-    fun setCheckMarkParams(color: Int, strokeWidthDp: Int) {
+    fun setCheckMarkParams(@ColorInt color: Int, strokeWidthDp: Int) {
         checkMarkStrokeWidth = dpToPixel(context, strokeWidthDp)
         checkMarkColor = color
         invalidate()
@@ -373,5 +373,4 @@ class NeuCheckBox : View, NeuUtil {
 
         return path
     }
-
 }
