@@ -3,7 +3,6 @@ package com.smb.neumorphicview
 import android.graphics.Color
 import android.graphics.Typeface
 import android.os.Bundle
-import android.util.Log.d
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.smb.neumorphicview.databinding.ActivityMainBinding
@@ -26,19 +25,19 @@ class MainActivity : AppCompatActivity() {
 
         binding.neuCheckBox.setOnNeuCheckedChangeListener(object: OnNeuCheckBoxCheckedChangeListener {
             override fun onCheckedChanged(neuCheckBox: NeuCheckBox, checked: Boolean) {
-                d("MMM", "Check box is $checked")
+//                d("MMM", "Check box is $checked")
             }
         })
 
         binding.neuSwitch.setOnNeuCheckedChangeListener(object : OnNeuSwitchCheckedChangeListener {
             override fun onCheckedChanged(neuSwitch: NeuSwitch, checked: Boolean) {
-                d("MMM", "the switch is $checked")
+//                d("MMM", "the switch is $checked")
             }
         })
 
         binding.neuSeekBar.setOnSeekBarProgressChanged(object : OnNeuSeekBarChangeListener {
             override fun onProgressChanged(neuSeekBar: NeuSeekBar?, progress: Int, fromUser: Boolean) {
-                d("MMM", "On progress changed $progress%")
+//                d("MMM", "On progress changed $progress%")
             }
 
             override fun onStartTrackingTouch(neuSeekBar: NeuSeekBar?) {

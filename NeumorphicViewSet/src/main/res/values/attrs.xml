@@ -145,4 +145,38 @@
 
     </declare-styleable>
 
+    <declare-styleable name="NeuRadioButton">
+
+        <attr name="nrb_text" format="string" />
+        <attr name="nrb_HorizontalPadding" format="dimension"/>
+        <attr name="nrb_VerticalPadding" format="dimension"/>
+        <attr name="nrb_textSize" format="dimension" />
+        <attr name="nrb_textColor" format="color"/>
+        <attr name="nrb_fontFamily" format="reference"/>
+        <attr name="nrb_textStyle" format="flags">
+            <flag name="normal" value="0" />
+            <flag name="bold" value="1" />
+            <flag name="italic" value="2" />
+            <flag name="bold_italic" value="3" />
+        </attr>
+
+        <attr name="nrb_lightDensity" format="float"/>
+        <attr name="nrb_shadowDensity" format="float"/>
+        <attr name="nrb_JutSize" format="enum">
+            <enum name="small" value="0"/>
+            <enum name="normal" value="1"/>
+            <enum name="large" value="2"/>
+        </attr>
+
+        <attr name="nrb_disabledColor" format="color"/>
+        <attr name="nrb_backgroundColor" format="color"/>
+        <attr name="nrb_CheckedColor" format="color"/>
+
+        <attr name="nrb_enabled" format="boolean"/>
+        <attr name="nrb_checked" format="boolean"/>
+
+        <attr name="nrb_ButtonRadius" format="dimension" />
+
+    </declare-styleable>
+
 </resources>
