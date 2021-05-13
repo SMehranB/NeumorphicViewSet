@@ -109,4 +109,36 @@
 
     </declare-styleable>
 
+    <declare-styleable name="NeuCheckBox">
+
+        <attr name="ncb_text" format="string" />
+        <attr name="ncb_HorizontalPadding" format="dimension"/>
+        <attr name="ncb_VerticalPadding" format="dimension"/>
+        <attr name="ncb_textSize" format="dimension" />
+        <attr name="ncb_textColor" format="color"/>
+        <attr name="ncb_fontFamily" format="reference"/>
+        <attr name="ncb_textStyle" format="flags">
+            <flag name="normal" value="0" />
+            <flag name="bold" value="1" />
+            <flag name="italic" value="2" />
+            <flag name="bold_italic" value="3" />
+        </attr>
+
+        <attr name="ncb_lightDensity" format="float"/>
+        <attr name="ncb_shadowDensity" format="float"/>
+        <attr name="ncb_JutSize" format="enum">
+            <enum name="small" value="0"/>
+            <enum name="normal" value="1"/>
+            <enum name="large" value="2"/>
+        </attr>
+
+        <attr name="ncb_disabledColor" format="color"/>
+        <attr name="ncb_backgroundColor" format="color"/>
+        <attr name="ncb_handleColor" format="color"/>
+
+        <attr name="ncb_enabled" format="boolean"/>
+        <attr name="ncb_checked" format="boolean"/>
+
+    </declare-styleable>
+
 </resources>

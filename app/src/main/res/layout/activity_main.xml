@@ -60,7 +60,7 @@
             app:nib_JutSize="normal"
             app:nib_backgroundColor="@color/neuPrimaryColor"
             app:nib_cornerRadius="100dp"
-            app:nib_drawableDimension="80dp"
+            app:nib_drawableDimension="50dp"
             app:nib_drawableTint="@color/white"
             app:nib_lightDensity="0.4"
             app:nib_shadowDensity="0.5" />
@@ -93,6 +93,22 @@
             app:nb_textColor="@color/white"
             app:nb_textSize="24dp"
             app:nb_textStyle="bold" />
+
+        <CheckBox
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="ahsfdbdsj" />
+
+        <com.smb.neumorphicviewset.NeuCheckBox
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:ncb_backgroundColor="#500000"
+            app:ncb_JutSize="normal"
+            app:ncb_text="Check Me!"
+            app:ncb_textColor="@color/white"
+            app:ncb_textStyle="bold"
+            android:layout_gravity="center_horizontal"/>
+
 
     </LinearLayout>
 
