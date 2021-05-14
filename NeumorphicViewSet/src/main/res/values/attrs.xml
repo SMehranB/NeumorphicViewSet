@@ -148,8 +148,6 @@
     <declare-styleable name="NeuRadioButton">
 
         <attr name="nrb_text" format="string" />
-        <attr name="nrb_HorizontalPadding" format="dimension"/>
-        <attr name="nrb_VerticalPadding" format="dimension"/>
         <attr name="nrb_textSize" format="dimension" />
         <attr name="nrb_textColor" format="color"/>
         <attr name="nrb_fontFamily" format="reference"/>
@@ -169,13 +167,14 @@
         </attr>
 
         <attr name="nrb_disabledColor" format="color"/>
-        <attr name="nrb_backgroundColor" format="color"/>
+        <attr name="nrb_SurfaceColor" format="color"/>
         <attr name="nrb_CheckedColor" format="color"/>
 
         <attr name="nrb_enabled" format="boolean"/>
         <attr name="nrb_checked" format="boolean"/>
 
         <attr name="nrb_ButtonRadius" format="dimension" />
+        <attr name="nrb_StrokeWidth" format="dimension" />
 
     </declare-styleable>
 

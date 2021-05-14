@@ -66,10 +66,29 @@ class NeuButton : View, NeuUtil {
     private var horizontalPadding: Float = dpToPixel(context, 16)
     private var verticalPadding: Float = dpToPixel(context, 16)
     private var textHeight: Float = 0f
-    private var textSize: Float = dpToPixel(context, 16)
-    private var textColor: Int = Color.BLACK
-    private var textStyle: Int = Typeface.NORMAL
-    private var textFont: Int = 0
+    var textSizeDp: Float = dpToPixel(context, 16)
+        set(value) {
+            field = value
+            requestLayout()
+        }
+    @ColorInt
+    var textColor: Int = Color.BLACK
+        set(value) {
+            field = value
+            invalidate()
+        }
+    @StyleRes
+    var textStyle: Int = Typeface.NORMAL
+        set(value) {
+            field = value
+            requestLayout()
+        }
+    @FontRes
+    var textFont: Int = 0
+        set(value) {
+            field = value
+            requestLayout()
+        }
     var disabledTextColor = Color.GRAY
     var text: String = "Neumorphic Button"
         set(value) {
@@ -97,7 +116,7 @@ class NeuButton : View, NeuUtil {
             horizontalPadding = getDimension(R.styleable.NeuButton_nb_HorizontalPadding, horizontalPadding)
             verticalPadding = getDimension(R.styleable.NeuButton_nb_VerticalPadding, verticalPadding)
             textStyle = getInt(R.styleable.NeuButton_nb_textStyle, textStyle)
-            textSize = getDimension(R.styleable.NeuButton_nb_textSize, textSize)
+            textSizeDp = getDimension(R.styleable.NeuButton_nb_textSize, textSizeDp)
             textColor = getInteger(R.styleable.NeuButton_nb_textColor, textColor)
             textFont = getResourceId(R.styleable.NeuButton_nb_fontFamily, 0)
             disabledTextColor = getInteger(R.styleable.NeuButton_nb_disabledTextColor, disabledTextColor)
@@ -136,6 +155,10 @@ class NeuButton : View, NeuUtil {
 
         backgroundRectF.set(shadowMargin, shadowMargin, width.minus(shadowMargin), height.minus(shadowMargin))
         backgroundPaint.color = mBackgroundColor
+
+        if (!isEnabled) {
+            disable()
+        }
 
         super.onLayout(changed, left, top, right, bottom)
     }
@@ -250,14 +273,14 @@ class NeuButton : View, NeuUtil {
 
     fun setText(text: String, sizeDp: Int, @ColorInt color: Int) {
         this.text = text
-        textSize = dpToPixel(context, sizeDp)
+        textSizeDp = dpToPixel(context, sizeDp)
         textColor = color
         requestLayout()
     }
 
     fun setText(text: String, sizeDp: Int) {
         this.text = text
-        textSize = dpToPixel(context, sizeDp)
+        textSizeDp = dpToPixel(context, sizeDp)
         requestLayout()
     }
 
@@ -310,7 +333,7 @@ class NeuButton : View, NeuUtil {
 
         textPaint.apply {
             typeface = getTypeFace(context, textFont, textStyle)
-            textSize = this@NeuButton.textSize
+            textSize = this@NeuButton.textSizeDp
             color = textColor
             textAlign = Paint.Align.CENTER
         }
@@ -329,7 +352,7 @@ class NeuButton : View, NeuUtil {
 
         textPaint.apply {
             typeface = getTypeFace(context, textFont, textStyle)
-            textSize = this@NeuButton.textSize
+            textSize = this@NeuButton.textSizeDp
         }
         textHeight = textPaint.descent().minus(textPaint.ascent())
 

@@ -63,10 +63,29 @@ class NeuCheckBox : View, NeuUtil {
     private var mTextX: Float = 0f
     private var mTextY: Float = 0f
     private var textHeight: Float = 0f
-    private var textSize: Float = dpToPixel(context, 16)
-    private var textColor: Int = Color.BLACK
-    private var textStyle: Int = Typeface.NORMAL
-    private var textFont: Int = 0
+    var textSizeDp: Float = dpToPixel(context, 16)
+        set(value) {
+            field = value
+            requestLayout()
+        }
+    @ColorInt
+    var textColor: Int = Color.BLACK
+        set(value) {
+            field = value
+            invalidate()
+        }
+    @StyleRes
+    var textStyle: Int = Typeface.NORMAL
+        set(value) {
+            field = value
+            requestLayout()
+        }
+    @FontRes
+    var textFont: Int = 0
+        set(value) {
+            field = value
+            requestLayout()
+        }
     var disabledColor = Color.GRAY
     var text: String = ""
         set(value) {
@@ -95,7 +114,7 @@ class NeuCheckBox : View, NeuUtil {
             checkBoxDimension = getDimension(R.styleable.NeuCheckBox_ncb_CheckBoxDimension, checkBoxDimension)
 
             textStyle = getInt(R.styleable.NeuCheckBox_ncb_textStyle, textStyle)
-            textSize = getDimension(R.styleable.NeuCheckBox_ncb_textSize, textSize)
+            textSizeDp = getDimension(R.styleable.NeuCheckBox_ncb_textSize, textSizeDp)
             textColor = getInteger(R.styleable.NeuCheckBox_ncb_textColor, textColor)
             textFont = getResourceId(R.styleable.NeuCheckBox_ncb_fontFamily, 0)
             disabledColor = getInteger(R.styleable.NeuCheckBox_ncb_disabledColor, disabledColor)
@@ -219,6 +238,10 @@ class NeuCheckBox : View, NeuUtil {
 
     fun setCheckMarkParams(@ColorInt color: Int) {
         checkMarkColor = color
+        checkMarkPaint.apply {
+            this.color = color
+            setShadowLayer(checkMarkGlowRadius, 0f, 0f, checkMarkColor)
+        }
         invalidate()
     }
 
@@ -230,14 +253,14 @@ class NeuCheckBox : View, NeuUtil {
 
     fun setText(text: String, sizeDp: Int, @ColorInt color: Int) {
         this.text = text
-        textSize = dpToPixel(context, sizeDp)
+        textSizeDp = dpToPixel(context, sizeDp)
         textColor = color
         requestLayout()
     }
 
     fun setText(text: String, sizeDp: Int) {
         this.text = text
-        textSize = dpToPixel(context, sizeDp)
+        textSizeDp = dpToPixel(context, sizeDp)
         requestLayout()
     }
 
@@ -260,7 +283,7 @@ class NeuCheckBox : View, NeuUtil {
 
         textPaint.apply {
             typeface = getTypeFace(context, textFont, textStyle)
-            textSize = this@NeuCheckBox.textSize
+            textSize = this@NeuCheckBox.textSizeDp
             color = textColor
         }
 
@@ -273,7 +296,7 @@ class NeuCheckBox : View, NeuUtil {
 
         val left = shadowMargin.plus(checkMarkStrokeWidth.div(2))
         val right = left.plus(checkBoxDimension)
-        val top = shadowMargin.plus(checkMarkStrokeWidth.div(2))
+        val top = height.div(2).minus(checkBoxDimension.div(2))
         val bottom = top.plus(checkBoxDimension)
 
         checkBoxRectF.set(left, top, right, bottom)
@@ -291,7 +314,7 @@ class NeuCheckBox : View, NeuUtil {
 
         textPaint.apply {
             typeface = getTypeFace(context, textFont, textStyle)
-            textSize = this@NeuCheckBox.textSize
+            textSize = this@NeuCheckBox.textSizeDp
         }
         textHeight = textPaint.descent().minus(textPaint.ascent())
 

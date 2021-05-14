@@ -6,9 +6,13 @@ import android.graphics.*
 import android.util.AttributeSet
 import android.view.MotionEvent
 import android.view.View
+import androidx.annotation.ColorInt
+import androidx.annotation.FontRes
+import androidx.annotation.StyleRes
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.ColorUtils
 import com.smb.neumorphicviewset.interfaces.NeuUtil
+import com.smb.neumorphicviewset.interfaces.OnNeuRadioButtonCheckedChangeListener
 
 class NeuRadioButton : View, NeuUtil {
 
@@ -29,7 +33,6 @@ class NeuRadioButton : View, NeuUtil {
     private val lightPaint = Paint(Paint.ANTI_ALIAS_FLAG)
 
     /* Background parameters */
-    private val radioButtonRectF = RectF()
     var radioButtonColor = ContextCompat.getColor(context, R.color.neuPrimaryColor)
         set(value) {
             field = value
@@ -39,19 +42,16 @@ class NeuRadioButton : View, NeuUtil {
     /* Check box parameters */
     private var checkMarkStrokeWidth: Float = dpToPixel(context, 8)
     private var checkMarkColor: Int = Color.CYAN
+    private var buttonRadius: Float = dpToPixel(context, 12)
     private val checkMarkGlowRadius = 25f
+    private var checkMarkRadius = buttonRadius.minus(checkMarkStrokeWidth.div(2))
+    private var handleX: Float = 0f
+    private var handleY: Float = 0f
     var isChecked: Boolean = false
         set(value) {
             field = value
             invalidate()
         }
-
-    private var buttonRadius: Float = dpToPixel(context, 12)
-    private val handleGlowRadius = 25f
-    private var checkMarkRadius = buttonRadius.minus(checkMarkStrokeWidth.div(2))
-    private var handleX: Float = 0f
-    private var handleY: Float = 0f
-
 
     /* Shadow and lighting parameters */
     private var shadowMargin: Float = dpToPixel(context, 12)
@@ -63,11 +63,29 @@ class NeuRadioButton : View, NeuUtil {
     /* Text parameters */
     private var mTextX: Float = 0f
     private var mTextY: Float = 0f
-    private var textHeight: Float = 0f
-    private var textSize: Float = dpToPixel(context, 16)
-    private var textColor: Int = Color.BLACK
-    private var textStyle: Int = Typeface.NORMAL
-    private var textFont: Int = 0
+    var textSizeDp: Float = dpToPixel(context, 16)
+        set(value) {
+            field = value
+            requestLayout()
+        }
+    @ColorInt
+    var textColor: Int = Color.BLACK
+        set(value) {
+            field = value
+            invalidate()
+        }
+    @StyleRes
+    var textStyle: Int = Typeface.NORMAL
+        set(value) {
+            field = value
+            requestLayout()
+        }
+    @FontRes
+    var textFont: Int = 0
+        set(value) {
+            field = value
+            requestLayout()
+        }
     var disabledColor = Color.GRAY
     var text: String = ""
         set(value) {
@@ -75,24 +93,25 @@ class NeuRadioButton : View, NeuUtil {
             requestLayout()
         }
 
-//    private var onNeuCheckedChangeListener: OnNeuCheckBoxCheckedChangeListener? = null
-//
-//    fun setOnNeuCheckedChangeListener(onCheckedChangeListener: OnNeuCheckBoxCheckedChangeListener) {
-//        this.onNeuCheckedChangeListener = onCheckedChangeListener
-//    }
+    private var onNeuCheckedChangeListener: OnNeuRadioButtonCheckedChangeListener? = null
+
+    fun setOnNeuCheckedChangeListener(onCheckedChangeListener: OnNeuRadioButtonCheckedChangeListener) {
+        this.onNeuCheckedChangeListener = onCheckedChangeListener
+    }
 
     private fun initAttributes(context: Context, attributeSet: AttributeSet?, defStyleAttr: Int) {
 
         val attrs = context.theme.obtainStyledAttributes(attributeSet, R.styleable.NeuRadioButton, defStyleAttr, 0)
         attrs.apply {
-            radioButtonColor = getInteger(R.styleable.NeuRadioButton_nrb_backgroundColor, radioButtonColor)
+            radioButtonColor = getInteger(R.styleable.NeuRadioButton_nrb_SurfaceColor, radioButtonColor)
+            checkMarkStrokeWidth = getDimension(R.styleable.NeuRadioButton_nrb_StrokeWidth, checkMarkStrokeWidth)
 
             lightDensity = getFloat(R.styleable.NeuRadioButton_nrb_lightDensity, lightDensity).coerceAtMost(1f)
             shadowDensity = getFloat(R.styleable.NeuRadioButton_nrb_shadowDensity, shadowDensity).coerceAtMost(1f)
             jutSize = getInt(R.styleable.NeuRadioButton_nrb_JutSize, jutSize)
 
             textStyle = getInt(R.styleable.NeuRadioButton_nrb_textStyle, textStyle)
-            textSize = getDimension(R.styleable.NeuRadioButton_nrb_textSize, textSize)
+            textSizeDp = getDimension(R.styleable.NeuRadioButton_nrb_textSize, textSizeDp)
             textColor = getInteger(R.styleable.NeuRadioButton_nrb_textColor, textColor)
             textFont = getResourceId(R.styleable.NeuRadioButton_nrb_fontFamily, 0)
             disabledColor = getInteger(R.styleable.NeuRadioButton_nrb_disabledColor, disabledColor)
@@ -158,7 +177,7 @@ class NeuRadioButton : View, NeuUtil {
             isChecked = !isChecked
             invalidate()
 
-//            onNeuCheckedChangeListener?.onCheckedChanged(this, CheckedStatus)
+            onNeuCheckedChangeListener?.onCheckedChanged(this, isChecked)
 
             performClick()
             return true
@@ -166,7 +185,6 @@ class NeuRadioButton : View, NeuUtil {
 
         return false
     }
-/*
 
     fun enable() {
         isEnabled = true
@@ -211,32 +229,32 @@ class NeuRadioButton : View, NeuUtil {
         invalidate()
     }
 
-    fun setCheckBoxDimension(dimensionDp: Int) {
-        checkBoxDimension = dpToPixel(context, dimensionDp)
+    fun setButtonRadius(radiusDp: Int) {
+        buttonRadius = dpToPixel(context, radiusDp)
+        checkMarkRadius = buttonRadius.minus(checkMarkStrokeWidth.div(2))
         requestLayout()
     }
 
-    fun setCheckMarkParams(@ColorInt color: Int) {
+    fun setCheckColor(@ColorInt color: Int) {
         checkMarkColor = color
-        invalidate()
-    }
+        checkMarkPaint.apply {
+            this.color = color
+            setShadowLayer(checkMarkGlowRadius, 0f, 0f, color)
+        }
 
-    fun setCheckMarkParams(@ColorInt color: Int, strokeWidthDp: Int) {
-        checkMarkStrokeWidth = dpToPixel(context, strokeWidthDp)
-        checkMarkColor = color
         invalidate()
     }
 
     fun setText(text: String, sizeDp: Int, @ColorInt color: Int) {
         this.text = text
-        textSize = dpToPixel(context, sizeDp)
+        textSizeDp = dpToPixel(context, sizeDp)
         textColor = color
         requestLayout()
     }
 
     fun setText(text: String, sizeDp: Int) {
         this.text = text
-        textSize = dpToPixel(context, sizeDp)
+        textSizeDp = dpToPixel(context, sizeDp)
         requestLayout()
     }
 
@@ -251,7 +269,6 @@ class NeuRadioButton : View, NeuUtil {
         requestLayout()
     }
 
-*/
     private fun adjustText() {
 
         /**
@@ -260,7 +277,7 @@ class NeuRadioButton : View, NeuUtil {
 
         textPaint.apply {
             typeface = getTypeFace(context, textFont, textStyle)
-            textSize = this@NeuRadioButton.textSize
+            textSize = this@NeuRadioButton.textSizeDp
             color = textColor
         }
 
@@ -272,7 +289,6 @@ class NeuRadioButton : View, NeuUtil {
     private fun adjustCheckBoxParams() {
         handleX = shadowMargin.plus(buttonRadius).plus(checkMarkStrokeWidth.div(2))
         handleY = height.div(2f)
-
         radioButtonPaint.color = radioButtonColor
     }
 
@@ -280,12 +296,12 @@ class NeuRadioButton : View, NeuUtil {
 
         /** Need to set the parameters that are determining in the measurement
          * of the length of the text since the size of the view is calculated
-         * based on the height and the width of the text
+         * based on the height and the width of the text and the radio button
          */
 
         textPaint.apply {
             typeface = getTypeFace(context, textFont, textStyle)
-            textSize = this@NeuRadioButton.textSize
+            textSize = this@NeuRadioButton.textSizeDp
         }
         val textHeight = textPaint.descent().minus(textPaint.ascent())
 
@@ -343,7 +359,7 @@ class NeuRadioButton : View, NeuUtil {
 
         checkMarkPaint.apply {
             color = checkMarkColor
-            setShadowLayer(handleGlowRadius, 0f, 0f, checkMarkColor)
+            setShadowLayer(checkMarkGlowRadius, 0f, 0f, checkMarkColor)
         }
     }
 }
