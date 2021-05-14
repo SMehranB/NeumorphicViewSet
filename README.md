@@ -180,7 +180,6 @@ neuButton.apply {
 binding.viewHolder.addView(neuButton)
 ```
 
-
 ## 📄 License
 ```text
 MIT License
