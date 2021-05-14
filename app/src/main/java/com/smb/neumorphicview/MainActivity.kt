@@ -1,13 +1,13 @@
 package com.smb.neumorphicview
 
 import android.os.Bundle
+import android.util.Log.d
+import android.widget.CompoundButton
+import android.widget.RadioGroup
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.smb.neumorphicview.databinding.ActivityMainBinding
-import com.smb.neumorphicviewset.NeuCheckBox
-import com.smb.neumorphicviewset.NeuRadioButton
-import com.smb.neumorphicviewset.NeuSeekBar
-import com.smb.neumorphicviewset.NeuSwitch
+import com.smb.neumorphicviewset.*
 import com.smb.neumorphicviewset.interfaces.OnNeuCheckBoxCheckedChangeListener
 import com.smb.neumorphicviewset.interfaces.OnNeuRadioButtonCheckedChangeListener
 import com.smb.neumorphicviewset.interfaces.OnNeuSeekBarChangeListener
@@ -23,6 +23,25 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        binding.tempRG.setOnCheckedChangeListener(object: RadioGroup.OnCheckedChangeListener{
+            override fun onCheckedChanged(p0: RadioGroup?, p1: Int) {
+
+            }
+        })
+
+        binding.neuRadioGroup.onCheckedChangeListener = object : NeuRadioGroup.OnCheckedChangedListener{
+            override fun onCheckChanged(neuRadioGroup: NeuRadioGroup, checkedId: Int) {
+                d("MMM", checkedId.toString())
+                d("MMM", neuRadioGroup.checkedNeuRadioButtonId.toString())
+            }
+        }
+
+        binding.tempRD.setOnCheckedChangeListener(object: CompoundButton.OnCheckedChangeListener {
+            override fun onCheckedChanged(p0: CompoundButton?, p1: Boolean) {
+                d("MMM", "afmjsdnfkas")
+            }
+
+        })
         binding.rb1.setOnNeuCheckedChangeListener(object: OnNeuRadioButtonCheckedChangeListener{
             override fun onCheckedChanged(neuRadioButton: NeuRadioButton, checked: Boolean) {
 //                d("MMM", "Radio $checked")
@@ -102,8 +121,9 @@ class MainActivity : AppCompatActivity() {
 
         binding.change.setOnClickListener {
 
-            binding.btnNeumorphic.apply {
-
+            binding.neuRadioGroup.apply {
+//                check(2131296559)
+                clearCheck()
             }
         }
 

@@ -52,6 +52,7 @@ class NeuRadioButton : View, NeuUtil {
             field = value
             invalidate()
         }
+    var isCheckable: Boolean = true
 
     /* Shadow and lighting parameters */
     private var shadowMargin: Float = dpToPixel(context, 12)
@@ -150,7 +151,7 @@ class NeuRadioButton : View, NeuUtil {
         adjustText()
 
         if (!isEnabled) {
-//            disable()
+            disable()
         }
 
         super.onLayout(changed, left, top, right, bottom)
@@ -174,10 +175,11 @@ class NeuRadioButton : View, NeuUtil {
 
         if(event?.action == MotionEvent.ACTION_DOWN && isEnabled){
 
-            isChecked = !isChecked
-            invalidate()
-
-            onNeuCheckedChangeListener?.onCheckedChanged(this, isChecked)
+            if (isCheckable) {
+                isChecked = !isChecked
+                onNeuCheckedChangeListener?.onCheckedChanged(this, isChecked)
+                invalidate()
+            }
 
             performClick()
             return true
