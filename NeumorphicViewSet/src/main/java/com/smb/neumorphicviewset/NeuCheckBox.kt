@@ -12,7 +12,6 @@ import androidx.annotation.StyleRes
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.ColorUtils
 import com.smb.neumorphicviewset.interfaces.NeuUtil
-import com.smb.neumorphicviewset.interfaces.OnNeuCheckBoxCheckedChangeListener
 
 class NeuCheckBox : View, NeuUtil {
     constructor(context: Context): super(context){
@@ -93,10 +92,12 @@ class NeuCheckBox : View, NeuUtil {
             requestLayout()
         }
 
-    private var onNeuCheckedChangeListener: OnNeuCheckBoxCheckedChangeListener? = null
 
-    fun setOnNeuCheckedChangeListener(onCheckedChangeListener: OnNeuCheckBoxCheckedChangeListener) {
-        this.onNeuCheckedChangeListener = onCheckedChangeListener
+private var onNeuCheckedChangeListener: OnCheckedChangeListener? = null
+
+
+    fun setOnNeuCheckedChangeListener(listener: OnCheckedChangeListener) {
+        this.onNeuCheckedChangeListener = listener
     }
 
     private fun initAttributes(context: Context, attributeSet: AttributeSet?, defStyleAttr: Int) {
@@ -395,5 +396,9 @@ class NeuCheckBox : View, NeuUtil {
         path.lineTo(endX, endY)
 
         return path
+    }
+
+    interface OnCheckedChangeListener {
+        fun onCheckedChanged(neuCheckBox: NeuCheckBox, checked: Boolean)
     }
 }

@@ -38,19 +38,6 @@
             android:background="@color/neuPrimaryColor"
             android:orientation="vertical">
 
-            <RadioGroup
-                android:id="@+id/tempRG"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
-
-                <RadioButton
-                    android:id="@+id/tempRD"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="fasfd"/>
-
-            </RadioGroup>
-
             <com.smb.neumorphicviewset.NeuRadioGroup
                 android:id="@+id/neuRadioGroup"
                 android:layout_width="match_parent"

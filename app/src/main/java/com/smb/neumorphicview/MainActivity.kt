@@ -2,16 +2,10 @@ package com.smb.neumorphicview
 
 import android.os.Bundle
 import android.util.Log.d
-import android.widget.CompoundButton
-import android.widget.RadioGroup
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.smb.neumorphicview.databinding.ActivityMainBinding
 import com.smb.neumorphicviewset.*
-import com.smb.neumorphicviewset.interfaces.OnNeuCheckBoxCheckedChangeListener
-import com.smb.neumorphicviewset.interfaces.OnNeuRadioButtonCheckedChangeListener
-import com.smb.neumorphicviewset.interfaces.OnNeuSeekBarChangeListener
-import com.smb.neumorphicviewset.interfaces.OnNeuSwitchCheckedChangeListener
 
 class MainActivity : AppCompatActivity() {
 
@@ -23,12 +17,6 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        binding.tempRG.setOnCheckedChangeListener(object: RadioGroup.OnCheckedChangeListener{
-            override fun onCheckedChanged(p0: RadioGroup?, p1: Int) {
-
-            }
-        })
-
         binding.neuRadioGroup.onCheckedChangeListener = object : NeuRadioGroup.OnCheckedChangedListener{
             override fun onCheckChanged(neuRadioGroup: NeuRadioGroup, checkedId: Int) {
                 d("MMM", checkedId.toString())
@@ -36,30 +24,25 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        binding.tempRD.setOnCheckedChangeListener(object: CompoundButton.OnCheckedChangeListener {
-            override fun onCheckedChanged(p0: CompoundButton?, p1: Boolean) {
-                d("MMM", "afmjsdnfkas")
-            }
-
-        })
-        binding.rb1.setOnNeuCheckedChangeListener(object: OnNeuRadioButtonCheckedChangeListener{
+        binding.rb1.setOnNeuCheckedChangeListener(object: NeuRadioButton.OnCheckedChangeListener{
             override fun onCheckedChanged(neuRadioButton: NeuRadioButton, checked: Boolean) {
 //                d("MMM", "Radio $checked")
             }
         })
-        binding.neuCheckBox.setOnNeuCheckedChangeListener(object: OnNeuCheckBoxCheckedChangeListener {
+
+        binding.neuCheckBox.setOnNeuCheckedChangeListener(object: NeuCheckBox.OnCheckedChangeListener {
             override fun onCheckedChanged(neuCheckBox: NeuCheckBox, checked: Boolean) {
 //                d("MMM", "Check box is $checked")
             }
         })
 
-        binding.neuSwitch.setOnNeuCheckedChangeListener(object : OnNeuSwitchCheckedChangeListener {
+        binding.neuSwitch.setOnNeuCheckedChangeListener(object : NeuSwitch.OnCheckedChangeListener {
             override fun onCheckedChanged(neuSwitch: NeuSwitch, checked: Boolean) {
 //                d("MMM", "the switch is $checked")
             }
         })
 
-        binding.neuSeekBar.setOnSeekBarProgressChanged(object : OnNeuSeekBarChangeListener {
+        binding.neuSeekBar.setOnNeuCheckedChangeListener(object : NeuSeekBar.OnChangeListener {
             override fun onProgressChanged(neuSeekBar: NeuSeekBar?, progress: Int, fromUser: Boolean) {
 //                d("MMM", "On progress changed $progress%")
             }

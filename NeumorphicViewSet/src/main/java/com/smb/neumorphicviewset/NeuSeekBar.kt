@@ -12,7 +12,6 @@ import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.ColorUtils
 import com.smb.neumorphicviewset.interfaces.NeuUtil
-import com.smb.neumorphicviewset.interfaces.OnNeuSeekBarChangeListener
 import kotlin.math.abs
 
 class NeuSeekBar : View, NeuUtil {
@@ -72,7 +71,7 @@ class NeuSeekBar : View, NeuUtil {
     private var jutSize: Int = 1
     private var jut: Jut = Jut.NORMAL
 
-    private var onNeuSeekBarChangeListener: OnNeuSeekBarChangeListener? = null
+    private var onChangeListener: OnChangeListener? = null
 
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
@@ -132,7 +131,7 @@ class NeuSeekBar : View, NeuUtil {
                         parent.requestDisallowInterceptTouchEvent(true)
                         progress = xToProgress(event.x)
                         isDragging = true
-                        onNeuSeekBarChangeListener?.onStartTrackingTouch(this)
+                        onChangeListener?.onStartTrackingTouch(this)
 
                         if (clickInProgressArea(event)) {
                             handleX = event.x
@@ -153,7 +152,7 @@ class NeuSeekBar : View, NeuUtil {
                     if (isDragging && seekBarClicked(event)) {
 
                         progress = xToProgress(event.x)
-                        onNeuSeekBarChangeListener?.onProgressChanged(this, progress, true)
+                        onChangeListener?.onProgressChanged(this, progress, true)
 
                         if (clickInProgressArea(event)) {
                             handleX = event.x
@@ -165,7 +164,7 @@ class NeuSeekBar : View, NeuUtil {
 
                 MotionEvent.ACTION_UP -> {
                     isDragging = false
-                    onNeuSeekBarChangeListener?.onStopTrackingTouch(this)
+                    onChangeListener?.onStopTrackingTouch(this)
                     parent.requestDisallowInterceptTouchEvent(false)
                 }
             }
@@ -174,8 +173,8 @@ class NeuSeekBar : View, NeuUtil {
         return super.onTouchEvent(event)
     }
 
-    fun setOnSeekBarProgressChanged(onNeuSeekBarChangeListener: OnNeuSeekBarChangeListener) {
-        this.onNeuSeekBarChangeListener = onNeuSeekBarChangeListener
+    fun setOnNeuCheckedChangeListener(listener: OnChangeListener) {
+        this.onChangeListener = listener
     }
 
     fun enable() {
@@ -200,7 +199,7 @@ class NeuSeekBar : View, NeuUtil {
         this.progress = progress
         handleX = progressToX(progress)
         adjustProgressRectF()
-        onNeuSeekBarChangeListener?.onProgressChanged(this, progress, false)
+        onChangeListener?.onProgressChanged(this, progress, false)
         invalidate()
     }
 
@@ -400,5 +399,11 @@ class NeuSeekBar : View, NeuUtil {
 
     private fun clickInProgressArea(event: MotionEvent): Boolean {
         return event.x in progressBarStart..progressBarEnd
+    }
+
+    interface OnChangeListener {
+        fun onProgressChanged(neuSeekBar: NeuSeekBar?, progress: Int, fromUser: Boolean)
+        fun onStartTrackingTouch(neuSeekBar: NeuSeekBar?)
+        fun onStopTrackingTouch(neuSeekBar: NeuSeekBar?)
     }
 }

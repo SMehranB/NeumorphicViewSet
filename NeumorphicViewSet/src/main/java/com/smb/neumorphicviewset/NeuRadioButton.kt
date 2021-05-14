@@ -12,7 +12,6 @@ import androidx.annotation.StyleRes
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.ColorUtils
 import com.smb.neumorphicviewset.interfaces.NeuUtil
-import com.smb.neumorphicviewset.interfaces.OnNeuRadioButtonCheckedChangeListener
 
 class NeuRadioButton : View, NeuUtil {
 
@@ -94,10 +93,10 @@ class NeuRadioButton : View, NeuUtil {
             requestLayout()
         }
 
-    private var onNeuCheckedChangeListener: OnNeuRadioButtonCheckedChangeListener? = null
+    private var onNeuCheckedChangeListener: OnCheckedChangeListener? = null
 
-    fun setOnNeuCheckedChangeListener(onCheckedChangeListener: OnNeuRadioButtonCheckedChangeListener) {
-        this.onNeuCheckedChangeListener = onCheckedChangeListener
+    fun setOnNeuCheckedChangeListener(listener: OnCheckedChangeListener) {
+        this.onNeuCheckedChangeListener = listener
     }
 
     private fun initAttributes(context: Context, attributeSet: AttributeSet?, defStyleAttr: Int) {
@@ -363,5 +362,9 @@ class NeuRadioButton : View, NeuUtil {
             color = checkMarkColor
             setShadowLayer(checkMarkGlowRadius, 0f, 0f, checkMarkColor)
         }
+    }
+
+    interface OnCheckedChangeListener {
+        fun onCheckedChanged(neuRadioButton: NeuRadioButton, checked: Boolean)
     }
 }
