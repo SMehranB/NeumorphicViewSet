@@ -36,8 +36,8 @@ class NeuImageButton : View, NeuUtil {
     private var mBackgroundColor = ContextCompat.getColor(context, R.color.neuPrimaryColor)
     private val backgroundRectF = RectF()
     private var cornerRadius: Float = dpToPixel(context, 8)
-    private var horizontalPadding: Float = dpToPixel(context,16)
-    private var verticalPadding: Float = dpToPixel(context,16)
+    private var horizontalPadding: Float = 0f
+    private var verticalPadding: Float = 0f
     var disabledTextColor = Color.GRAY
 
     /* Shadow and lighting parameters */
@@ -219,7 +219,7 @@ class NeuImageButton : View, NeuUtil {
 
         val width = drawableDimension
             .plus(shadowMargin.times(2)) //the margin dedicated to the lighting and shadow from each side
-            .plus(horizontalPadding.times(2)) //this padding applies only to the text increasing the width of the view
+            .plus(horizontalPadding.times(2))
 
         val height = drawableDimension
             .plus(shadowMargin.times(2))

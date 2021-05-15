@@ -77,45 +77,40 @@ class MainActivity : AppCompatActivity() {
             disabled = if (disabled) {
                 binding.apply {
                     rb1.enable()
+                    rb2.enable()
+                    btnMute.enable()
+                    btnCheckOut.enable()
                     neuCheckBox.enable()
                     neuSeekBar.enable()
                     neuSwitch.enable()
-//                neuButton.enable()
                     btnPlay.enable()
+                    btnToStart.enable()
+                    btnToEnd.enable()
                     btnNeumorphic.enable()
-
-
                 }
                 !disabled
             } else {
-
                 binding.apply {
                     rb1.disable()
+                    rb2.disable()
+                    btnMute.disable()
+                    btnCheckOut.disable()
                     neuCheckBox.disable()
                     neuSeekBar.disable()
                     neuSwitch.disable()
-//                neuButton.disable()
                     btnNeumorphic.disable()
                     btnPlay.disable()
+                    btnToStart.disable()
+                    btnToEnd.disable()
                 }
                 !disabled
             }
         }
 
-        binding.change.setOnClickListener {
-
-            binding.neuRadioGroup.apply {
-//                check(2131296559)
-                clearCheck()
-            }
-        }
-
-//        neuButton.setOnClickListener {
-//            Toast.makeText(this, "neuButton Clicked", Toast.LENGTH_SHORT).show()
-//        }
         binding.btnNeumorphic.setOnClickListener {
-            Toast.makeText(this, "btnNeumorphic Clicked", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "Add More Items to Cart Clicked", Toast.LENGTH_SHORT).show()
         }
+
         binding.btnPlay.setOnClickListener {
             Toast.makeText(this, "btnPlay Clicked", Toast.LENGTH_SHORT).show()
         }

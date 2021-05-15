@@ -6,10 +6,15 @@
 ## Features!
 
  •	 Button
+ 
  •	 Image Button
+ 
  •	 Check box
+ 
  •	 Seek Bar
- •     Radio Button
+ 
+ •   Radio Button
+ 
  •	 Switch
 
 ## Screen recording
@@ -30,14 +35,14 @@ allprojects {
 
 ```groovy
 dependencies {
-	 implementation 'com.github.SMehranB:GlowButton:1.0.0'
+	 implementation 'com.github.SMehranB:NeumorphicViewSet:1.0.0'
 }
 ```
 ## Maven
 ```xml
 <dependency>
 	<groupId>com.github.SMehranB</groupId>
-	<artifactId>GlowButton</artifactId>
+	<artifactId>NeumorphicViewSet</artifactId>
 	<version>1.0.0</version>
 </dependency>
  ```

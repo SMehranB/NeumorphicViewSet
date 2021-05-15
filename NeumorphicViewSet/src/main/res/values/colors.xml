@@ -4,4 +4,10 @@
     <color name="neuPrimaryColor">#590000</color>
     <color name="neuSecondaryColor">#500000</color>
 
+    <color name="neuPrimaryColor_light">#A3A3A3</color>
+    <color name="neuSecondaryColor_light">#9C9C9C</color>
+
+    <color name="neuHandleColor">#00FFFF</color>
+
+    <color name="neuTextColor">#303030</color>
 </resources>

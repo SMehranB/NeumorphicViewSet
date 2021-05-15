@@ -67,7 +67,7 @@ class NeuSeekBar : View, NeuUtil {
     /* Shadow and lighting parameters */
     private var shadowMargin: Float = dpToPixel(context,16)
     private var lightDensity: Float = 0.5f
-    private var shadowDensity: Float = 0.5f
+    private var shadowDensity: Float = 0.6f
     private var jutSize: Int = 1
     private var jut: Jut = Jut.NORMAL
 
@@ -114,7 +114,7 @@ class NeuSeekBar : View, NeuUtil {
             drawRoundRect(progressRectF, cornerRadius, cornerRadius, progressPaint)
 
             // DRAWING HANDLE
-            drawCircle(handleX, handleY, handleRadius, lightPaint)
+            drawCircle(handleX, handleY, handleRadius.times(1.1f), lightPaint)
             drawCircle(handleX, handleY, handleRadius, handlePaint)
             drawCircle(handleX, handleY, handleRadius - thickness, progressPaint)
         }

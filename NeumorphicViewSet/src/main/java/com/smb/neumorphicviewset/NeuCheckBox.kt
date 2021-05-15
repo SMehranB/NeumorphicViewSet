@@ -295,7 +295,7 @@ private var onNeuCheckedChangeListener: OnCheckedChangeListener? = null
 
     private fun adjustCheckBoxParams() {
 
-        val left = shadowMargin.plus(checkMarkStrokeWidth.div(2))
+        val left = shadowMargin
         val right = left.plus(checkBoxDimension)
         val top = height.div(2).minus(checkBoxDimension.div(2))
         val bottom = top.plus(checkBoxDimension)

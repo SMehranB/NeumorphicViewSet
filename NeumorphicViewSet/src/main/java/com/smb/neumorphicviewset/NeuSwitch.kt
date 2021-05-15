@@ -4,13 +4,13 @@ import android.animation.Animator
 import android.animation.AnimatorSet
 import android.animation.ValueAnimator
 import android.content.Context
-import android.graphics.Canvas
-import android.graphics.Color
-import android.graphics.Paint
-import android.graphics.RectF
+import android.graphics.*
 import android.util.AttributeSet
 import android.view.MotionEvent
 import android.view.View
+import androidx.annotation.ColorInt
+import androidx.annotation.FontRes
+import androidx.annotation.StyleRes
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.ColorUtils
 import com.smb.neumorphicviewset.interfaces.MyAnimatorListener
@@ -32,6 +32,7 @@ class NeuSwitch: View, NeuUtil {
 
     /* Paint objects */
     private val backgroundPaint = Paint(Paint.ANTI_ALIAS_FLAG)
+    private val textPaint = Paint(Paint.ANTI_ALIAS_FLAG)
     private val handlePaint = Paint(Paint.ANTI_ALIAS_FLAG)
     private val lightPaint = Paint(Paint.ANTI_ALIAS_FLAG)
 
@@ -56,9 +57,9 @@ class NeuSwitch: View, NeuUtil {
     private var handleOffColor: Int = ColorUtils.blendARGB(Color.BLACK, handleColor, 0.4f)
 
     /* Background parameters */
-    private var backgroundHeight = dpToPixel(context, 40)
-    private var backgroundWidth = dpToPixel(context, 70)
-    var backColor = ContextCompat.getColor(context, R.color.neuPrimaryColor)
+    private var switchHeight = dpToPixel(context, 30)
+    private var switchWidth = dpToPixel(context, 50)
+    var switchColor = ContextCompat.getColor(context, R.color.neuPrimaryColor)
         set(value) {
             field = value
             backgroundPaint.color = value
@@ -69,11 +70,43 @@ class NeuSwitch: View, NeuUtil {
     var disabledColor = Color.GRAY
 
     /* Shadow and lighting parameters */
-    private var shadowMargin: Float = dpToPixel(context,16)
+    private var shadowMargin: Float = dpToPixel(context,12)
     private var lightDensity: Float = 0.5f
     private var shadowDensity: Float = 0.5f
     private var jutSize: Int = 1
     private var jut: Jut = Jut.NORMAL
+
+    /* Text parameters */
+    private var mTextX: Float = 0f
+    private var mTextY: Float = 0f
+    var textSizeDp: Float = dpToPixel(context, 16)
+        set(value) {
+            field = value
+            requestLayout()
+        }
+    @ColorInt
+    var textColor: Int = Color.BLACK
+        set(value) {
+            field = value
+            invalidate()
+        }
+    @StyleRes
+    var textStyle: Int = Typeface.NORMAL
+        set(value) {
+            field = value
+            requestLayout()
+        }
+    @FontRes
+    var textFont: Int = 0
+        set(value) {
+            field = value
+            requestLayout()
+        }
+    var text: String = ""
+        set(value) {
+            field = value
+            requestLayout()
+        }
 
     private var onCheckedChangeListener: OnCheckedChangeListener? = null
 
@@ -95,6 +128,7 @@ class NeuSwitch: View, NeuUtil {
          * The order of the following functions is important
          */
         adjustBackgroundParams()
+        adjustText()
         adjustJutParams(jut)
 
         setLayerTypeBasedOnSDK(this, lightPaint)
@@ -108,6 +142,7 @@ class NeuSwitch: View, NeuUtil {
             drawRoundRect(backgroundRectF, cornerRadius, cornerRadius, lightPaint)
             drawRoundRect(backgroundRectF, cornerRadius, cornerRadius, backgroundPaint)
             drawCircle(handleX, handleY, handleRadius, handlePaint)
+            drawText(text, mTextX, mTextY, textPaint)
         }
     }
 
@@ -183,6 +218,30 @@ class NeuSwitch: View, NeuUtil {
         invalidate()
     }
 
+    fun setText(text: String, sizeDp: Int, @ColorInt color: Int) {
+        this.text = text
+        textSizeDp = dpToPixel(context, sizeDp)
+        textColor = color
+        requestLayout()
+    }
+
+    fun setText(text: String, sizeDp: Int) {
+        this.text = text
+        textSizeDp = dpToPixel(context, sizeDp)
+        requestLayout()
+    }
+
+    fun setTypeface(style: Int, @FontRes font: Int) {
+        textStyle = style
+        textFont = font
+        requestLayout()
+    }
+
+    fun setTypeface(@StyleRes style: Int) {
+        textStyle = style
+        requestLayout()
+    }
+
     fun setOnNeuCheckedChangeListener(listener: OnCheckedChangeListener) {
         onCheckedChangeListener = listener
     }
@@ -191,11 +250,19 @@ class NeuSwitch: View, NeuUtil {
 
         val attrs = context.theme.obtainStyledAttributes(attributeSet, R.styleable.NeuSwitch, defStyleAttr, 0)
         attrs.apply {
-            backColor = getInteger(R.styleable.NeuSwitch_ns_backgroundColor, backColor)
+            switchColor = getInteger(R.styleable.NeuSwitch_ns_backgroundColor, switchColor)
+            switchWidth = getDimension(R.styleable.NeuSwitch_ns_SwitchWidth, switchWidth)
+            switchHeight = getDimension(R.styleable.NeuSwitch_ns_SwitchHeight, switchHeight)
 
             lightDensity = getFloat(R.styleable.NeuSwitch_ns_lightDensity, lightDensity).coerceAtMost(1f)
             shadowDensity = getFloat(R.styleable.NeuSwitch_ns_shadowDensity, shadowDensity).coerceAtMost(1f)
             jutSize = getInt(R.styleable.NeuSwitch_ns_JutSize, jutSize)
+
+            textStyle = getInt(R.styleable.NeuSwitch_ns_textStyle, textStyle)
+            textSizeDp = getDimension(R.styleable.NeuSwitch_ns_textSize, textSizeDp)
+            textColor = getInteger(R.styleable.NeuSwitch_ns_textColor, textColor)
+            textFont = getResourceId(R.styleable.NeuSwitch_ns_fontFamily, 0)
+            text = getString(R.styleable.NeuSwitch_ns_text) ?: text
 
             disabledColor = getInteger(R.styleable.NeuSwitch_ns_disabledColor, disabledColor)
             handleColor = getInt(R.styleable.NeuSwitch_ns_handleColor, handleColor)
@@ -215,8 +282,21 @@ class NeuSwitch: View, NeuUtil {
 
     private fun getDesiredDimensions(): NeuUtil.MinimumDimensions {
 
-        val width = backgroundWidth.plus(shadowMargin.times(2))
-        val height = backgroundHeight.plus(shadowMargin.times(2))
+        textPaint.apply {
+            typeface = getTypeFace(context, textFont, textStyle)
+            textSize = this@NeuSwitch.textSizeDp
+        }
+        val textHeight = textPaint.descent().minus(textPaint.ascent())
+
+        val switchWidth = switchWidth.plus(shadowMargin.times(2))
+        val switchHeight = switchHeight.plus(shadowMargin.times(2))
+
+        var width = textPaint.measureText(text).plus(switchWidth)
+        if (text.isNotBlank()) {
+            width = width.plus(shadowMargin)
+        }
+
+        val height = textHeight.coerceAtLeast(switchHeight)
 
         return NeuUtil.MinimumDimensions(width.toInt(), height.toInt())
     }
@@ -281,12 +361,34 @@ class NeuSwitch: View, NeuUtil {
         }
     }
 
+    private fun adjustText() {
+
+        /**
+         * Setting all text parameters before the text is drawn
+         */
+
+        textPaint.apply {
+            typeface = getTypeFace(context, textFont, textStyle)
+            textSize = this@NeuSwitch.textSizeDp
+            color = textColor
+        }
+
+        mTextX = backgroundRectF.right.plus(shadowMargin)
+        val textVerticalMid = textPaint.descent().plus(textPaint.ascent()).div(2)
+        mTextY = height.div(2f).minus(textVerticalMid)
+    }
+
     private fun adjustBackgroundParams() {
-        backgroundRectF.set(shadowMargin, shadowMargin, width.minus(shadowMargin), height.minus(shadowMargin))
+        val left = shadowMargin
+        val right = left.plus(switchWidth)
+        val top = height.div(2).minus(switchHeight.div(2))
+        val bottom = top.plus(switchHeight)
+
+        backgroundRectF.set(left, top, right, bottom)
         cornerRadius = backgroundRectF.height().div(2)
         backgroundPaint.apply {
             style = Paint.Style.FILL
-            color = backColor
+            color = switchColor
         }
     }
 
@@ -317,12 +419,12 @@ class NeuSwitch: View, NeuUtil {
         }
 
         backgroundPaint.apply {
-            setShadowLayer(radius, shadowOffset, shadowOffset, ColorUtils.blendARGB(backColor, Color.BLACK, shadowDensity))
+            setShadowLayer(radius, shadowOffset, shadowOffset, ColorUtils.blendARGB(switchColor, Color.BLACK, shadowDensity))
         }
 
         lightPaint.apply {
-            color = backColor
-            setShadowLayer(radius, -lightOffset, -lightOffset, ColorUtils.blendARGB(backColor, Color.WHITE, lightDensity))
+            color = switchColor
+            setShadowLayer(radius, -lightOffset, -lightOffset, ColorUtils.blendARGB(switchColor, Color.WHITE, lightDensity))
         }
 
         handleRadius =  backgroundRectF.height().div(2).minus(handleMargin)

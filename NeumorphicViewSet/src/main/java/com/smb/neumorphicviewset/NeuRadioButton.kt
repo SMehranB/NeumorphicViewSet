@@ -105,6 +105,7 @@ class NeuRadioButton : View, NeuUtil {
         attrs.apply {
             radioButtonColor = getInteger(R.styleable.NeuRadioButton_nrb_SurfaceColor, radioButtonColor)
             checkMarkStrokeWidth = getDimension(R.styleable.NeuRadioButton_nrb_StrokeWidth, checkMarkStrokeWidth)
+            checkMarkColor = getInt(R.styleable.NeuCheckBox_ncb_CheckMarkColor, checkMarkColor)
 
             lightDensity = getFloat(R.styleable.NeuRadioButton_nrb_lightDensity, lightDensity).coerceAtMost(1f)
             shadowDensity = getFloat(R.styleable.NeuRadioButton_nrb_shadowDensity, shadowDensity).coerceAtMost(1f)
@@ -146,7 +147,7 @@ class NeuRadioButton : View, NeuUtil {
     override fun onLayout(changed: Boolean, left: Int, top: Int, right: Int, bottom: Int) {
 
         adjustJutParams(jut)
-        adjustCheckBoxParams()
+        adjustRadioButtonParams()
         adjustText()
 
         if (!isEnabled) {
@@ -287,7 +288,7 @@ class NeuRadioButton : View, NeuUtil {
         mTextY = height.div(2f).minus(textVerticalMid)
     }
 
-    private fun adjustCheckBoxParams() {
+    private fun adjustRadioButtonParams() {
         handleX = shadowMargin.plus(buttonRadius).plus(checkMarkStrokeWidth.div(2))
         handleY = height.div(2f)
         radioButtonPaint.color = radioButtonColor
