@@ -25,6 +25,11 @@ class NeuRadioGroup : LinearLayout {
     override fun onViewAdded(child: View?) {
 
         if (child is NeuRadioButton) {
+            if (child.isChecked) {
+                checkedRadioButton = child
+                checkedNeuRadioButtonId = child.id
+            }
+
             child.setOnClickListener {
                 changeCheckedTo(it as NeuRadioButton)
             }

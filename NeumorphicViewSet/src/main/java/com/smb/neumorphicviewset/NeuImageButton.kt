@@ -41,7 +41,7 @@ class NeuImageButton : View, NeuUtil {
     var disabledTextColor = Color.GRAY
 
     /* Shadow and lighting parameters */
-    private var shadowMargin: Float = dpToPixel(context,16)
+    private var shadowMargin: Float = dpToPixel(context,12)
     private var lightDensity: Float = 0.5f
     private var shadowDensity: Float = 0.5f
     private var jutSize: Int = 1

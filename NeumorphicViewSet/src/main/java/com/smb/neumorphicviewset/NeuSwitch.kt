@@ -137,7 +137,6 @@ class NeuSwitch: View, NeuUtil {
     }
 
     override fun onDraw(canvas: Canvas?) {
-
         canvas?.apply {
             drawRoundRect(backgroundRectF, cornerRadius, cornerRadius, lightPaint)
             drawRoundRect(backgroundRectF, cornerRadius, cornerRadius, backgroundPaint)
@@ -183,6 +182,9 @@ class NeuSwitch: View, NeuUtil {
                 color = handleOffColor
             }
         }
+
+        textPaint.color = textColor
+
         invalidate()
     }
 
@@ -194,6 +196,9 @@ class NeuSwitch: View, NeuUtil {
                 setShadowLayer(handleGlowRadius, 0f, 0f, disabledColor)
             }
         }
+
+        textPaint.color = disabledColor
+
         invalidate()
     }
 

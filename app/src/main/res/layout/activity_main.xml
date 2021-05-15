@@ -8,21 +8,20 @@
     android:orientation="vertical"
     tools:context=".MainActivity">
 
-    <Button
-        android:id="@+id/disableEnable"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:drawableLeft="@drawable/baseline_face_24"
-        android:drawableTint="@color/design_default_color_error"
-        android:text="Disable/Enable" />
-
         <LinearLayout
             android:id="@+id/viewHolder"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/neuPrimaryColor_light"
             android:orientation="vertical">
+
+            <Button
+                android:id="@+id/disableEnable"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:visibility="gone"
+                android:text="Disable/Enable" />
 
             <com.smb.neumorphicviewset.NeuRadioGroup
                 android:id="@+id/neuRadioGroup"
@@ -86,6 +85,7 @@
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
                 android:orientation="horizontal">
 
                 <com.smb.neumorphicviewset.NeuButton
@@ -128,7 +128,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:background="@color/neuPrimaryColor"
         android:orientation="vertical">
 
@@ -241,6 +241,64 @@
                 app:nib_shadowDensity="0.5" />
 
         </LinearLayout>
+
+        <com.smb.neumorphicviewset.NeuButton
+            android:id="@+id/btnThree"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            app:nb_JutSize="normal"
+            app:nb_backgroundColor="@color/neuSecondaryColor"
+            app:nb_cornerRadius="20dp"
+            app:nb_drawablePadding="24dp"
+            app:nb_HorizontalPadding="32dp"
+            app:nb_drawableEnd="@drawable/outline_shopping_cart_24"
+            app:nb_drawableTint="@color/white"
+            app:nb_lightDensity="0.4"
+            app:nb_shadowDensity="0.5"
+            app:nb_text="Add All Items to Cart"
+            app:nb_textColor="@color/white"
+            app:nb_textSize="16dp"
+            app:nb_textStyle="bold" />
+
+        <com.smb.neumorphicviewset.NeuButton
+            android:id="@+id/btnFour"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            app:nb_JutSize="normal"
+            app:nb_backgroundColor="@color/neuSecondaryColor"
+            app:nb_cornerRadius="20dp"
+            app:nb_drawablePadding="24dp"
+            app:nb_HorizontalPadding="32dp"
+            app:nb_drawableStart="@drawable/baseline_face_24"
+            app:nb_drawableEnd="@drawable/baseline_face_24"
+            app:nb_drawableTint="@color/white"
+            app:nb_lightDensity="0.4"
+            app:nb_shadowDensity="0.5"
+            app:nb_text="Create Profile"
+            app:nb_textColor="@color/white"
+            app:nb_textSize="16dp"
+            app:nb_textStyle="bold" />
+
+        <com.smb.neumorphicviewset.NeuButton
+            android:id="@+id/btnFive"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            app:nb_JutSize="normal"
+            app:nb_backgroundColor="@color/neuSecondaryColor"
+            app:nb_cornerRadius="20dp"
+            app:nb_drawablePadding="24dp"
+            app:nb_HorizontalPadding="32dp"
+            app:nb_drawableStart="@drawable/outline_payment_24"
+            app:nb_drawableTint="@color/white"
+            app:nb_lightDensity="0.4"
+            app:nb_shadowDensity="0.5"
+            app:nb_text="Proceed to Payment"
+            app:nb_textColor="@color/white"
+            app:nb_textSize="16dp"
+            app:nb_textStyle="bold" />
 
     </LinearLayout>
 

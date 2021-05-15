@@ -19,7 +19,7 @@
 
 ## Screen recording
 
- <img src="./screen_recording.gif" height="600"> <img src="./screen_recording.gif" height="600">
+ <img src="./screenshot.png" height="600">
  
 # Install
  
