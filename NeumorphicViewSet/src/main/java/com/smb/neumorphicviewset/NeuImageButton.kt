@@ -59,7 +59,7 @@ class NeuImageButton : View, NeuUtil {
         val attrs = context.theme.obtainStyledAttributes(attributeSet, R.styleable.NeuImageButton, defStyleAttr, 0)
         attrs.apply {
             cornerRadius = getDimension(R.styleable.NeuImageButton_nib_cornerRadius, cornerRadius)
-            mBackgroundColor = getInteger(R.styleable.NeuImageButton_nib_backgroundColor, mBackgroundColor)
+            mBackgroundColor = getInteger(R.styleable.NeuImageButton_nib_ButtonColor, mBackgroundColor)
 
             drawableDimension = getDimension(R.styleable.NeuImageButton_nib_drawableDimension, drawableDimension)
             drawable = getResourceId(R.styleable.NeuImageButton_nib_drawable, drawable)

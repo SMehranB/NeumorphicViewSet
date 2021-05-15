@@ -255,7 +255,7 @@ class NeuSwitch: View, NeuUtil {
 
         val attrs = context.theme.obtainStyledAttributes(attributeSet, R.styleable.NeuSwitch, defStyleAttr, 0)
         attrs.apply {
-            switchColor = getInteger(R.styleable.NeuSwitch_ns_backgroundColor, switchColor)
+            switchColor = getInteger(R.styleable.NeuSwitch_ns_SwitchColor, switchColor)
             switchWidth = getDimension(R.styleable.NeuSwitch_ns_SwitchWidth, switchWidth)
             switchHeight = getDimension(R.styleable.NeuSwitch_ns_SwitchHeight, switchHeight)
 

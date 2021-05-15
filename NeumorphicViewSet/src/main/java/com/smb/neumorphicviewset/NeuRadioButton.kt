@@ -103,9 +103,9 @@ class NeuRadioButton : View, NeuUtil {
 
         val attrs = context.theme.obtainStyledAttributes(attributeSet, R.styleable.NeuRadioButton, defStyleAttr, 0)
         attrs.apply {
-            radioButtonColor = getInteger(R.styleable.NeuRadioButton_nrb_SurfaceColor, radioButtonColor)
+            radioButtonColor = getInteger(R.styleable.NeuRadioButton_nrb_RadioButtonColor, radioButtonColor)
             checkMarkStrokeWidth = getDimension(R.styleable.NeuRadioButton_nrb_StrokeWidth, checkMarkStrokeWidth)
-            checkMarkColor = getInt(R.styleable.NeuCheckBox_ncb_CheckMarkColor, checkMarkColor)
+            checkMarkColor = getInt(R.styleable.NeuRadioButton_nrb_CheckedColor, checkMarkColor)
 
             lightDensity = getFloat(R.styleable.NeuRadioButton_nrb_lightDensity, lightDensity).coerceAtMost(1f)
             shadowDensity = getFloat(R.styleable.NeuRadioButton_nrb_shadowDensity, shadowDensity).coerceAtMost(1f)

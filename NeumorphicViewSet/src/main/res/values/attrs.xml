@@ -27,7 +27,7 @@
         <attr name="nb_disabledTextColor" format="color"/>
 
         <attr name="nb_cornerRadius" format="dimension"/>
-        <attr name="nb_backgroundColor" format="color"/>
+        <attr name="nb_ButtonColor" format="color"/>
 
         <attr name="nb_drawableDimension" format="dimension"/>
         <attr name="nb_drawableStart" format="reference"/>
@@ -55,7 +55,7 @@
         <attr name="nib_disabledColor" format="color"/>
 
         <attr name="nib_cornerRadius" format="dimension"/>
-        <attr name="nib_backgroundColor" format="color"/>
+        <attr name="nib_ButtonColor" format="color"/>
 
         <attr name="nib_drawableDimension" format="dimension"/>
         <attr name="nib_drawable" format="reference"/>
@@ -77,7 +77,7 @@
 
         <attr name="nsb_disabledColor" format="color"/>
 
-        <attr name="nsb_backgroundColor" format="color"/>
+        <attr name="nsb_SeekBarColor" format="color"/>
         <attr name="nsb_handleRadius" format="dimension"/>
 
         <attr name="nsb_ProgressBarHeight" format="dimension"/>
@@ -115,7 +115,7 @@
         <attr name="ns_SwitchHeight" format="dimension" />
 
         <attr name="ns_disabledColor" format="color"/>
-        <attr name="ns_backgroundColor" format="color"/>
+        <attr name="ns_SwitchColor" format="color"/>
         <attr name="ns_handleColor" format="color"/>
 
         <attr name="ns_enabled" format="boolean"/>
@@ -147,7 +147,7 @@
         </attr>
 
         <attr name="ncb_disabledColor" format="color"/>
-        <attr name="ncb_backgroundColor" format="color"/>
+        <attr name="ncb_CheckBoxColor" format="color"/>
         <attr name="ncb_handleColor" format="color"/>
 
         <attr name="ncb_enabled" format="boolean"/>
@@ -181,7 +181,7 @@
         </attr>
 
         <attr name="nrb_disabledColor" format="color"/>
-        <attr name="nrb_SurfaceColor" format="color"/>
+        <attr name="nrb_RadioButtonColor" format="color"/>
         <attr name="nrb_CheckedColor" format="color"/>
 
         <attr name="nrb_enabled" format="boolean"/>

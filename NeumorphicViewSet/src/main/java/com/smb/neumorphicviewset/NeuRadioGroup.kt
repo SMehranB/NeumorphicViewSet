@@ -26,8 +26,7 @@ class NeuRadioGroup : LinearLayout {
 
         if (child is NeuRadioButton) {
             if (child.isChecked) {
-                checkedRadioButton = child
-                checkedNeuRadioButtonId = child.id
+                changeCheckedTo(child)
             }
 
             child.setOnClickListener {

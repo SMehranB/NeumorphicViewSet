@@ -239,7 +239,7 @@ class NeuSeekBar : View, NeuUtil {
         attrs.apply {
 
             handleRadius = getDimension(R.styleable.NeuSeekBar_nsb_handleRadius, handleRadius)
-            backColor = getInteger(R.styleable.NeuSeekBar_nsb_backgroundColor, backColor)
+            backColor = getInteger(R.styleable.NeuSeekBar_nsb_SeekBarColor, backColor)
 
             lightDensity = getFloat(R.styleable.NeuSeekBar_nsb_lightDensity, lightDensity).coerceAtMost(1f)
             shadowDensity = getFloat(R.styleable.NeuSeekBar_nsb_shadowDensity, shadowDensity).coerceAtMost(1f)

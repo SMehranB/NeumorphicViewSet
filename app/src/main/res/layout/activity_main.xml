@@ -8,123 +8,123 @@
     android:orientation="vertical"
     tools:context=".MainActivity">
 
-        <LinearLayout
-            android:id="@+id/viewHolder"
+    <LinearLayout
+        android:id="@+id/viewHolder"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/neuPrimaryColor_light"
+        android:orientation="vertical">
+
+        <Button
+            android:id="@+id/disableEnable"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/neuPrimaryColor_light"
-            android:orientation="vertical">
+            android:layout_margin="8dp"
+            android:text="Disable/Enable"
+            android:visibility="visible" />
 
-            <Button
-                android:id="@+id/disableEnable"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="8dp"
-                android:visibility="gone"
-                android:text="Disable/Enable" />
+        <com.smb.neumorphicviewset.NeuRadioGroup
+            android:id="@+id/neuRadioGroup"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
 
-            <com.smb.neumorphicviewset.NeuRadioGroup
-                android:id="@+id/neuRadioGroup"
+            <com.smb.neumorphicviewset.NeuRadioButton
+                android:id="@+id/rb1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                app:nrb_CheckedColor="#11FF00"
+                app:nrb_JutSize="large"
+                app:nrb_RadioButtonColor="@color/neuSecondaryColor_light"
+                app:nrb_lightDensity="0.8"
+                app:nrb_text="Normal Delivery"
+                app:nrb_textColor="@color/neuTextColor" />
 
-                <com.smb.neumorphicviewset.NeuRadioButton
-                    android:id="@+id/rb1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    app:nrb_SurfaceColor="@color/neuSecondaryColor_light"
-                    app:nrb_lightDensity="0.8"
-                    app:nrb_CheckedColor="#11FF00"
-                    app:nrb_JutSize="large"
-                    app:nrb_text="Normal Delivery"
-                    app:nrb_textColor="@color/neuTextColor" />
-
-                <com.smb.neumorphicviewset.NeuRadioButton
-                    android:id="@+id/rb2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    app:nrb_JutSize="large"
-                    app:nrb_checked="true"
-                    app:nrb_CheckedColor="#11FF00"
-                    app:nrb_SurfaceColor="@color/neuSecondaryColor_light"
-                    app:nrb_lightDensity="0.8"
-                    app:nrb_text="Express Delivery"
-                    app:nrb_textColor="@color/neuTextColor" />
-
-            </com.smb.neumorphicviewset.NeuRadioGroup>
-
-                <com.smb.neumorphicviewset.NeuSwitch
-                    android:id="@+id/neuSwitch"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="start"
-                    app:ns_backgroundColor="@color/neuSecondaryColor_light"
-                    app:ns_checked="true"
-                    app:ns_textColor="@color/neuTextColor"
-                    app:ns_text="Insure My Package"
-                    app:ns_JutSize="large"
-                    app:ns_handleColor="#11FF00"
-                    app:ns_lightDensity="0.8"
-                    app:ns_shadowDensity="0.6" />
-
-            <com.smb.neumorphicviewset.NeuCheckBox
-                android:id="@+id/neu_check_box"
+            <com.smb.neumorphicviewset.NeuRadioButton
+                android:id="@+id/rb2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="start"
-                app:ncb_JutSize="large"
-                app:ncb_shadowDensity="0.6"
-                app:ncb_lightDensity="0.8"
-                app:ncb_checked="true"
-                app:ncb_CheckMarkColor="#11FF00"
-                app:ncb_backgroundColor="@color/neuSecondaryColor_light"
-                app:ncb_text="Save my info"
-                app:ncb_textColor="@color/neuTextColor"/>
+                app:nrb_CheckedColor="#11FF00"
+                app:nrb_JutSize="large"
+                app:nrb_checked="true"
+                app:nrb_RadioButtonColor="@color/neuSecondaryColor_light"
+                app:nrb_lightDensity="0.8"
+                app:nrb_text="Express Delivery"
+                app:nrb_textColor="@color/neuTextColor" />
 
-            <LinearLayout
+        </com.smb.neumorphicviewset.NeuRadioGroup>
+
+        <com.smb.neumorphicviewset.NeuSwitch
+            android:id="@+id/neuSwitch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            app:ns_JutSize="large"
+            app:ns_SwitchColor="@color/neuSecondaryColor_light"
+            app:ns_checked="true"
+            app:ns_handleColor="#11FF00"
+            app:ns_lightDensity="0.8"
+            app:ns_shadowDensity="0.6"
+            app:ns_text="Insure My Package"
+            app:ns_textColor="@color/neuTextColor" />
+
+        <com.smb.neumorphicviewset.NeuCheckBox
+            android:id="@+id/neu_check_box"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            app:ncb_CheckBoxColor="@color/neuSecondaryColor_light"
+            app:ncb_CheckMarkColor="#11FF00"
+            app:ncb_JutSize="large"
+            app:ncb_checked="true"
+            app:ncb_lightDensity="0.8"
+            app:ncb_shadowDensity="0.6"
+            app:ncb_text="Save my info"
+            app:ncb_textColor="@color/neuTextColor" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:orientation="horizontal">
+
+            <com.smb.neumorphicviewset.NeuButton
+                android:id="@+id/btnNeumorphic"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:orientation="horizontal">
+                app:nb_ButtonColor="@color/neuSecondaryColor_light"
+                app:nb_JutSize="normal"
+                app:nb_cornerRadius="20dp"
+                app:nb_drawableEnd="@drawable/outline_shopping_cart_24"
+                app:nb_drawableTint="@color/neuTextColor"
+                app:nb_lightDensity="0.8"
+                app:nb_shadowDensity="0.6"
+                app:nb_text="Add More to Cart"
+                app:nb_textColor="@color/neuTextColor"
+                app:nb_textSize="16dp"
+                app:nb_textStyle="bold" />
 
-                <com.smb.neumorphicviewset.NeuButton
-                    android:id="@+id/btnNeumorphic"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    app:nb_JutSize="normal"
-                    app:nb_backgroundColor="@color/neuSecondaryColor_light"
-                    app:nb_cornerRadius="20dp"
-                    app:nb_drawableEnd="@drawable/outline_shopping_cart_24"
-                    app:nb_drawableTint="@color/neuTextColor"
-                    app:nb_lightDensity="0.8"
-                    app:nb_shadowDensity="0.6"
-                    app:nb_text="Add More to Cart"
-                    app:nb_textColor="@color/neuTextColor"
-                    app:nb_textSize="16dp"
-                    app:nb_textStyle="bold" />
-
-                <com.smb.neumorphicviewset.NeuButton
-                    android:id="@+id/btnCheckOut"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    app:nb_JutSize="normal"
-                    app:nb_backgroundColor="@color/neuSecondaryColor_light"
-                    app:nb_cornerRadius="20dp"
-                    app:nb_drawableEnd="@drawable/outline_payment_24"
-                    app:nb_drawableTint="@color/neuTextColor"
-                    app:nb_lightDensity="0.8"
-                    app:nb_shadowDensity="0.6"
-                    app:nb_text="Check Out"
-                    app:nb_textColor="@color/neuTextColor"
-                    app:nb_textSize="16dp"
-                    app:nb_textStyle="bold" />
-
-            </LinearLayout>
+            <com.smb.neumorphicviewset.NeuButton
+                android:id="@+id/btnCheckOut"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                app:nb_ButtonColor="@color/neuSecondaryColor_light"
+                app:nb_JutSize="normal"
+                app:nb_cornerRadius="20dp"
+                app:nb_drawableEnd="@drawable/outline_payment_24"
+                app:nb_drawableTint="@color/neuTextColor"
+                app:nb_lightDensity="0.8"
+                app:nb_shadowDensity="0.6"
+                app:nb_text="Check Out"
+                app:nb_textColor="@color/neuTextColor"
+                app:nb_textSize="16dp"
+                app:nb_textStyle="bold" />
 
         </LinearLayout>
+
+    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -140,11 +140,11 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="01:03"
-                android:layout_marginStart="8dp"
                 android:layout_gravity="center_vertical"
-                android:textColor="@color/white"
-                android:layout_marginLeft="8dp" />
+                android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp"
+                android:text="01:03"
+                android:textColor="@color/white" />
 
             <com.smb.neumorphicviewset.NeuSeekBar
                 android:id="@+id/neuSeekBar"
@@ -153,9 +153,9 @@
                 android:layout_weight="2"
                 app:nsb_JutSize="normal"
                 app:nsb_Progress="30"
-                app:nsb_ProgressColor="@color/neuHandleColor"
                 app:nsb_ProgressBarHeight="16dp"
-                app:nsb_backgroundColor="@color/neuSecondaryColor"
+                app:nsb_ProgressColor="@color/neuHandleColor"
+                app:nsb_SeekBarColor="@color/neuSecondaryColor"
                 app:nsb_handleRadius="12dp"
                 app:nsb_lightDensity="0.5"
                 app:nsb_shadowDensity="0.6" />
@@ -163,11 +163,11 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="03:20"
-                android:layout_marginEnd="8dp"
                 android:layout_gravity="center_vertical"
-                android:textColor="@color/white"
-                android:layout_marginRight="8dp" />
+                android:layout_marginEnd="8dp"
+                android:layout_marginRight="8dp"
+                android:text="03:20"
+                android:textColor="@color/white" />
 
         </LinearLayout>
 
@@ -181,11 +181,11 @@
                 android:id="@+id/btnToStart"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                app:nib_ButtonColor="@color/neuSecondaryColor"
+                app:nib_HorizontalPadding="12dp"
                 app:nib_JutSize="large"
                 app:nib_VerticalPadding="12dp"
-                app:nib_HorizontalPadding="12dp"
-                android:layout_gravity="center_vertical"
-                app:nib_backgroundColor="@color/neuSecondaryColor"
                 app:nib_cornerRadius="100dp"
                 app:nib_drawable="@drawable/baseline_skip_previous_24"
                 app:nib_drawableDimension="20dp"
@@ -197,10 +197,10 @@
                 android:id="@+id/btnPlay"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                app:nib_ButtonColor="@color/neuSecondaryColor"
+                app:nib_HorizontalPadding="16dp"
                 app:nib_JutSize="large"
                 app:nib_VerticalPadding="16dp"
-                app:nib_HorizontalPadding="16dp"
-                app:nib_backgroundColor="@color/neuSecondaryColor"
                 app:nib_cornerRadius="100dp"
                 app:nib_drawableDimension="60dp"
                 app:nib_drawableTint="@color/white"
@@ -211,13 +211,13 @@
                 android:id="@+id/btnToEnd"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                app:nib_ButtonColor="@color/neuSecondaryColor"
+                app:nib_HorizontalPadding="12dp"
                 app:nib_JutSize="large"
                 app:nib_VerticalPadding="12dp"
-                app:nib_HorizontalPadding="12dp"
-                app:nib_drawable="@drawable/baseline_skip_next_24"
-                app:nib_backgroundColor="@color/neuSecondaryColor"
-                android:layout_gravity="center_vertical"
                 app:nib_cornerRadius="100dp"
+                app:nib_drawable="@drawable/baseline_skip_next_24"
                 app:nib_drawableDimension="20dp"
                 app:nib_drawableTint="@color/white"
                 app:nib_lightDensity="0.4"
@@ -227,14 +227,14 @@
                 android:id="@+id/btnMute"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:nib_JutSize="large"
-                app:nib_VerticalPadding="5dp"
-                app:nib_HorizontalPadding="5dp"
-                app:nib_drawable="@drawable/baseline_volume_mute_18"
-                app:nib_backgroundColor="@color/neuSecondaryColor"
                 android:layout_gravity="bottom"
                 android:layout_marginBottom="24dp"
+                app:nib_ButtonColor="@color/neuSecondaryColor"
+                app:nib_HorizontalPadding="5dp"
+                app:nib_JutSize="large"
+                app:nib_VerticalPadding="5dp"
                 app:nib_cornerRadius="100dp"
+                app:nib_drawable="@drawable/baseline_volume_mute_18"
                 app:nib_drawableDimension="22dp"
                 app:nib_drawableTint="@color/white"
                 app:nib_lightDensity="0.4"
@@ -247,12 +247,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            app:nb_JutSize="normal"
-            app:nb_backgroundColor="@color/neuSecondaryColor"
-            app:nb_cornerRadius="20dp"
-            app:nb_drawablePadding="24dp"
+            app:nb_ButtonColor="@color/neuSecondaryColor"
             app:nb_HorizontalPadding="32dp"
+            app:nb_JutSize="normal"
+            app:nb_cornerRadius="20dp"
             app:nb_drawableEnd="@drawable/outline_shopping_cart_24"
+            app:nb_drawablePadding="24dp"
             app:nb_drawableTint="@color/white"
             app:nb_lightDensity="0.4"
             app:nb_shadowDensity="0.5"
@@ -266,13 +266,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            app:nb_JutSize="normal"
-            app:nb_backgroundColor="@color/neuSecondaryColor"
-            app:nb_cornerRadius="20dp"
-            app:nb_drawablePadding="24dp"
+            app:nb_ButtonColor="@color/neuSecondaryColor"
             app:nb_HorizontalPadding="32dp"
-            app:nb_drawableStart="@drawable/baseline_face_24"
+            app:nb_JutSize="normal"
+            app:nb_cornerRadius="20dp"
             app:nb_drawableEnd="@drawable/baseline_face_24"
+            app:nb_drawablePadding="24dp"
+            app:nb_drawableStart="@drawable/baseline_face_24"
             app:nb_drawableTint="@color/white"
             app:nb_lightDensity="0.4"
             app:nb_shadowDensity="0.5"
@@ -286,11 +286,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
+            app:nb_ButtonColor="@color/neuSecondaryColor"
+            app:nb_HorizontalPadding="32dp"
             app:nb_JutSize="normal"
-            app:nb_backgroundColor="@color/neuSecondaryColor"
             app:nb_cornerRadius="20dp"
             app:nb_drawablePadding="24dp"
-            app:nb_HorizontalPadding="32dp"
             app:nb_drawableStart="@drawable/outline_payment_24"
             app:nb_drawableTint="@color/white"
             app:nb_lightDensity="0.4"

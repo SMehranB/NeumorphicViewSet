@@ -104,7 +104,7 @@ private var onNeuCheckedChangeListener: OnCheckedChangeListener? = null
 
         val attrs = context.theme.obtainStyledAttributes(attributeSet, R.styleable.NeuCheckBox, defStyleAttr, 0)
         attrs.apply {
-            checkBoxColor = getInteger(R.styleable.NeuCheckBox_ncb_backgroundColor, checkBoxColor)
+            checkBoxColor = getInteger(R.styleable.NeuCheckBox_ncb_CheckBoxColor, checkBoxColor)
 
             lightDensity = getFloat(R.styleable.NeuCheckBox_ncb_lightDensity, lightDensity).coerceAtMost(1f)
             shadowDensity = getFloat(R.styleable.NeuCheckBox_ncb_shadowDensity, shadowDensity).coerceAtMost(1f)
