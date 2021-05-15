@@ -1,5 +1,5 @@
 
-# Neumorphic View Set
+# Neumorphic View Set [![](https://jitpack.io/v/SMehranB/NeumorphicViewSet.svg)](https://jitpack.io/#SMehranB/NeumorphicViewSet)
 
 ## A set of views with neumorphic design
  
